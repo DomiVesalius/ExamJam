@@ -106,3 +106,6 @@ dist
 # builds
 frontend/app/build
 backend/app/build
+
+# IDE
+.idea

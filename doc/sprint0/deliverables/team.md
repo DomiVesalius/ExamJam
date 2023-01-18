@@ -4,7 +4,7 @@
 |                 |          |            |                                  |                     | `abhinav#3088`         |
 |                 |          |            |                                  |                     | `Nando#9021`           |
 |                 |          |            |                                  |                     | `Domi#1725`            |
-|                 |          |            |                                  |                     | `ant#0095`             |
+| Ananth Chebolu  | chebolua | 1008464886 | ananth.chebolu@mail.utoronto.ca  | Discord/Email       | `ant#0095`             |
 | Allan Henriques | henriq93 | 1007292154 | allan.henriques@mail.utoronto.ca |                     | `Allan Henriques#9038` |
 |                 |          |            |                                  |                     | `Singularity_1#1949`   |
 

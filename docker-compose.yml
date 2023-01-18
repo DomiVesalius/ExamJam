@@ -1,6 +1,17 @@
 version: '3'
 
 services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - frontend  # frontend depends on backend which depends on database
+    ports:
+      - "80:80"
+    networks:
+      - hireme-network
+
   frontend:
     image: frontend
     container_name: frontend

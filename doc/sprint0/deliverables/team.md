@@ -1,6 +1,7 @@
 | Full Name       | UTORID   | Student ID | Email                            | Best Way to Contact | Discord Username       |
-| ----------------| -------- | ---------- | ---------------------------------|                     | `abhinav#3088`         |
+|-----------------|----------|------------|----------------------------------|---------------------|------------------------|
 | Kyuhyun Ryu     | ryukyuhy | 1006321801 | kyuhyun.ryu@utoronto.ca          | Discord/Email       | `korea eric#2022`      |
+|                 |          |            |                                  |                     | `abhinav#3088`         |
 |                 |          |            |                                  |                     | `Nando#9021`           |
 |                 |          |            |                                  |                     | `Domi#1725`            |
 |                 |          |            |                                  |                     | `ant#0095`             |

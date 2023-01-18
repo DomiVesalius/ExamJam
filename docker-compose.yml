@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  backend:
+    image: backend
+    container_name: backend
+    restart: always
+    stdin_open: true
+    depends_on:
+      - database
+    ports:
+      - "8080:8080"
+    networks:
+      - hireme-network
+    volumes:
+      - ./backend/app:/app
+      - /app/node_modules # ignore local node_modules path
+    build:
+      context: backend
+      dockerfile: dev.Dockerfile
+    env_file:
+      - backend/app/.env.development
+
+  database:
+    image: mongo:6.0
+    container_name: database
+    ports:
+      - '27017:27017'
+    networks:
+      - hireme-network
+    volumes:
+      - database-volume:/data/db
+
+networks:
+  hireme-network:
+    driver: bridge
+
+volumes:
+  database-volume:
+    driver: local

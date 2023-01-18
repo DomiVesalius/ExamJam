@@ -1,5 +1,5 @@
-| Full Name | UTORID | Student ID | Email | Best Way to Contact | Discord Username     |
-|-----------|--------|------------|-------|---------------------|----------------------|
+| Full Name | UTORID | Student ID | Email | Best Way to Contact | Discord Username       |
+|-----------|--------|------------|-------|---------------------|------------------------|
 |           |        |            |       |                     | `abhinav#3088`         |
 |           |        |            |       |                     | `korea eric#2022`      |
 |           |        |            |       |                     | `Nando#9021`           |

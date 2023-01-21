@@ -6,6 +6,6 @@
 | Mohammad Qadir   | qadirmo3  | 1006079191 | mohammad.qadir@mail.utoronto.ca   | Discord             | `Domi#1725`            |
 | Ananth Chebolu   | chebolua  | 1008464886 | ananth.chebolu@mail.utoronto.ca   | Discord/Email       | `ant#0095`             |
 | Allan Henriques  | henriq93  | 1007292154 | allan.henriques@mail.utoronto.ca  | Discord             | `Allan Henriques#9038` |
-|                  |           |            |                                   |                     | `Singularity_1#1949`   |
+| Harshit Gupta    | guptaha8  | 1006689264 | harshit.gupta@mail.utoronto.ca    | Discord             | `Singularity_1#1949`   |
 
 **Discord Server Invite :** `https://discord.gg/dKNeyRUycJ`

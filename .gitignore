@@ -109,3 +109,6 @@ backend/app/build
 
 # IDE
 .idea
+
+# Mac
+**/.DS_Store

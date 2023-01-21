@@ -9,3 +9,5 @@
 | Harshit Gupta    | guptaha8  | 1006689264 | harshit.gupta@mail.utoronto.ca    | Discord             | `Singularity_1#1949`   |
 
 **Discord Server Invite :** `https://discord.gg/dKNeyRUycJ`
+
+Our proposal is not complete, but we would like some feedback on what we have so far.

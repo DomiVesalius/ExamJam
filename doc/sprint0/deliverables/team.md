@@ -9,5 +9,7 @@
 | Harshit Gupta    | guptaha8  | 1006689264 | harshit.gupta@mail.utoronto.ca    | Discord             | `Singularity_1#1949`   |
 
 **Discord Server Invite :** `https://discord.gg/dKNeyRUycJ`
+**Trello Board:** https://trello.com/b/o5s6vYqF/hireme-kanban
+**Trello Invite:** https://trello.com/invite/csc301teamhireme/ATTI210a0ea2624cebfbea4c12ad0df0f2d39356EB2A
 
 Our proposal is not complete, but we would like some feedback on what we have so far.

@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon",
     "format": "prettier --write src/",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "gen": "tsoa spec-and-routes"
   },
   "author": "",
   "license": "ISC",

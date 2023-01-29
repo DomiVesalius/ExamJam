@@ -47,7 +47,8 @@ The project will initially be targeted towards University of Toronto students fo
 term. The reason being is that we want to have a strong foundation in our MVP before branching out. If time permits, we 
 aim to extend this to other academic institutions in North America. 
 
-With regard to competitors, any Q&A platform can be considered a competitor since exam questions can be asked on any of 
-those platforms. What other platforms cannot guarantee is an academically honest experience since those platforms cannot
-view university exams due to intellectual property laws. Our platform requires a university email and access is only 
-limited to exams provided from that university. For instance, UofT students can only see UofT past exams. 
+With regard to competitors, any Q&A platform (e.g. Piazza, Chegg, StackExchange) can be considered a competitor since 
+exam questions can be asked on any of those platforms. What other platforms cannot guarantee is an academically honest 
+experience since those platforms cannot view university exams due to intellectual property laws. Our platform requires a
+university email and access is only limited to exams provided from that university. For instance, UofT students can only
+see UofT past exams. 

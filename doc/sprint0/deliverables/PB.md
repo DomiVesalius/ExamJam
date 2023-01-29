@@ -18,12 +18,13 @@
      * Users can log out after logging in (log-out button is visible after a user logs in).
 2. As a user, I should be able to manage my profile
    * Priority: 2
-   * COS: Users can:
-     * Customize their profile picture
-     * Update their display name
-     * Change their passwords
-     * Delete their account
-     * Add a bio
+   * COS: 
+     * Users can:
+       * Customize their profile picture
+       * Update their display name
+       * Change their passwords
+       * Delete their account
+       * Add a bio
 3. As a user, I should be able to toggle between light mode and dark mode so that I can customize my UI.
    * Priority: 1
    * COS:

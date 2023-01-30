@@ -19,3 +19,17 @@
     - Makefile
       - A few common docker compose commands for quality of life
     - Nginx as reverse proxy
+
+## Proof of Connection
+
+When launching the app for the first time, the page will look something like this:
+![img.png](assets/setup/initialClient.png)
+
+Filling out the text field and clicking submit will send a POST request to the backend:
+![img.png](assets/setup/backendLog.png)
+
+The backend will then create a document in the database:
+![img.png](assets/setup/dbLog.png)
+
+Finally, the frontend will query for all `randompeople` documents and render them:
+![img.png](assets/setup/finalClient.png)

@@ -3,7 +3,7 @@
 **Notes**
 * The priority scale is from 1-5
   * 1 = the least important
-  * 2 = most important
+  * 5 = most important
 * COS = Criteria of Satisfaction
 ## User Stories
 

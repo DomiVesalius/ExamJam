@@ -22,6 +22,7 @@ Install the following:
    * At this point, the frontend and backend should be running on `localhost:3000` and `localhost:8080` respectively.
    * Nginx is also set up as a reverse proxy, so you can also go straight to `localhost` to get the frontend and `localhost/api` for the backend.
    * Backend API docs should be available at `localhost/api/docs` or `localhost:8080/api/docs`
+6. After you have confirmed that everything is working fine, you can shutdown the containers using `docker compose down`
 
 ## Tech Stack
 
@@ -38,3 +39,15 @@ Install the following:
 * MongoDB
 
 ## Contributing
+
+Our development team uses git flow for contributions. The branches are as follows:
+* `master`: Contains production ready releases
+* `develop`: Branches off of master and contains the latest development changes
+
+To implement a new feature:
+1. Create a branch off of `develop` that matches `feature/DEV-###-*` where `###` is the number corresponding to the feature on Trello.
+2. Implement the feature...
+3. Create a pull request to merge into `develop` following the PR template given in `.github/` directory. 
+4. Request a review and approval by at least 2 other developers prior to merging changes into `develop`
+
+For other scenarios such as hot/bugfixes, follow the guidelines [here](https://nvie.com/posts/a-successful-git-branching-model/).

@@ -29,7 +29,7 @@ Install the following:
    * At this point, the frontend and backend should be running on `localhost:3000` and `localhost:8080` respectively.
    * Nginx is also set up as a reverse proxy, so you can also go straight to `localhost` to get the frontend and `localhost/api` for the backend.
    * Backend API docs should be available at `localhost/api/docs` or `localhost:8080/api/docs`
-6. After you have confirmed that everything is working fine, you can shutdown the containers using `docker compose down`
+6. After you have confirmed that everything is working fine, you can shut down the containers using `docker compose down`
 
 ## Tech Stack
 

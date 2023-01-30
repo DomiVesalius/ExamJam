@@ -4,7 +4,7 @@
 
 ![Landing Page](assets/landing_page.png)
 
-## Sign In & Register
+## Sign In
 
 ![Sign-in Page](assets/signin_1.png)
 ![Sign-in Page](assets/signin_2.png)

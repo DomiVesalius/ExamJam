@@ -6,8 +6,8 @@
 
 ## Sign In & Register
 
-![Sign-in Page](assets/signin_1.png, assets/signin_2.png)
-
+![Sign-in Page](assets/signin_1.png)
+![Sign-in Page](assets/signin_2.png)
 ## Dashboard
 
 The following the main dashboard after a user signs in:
@@ -19,7 +19,9 @@ The following the main dashboard after a user signs in:
 The following an example of what a user may see when they search for a specific course.
 There are 3 categories. All Files, Posts, and Favourites. All Files, Favourites, and Posts have a mockup.
 
-![Course Page](assets/Course_Preview_All_files.png, assets/Course_Preview_posts, assets/Course_Preview_Favourites)
+![Course Page](assets/Course_Preview_All_files.png)
+![Course Page](assets/Course_Preview_posts.png)
+![Course Page](assets/Course_Preview_Favourites.png)
 
 ## Exam Page
 

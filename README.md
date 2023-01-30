@@ -2,6 +2,13 @@
 
 ## Motivation
 
+Students at the University of Toronto spend a lot of their waking time studying for upcoming midterms and finals. This 
+often involves the use of past exams as a form of practice in order to truly hone their skills. The only issue is that
+they are often held back by the lack of past exam answers which may lead them to build bad problem-solving habits due
+to ignorant practice. ExamJam aims to bridge the gap in knowledge by providing an accessible platform for
+current students to discuss past exam answers with their classmates and for future students to learn from those very
+same discussions many semesters in the future.
+
 ## Installation and Setup
 
 Install the following:

@@ -15,7 +15,6 @@ For larger deliverables, we opted to do them as a group.
 | Ananth Chebolu   | proposal.md <br/> PB.md <br/> UI/UX                                                  |
 
 ## Tools
-
 * Strawpoll for anonymous voting.
 * Google Drive for deliverable files
 * [when2meet.com](https://www.when2meet.com/) for planning meetings
@@ -41,7 +40,6 @@ When prioritizing user stories, we needed at most two rounds of voting to come t
 story. When adding stories, there was emphasis on being specific enough so as to make their difficulty level and relevance clear.
 
 ## Meetings
-
 There were four meetings which were all online throughout sprint 0.
 * January 14, 4:00pm - 5:15pm
     * Brainstorming Ideas

@@ -1,4 +1,6 @@
 import mongoose, { Model, Schema } from 'mongoose';
+import bcrypt from 'bcrypt';
+
 import { emailValidation } from './user.validators';
 
 export interface IUser {
@@ -20,6 +22,19 @@ const UserSchema: Schema = new Schema({
     },
     active: { type: Schema.Types.Boolean, default: false },
     password: { type: Schema.Types.String, required: true }
+});
+
+/**
+ * This pre hook will hash a users password everytime it is modified.
+ * Ensures that passwords are not stored as plaintext.
+ */
+UserSchema.pre('save', async function (next: mongoose.CallbackWithoutResultAndOptionalError) {
+    if (this.isModified('password')) {
+        const saltRounds = 10;
+        this.password = await bcrypt.hash(this.password, saltRounds);
+    }
+
+    return next();
 });
 
 const UserModel: Model<IUserModel> = mongoose.model<IUserModel>('User', UserSchema);

@@ -16,8 +16,9 @@ export class TestUtil {
     private static mongo?: MongoMemoryServer;
 
     static async connectToTestDatabase() {
-        mongoose.set('strictQuery', false); // gets rid of a warning
+        if (this.mongo) return;
 
+        mongoose.set('strictQuery', false); // gets rid of a warning
         this.mongo = await MongoMemoryServer.create();
         await mongoose.connect(this.mongo.getUri(), DB_CONFIG.options);
     }

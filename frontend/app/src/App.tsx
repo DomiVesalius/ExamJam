@@ -1,12 +1,7 @@
-import React, { FormEvent, useEffect, useState } from 'react';
-import HTTP from './utils/http';
-
-interface Person {
-    _id: string;
-    name: string;
-    SIN: number;
-    age: number;
-}
+import React from 'react';
+import PageLayout from './components/Layout/PageLayout';
+import Counter from './components/Counter/Counter';
+import { Typography } from '@mui/material';
 
 /**
  * For now this is just to show that the frontend and backend are connected.
@@ -15,53 +10,10 @@ interface Person {
  * @constructor
  */
 function App() {
-    const getPeople = () => {
-        HTTP.get('/misc/random-person')
-            .then((r) => r.data)
-            .then((d) => setPeople(d.people));
-    };
-
-    const createPerson = (name: string) => {
-        HTTP.post('/misc/random-person', { name: name })
-            .then((r) => r.data)
-            .then(() => getPeople());
-    };
-
-    const handleSubmit = (e: FormEvent) => {
-        e.preventDefault();
-        // @ts-ignore
-        createPerson(e.target.personName.value);
-    };
-
-    const [people, setPeople] = useState<Array<Person>>([]);
-
-    useEffect(() => {
-        getPeople();
-    }, []);
-
     return (
-        <div className="App">
-            {people.map((person) => {
-                return (
-                    <div style={{ margin: '10px', padding: '10px', border: '1px black solid' }}>
-                        <p>ID={person._id}</p>
-                        <p>Name={person.name}</p>
-                        <p>Age={person.age}</p>
-                        <p>SIN={person.SIN}</p>
-                    </div>
-                );
-            })}
-
-            <div>
-                <form onSubmit={(e) => handleSubmit(e)}>
-                    <label htmlFor="name">
-                        Name:
-                        <input id="name" name="personName" type="text" />
-                    </label>
-                    <button>Submit</button>
-                </form>
-            </div>
-        </div>
+        <PageLayout title={App.name}>
+            <Typography variant="h1">Welcome to the main page :]</Typography>
+        </PageLayout>
     );
 }
 

@@ -2,6 +2,7 @@ import UserModel from './user.model';
 import { emailValidation } from './user.validators';
 
 import { TestUtil } from '../../utils/test.util';
+import { Error, MongooseError } from 'mongoose';
 
 describe('User Model', () => {
     beforeAll(async () => {
@@ -54,5 +55,26 @@ describe('User Model', () => {
         });
 
         expect(user.password).not.toBe('pass123');
+    });
+
+    test('Emails are unique', async () => {
+        const user = await UserModel.create({
+            username: 'John Doe',
+            email: 'john.doe@mail.utoronto.ca',
+            password: 'pass123'
+        });
+
+        try {
+            await UserModel.create({
+                username: 'Johnathan Doe',
+                email: 'john.doe@mail.utoronto.ca',
+                password: 'xyzabc123'
+            });
+        } catch (e) {
+            expect(e).not.toBe(null);
+        }
+
+        const johns = await UserModel.find({ email: user.email });
+        expect(johns.length).toBe(1);
     });
 });

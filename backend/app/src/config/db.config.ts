@@ -39,7 +39,7 @@ const DB_CONFIG: DBConfig = {
         useNewUrlParser: true,
         socketTimeoutMS: 10000,
         keepAlive: true,
-        autoIndex: false,
+        autoIndex: true,
         retryWrites: false
     }
 };

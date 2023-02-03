@@ -2,7 +2,6 @@ import UserModel from './user.model';
 import { emailValidation } from './user.validators';
 
 import { TestUtil } from '../../utils/test.util';
-import { Error, MongooseError } from 'mongoose';
 
 describe('User Model', () => {
     beforeAll(async () => {

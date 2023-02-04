@@ -1,6 +1,12 @@
 import { BaseController } from '../base.controller';
 import { Body, Post, Route, Tags, Middlewares } from 'tsoa';
-import { RegisterBody, RegisterResponse, validRegisterSchema } from './users.schemas';
+import {
+    LoginBody,
+    LoginResponse,
+    RegisterBody,
+    RegisterResponse,
+    validRegisterSchema
+} from './users.schemas';
 import validationMiddleware from '../../middlewares/validation.middleware';
 import { RequestHandler } from 'express';
 import { UsersService } from '../../models/user/users.service';
@@ -40,5 +46,21 @@ export class UsersController extends BaseController {
         this.setStatus(res.code);
 
         return res;
+    }
+
+    @Post('login')
+    public async login(@Body() body: LoginBody): Promise<LoginResponse> {
+        if (!(await UsersService.comparePassword(body.email, body.password))) {
+            const res: LoginResponse = {
+                success: false,
+                code: 401,
+                errors: ['Invalid credentials']
+            };
+            this.setStatus(res.code);
+            return res;
+        }
+
+        return { success: true, code: 200 };
+        // Valid credentials
     }
 }

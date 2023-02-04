@@ -1,6 +1,9 @@
 import { BaseResponse } from '../base.controller';
 import * as yup from 'yup';
 
+/**
+ * POST /register Schemas =================================================
+ */
 export interface RegisterBody {
     username: string;
     email: string;
@@ -19,3 +22,13 @@ export const validRegisterSchema = yup.object().shape({
 });
 
 export interface RegisterResponse extends BaseResponse {}
+
+/**
+ * POST /login Schemas =================================================
+ */
+export interface LoginBody {
+    email: string;
+    password: string;
+}
+
+export interface LoginResponse extends BaseResponse {}

@@ -3,7 +3,7 @@
   "noImplicitAdditionalProperties": "throw-on-extras",
   "controllerPathGlobs": ["src/controllers/**/*.controller.ts"],
   "spec": {
-    "name": "CHANGE ME",
+    "name": "ExamJam Web API",
     "basePath": "/api",
     "outputDirectory": "src/routes",
     "specVersion": 3

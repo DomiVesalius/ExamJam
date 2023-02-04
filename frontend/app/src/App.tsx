@@ -1,5 +1,8 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 import HTTP from './utils/http';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import Profile from './Profile'
+
 
 interface Person {
     _id: string;
@@ -39,29 +42,41 @@ function App() {
         getPeople();
     }, []);
 
-    return (
-        <div className="App">
-            {people.map((person) => {
-                return (
-                    <div style={{ margin: '10px', padding: '10px', border: '1px black solid' }}>
-                        <p>ID={person._id}</p>
-                        <p>Name={person.name}</p>
-                        <p>Age={person.age}</p>
-                        <p>SIN={person.SIN}</p>
-                    </div>
-                );
-            })}
+    function Form(){
+        return (
+            <div className="App">
+                {people.map((person) => {
+                    return (
+                        <div style={{ margin: '10px', padding: '10px', border: '1px black solid' }}>
+                            <p>ID={person._id}</p>
+                            <p>Name={person.name}</p>
+                            <p>Age={person.age}</p>
+                            <p>SIN={person.SIN}</p>
+                        </div>
+                    );
+                })}
 
-            <div>
-                <form onSubmit={(e) => handleSubmit(e)}>
-                    <label htmlFor="name">
-                        Name:
-                        <input id="name" name="personName" type="text" />
-                    </label>
-                    <button>Submit</button>
-                </form>
+                <div>
+                    <form onSubmit={(e) => handleSubmit(e)}>
+                        <label htmlFor="name">
+                            Name:
+                            <input id="name" name="personName" type="text" />
+                        </label>
+                        <button>Submit</button>
+                    </form>
+                </div>
             </div>
-        </div>
+        );
+    }
+
+
+    return (
+        <BrowserRouter>
+            <Routes>
+                    <Route path={"/"} element={<Form/>}></Route>
+                    <Route path={"profile"} element={<Profile/>}></Route>
+            </Routes>
+        </BrowserRouter>
     );
 }
 

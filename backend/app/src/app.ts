@@ -5,12 +5,19 @@ import express, { Express } from 'express';
 
 import loggingMiddleware from './middlewares/logging.middleware';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+
 import { errorMiddleware, notFoundMiddleware } from './middlewares/error.middleware';
 
 import { RegisterRoutes } from './routes/routes';
 import apiRouter from './routes/apiRouter';
 
+import SERVER_CONFIG from './config/server.config';
+
 const app: Express = express();
+
+// Parsing cookies
+app.use(cookieParser(SERVER_CONFIG.cookieSecret));
 
 // Logging requests
 app.use(loggingMiddleware);

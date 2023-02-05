@@ -5,22 +5,24 @@ import express, { Express } from 'express';
 
 import loggingMiddleware from './middlewares/logging.middleware';
 import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
 
 import { errorMiddleware, notFoundMiddleware } from './middlewares/error.middleware';
 
 import { RegisterRoutes } from './routes/routes';
 import apiRouter from './routes/apiRouter';
 
-import SERVER_CONFIG from './config/server.config';
+import passport from 'passport';
+import sessionMiddleware from './middlewares/session.middleware';
 
 const app: Express = express();
 
-// Parsing cookies
-app.use(cookieParser(SERVER_CONFIG.cookieSecret));
-
 // Logging requests
 app.use(loggingMiddleware);
+
+// Sessions and auth
+app.use(sessionMiddleware);
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Parsing requests
 app.use(bodyParser.urlencoded({ extended: false }));

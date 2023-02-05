@@ -3,7 +3,6 @@ import HTTP from './utils/http';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import Profile from './Profile'
 import PageLayout from './components/Layout/PageLayout';
-import Counter from './components/Counter/Counter';
 import { Typography } from '@mui/material';
 
 

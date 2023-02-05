@@ -21,29 +21,6 @@ interface Person {
  * @constructor
  */
 function App() {
-    const getPeople = () => {
-        HTTP.get('/misc/random-person')
-            .then((r) => r.data)
-            .then((d) => setPeople(d.people));
-    };
-
-    const createPerson = (name: string) => {
-        HTTP.post('/misc/random-person', { name: name })
-            .then((r) => r.data)
-            .then(() => getPeople());
-    };
-
-    const handleSubmit = (e: FormEvent) => {
-        e.preventDefault();
-        // @ts-ignore
-        createPerson(e.target.personName.value);
-    };
-
-    const [people, setPeople] = useState<Array<Person>>([]);
-
-    useEffect(() => {
-        getPeople();
-    }, []);
 
     function Main(){
         return (

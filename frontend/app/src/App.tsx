@@ -1,11 +1,10 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 import HTTP from './utils/http';
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
-import Profile from './Profile'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Profile from './components/Profile/Profile';
 import PageLayout from './components/Layout/PageLayout';
 import Counter from './components/Counter/Counter';
 import { Typography } from '@mui/material';
-
 
 interface Person {
     _id: string;
@@ -45,7 +44,7 @@ function App() {
         getPeople();
     }, []);
 
-    function Main(){
+    function Main() {
         return (
             <PageLayout title={App.name}>
                 <Typography variant="h1">Welcome to the main page :]</Typography>
@@ -53,15 +52,14 @@ function App() {
         );
     }
 
-
     return (
         <BrowserRouter>
             <Routes>
-                    <Route path={"/"} element={<Main/>}></Route>
-                    <Route path={"profile"} element={<Profile/>}></Route>
+                <Route path={'/'} element={<Main />}></Route>
+                <Route path={'profile'} element={<Profile />}></Route>
             </Routes>
         </BrowserRouter>
-    )
+    );
 }
 
 export default App;

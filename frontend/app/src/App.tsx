@@ -1,7 +1,7 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 import HTTP from './utils/http';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Profile from './components/Profile/Profile';
+import Profile from './pages/Profile/Profile';
 import PageLayout from './components/Layout/PageLayout';
 import { Typography } from '@mui/material';
 

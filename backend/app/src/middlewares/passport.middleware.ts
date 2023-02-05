@@ -18,12 +18,10 @@ passport.use(
                     // Only check if the user account is activated in non-development environment
                     // to make it easier to for manual testing. Check will occur in 'production' and
                     // 'test' environments
-                    if (process.env.NODE_ENV !== 'development') {
-                        if (user.active) {
-                            done(null, user);
-                        } else {
-                            done(null, false);
-                        }
+                    if (process.env.NODE_ENV !== 'development' && !user.active) {
+                        done(null, false);
+                    } else {
+                        done(null, user);
                     }
                 } else {
                     // Since no user was found & there was no error, pass user as false to show

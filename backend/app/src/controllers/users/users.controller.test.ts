@@ -2,12 +2,16 @@ import { TestUtil } from '../../utils/test.util';
 import request from 'supertest';
 import app from '../../app';
 import { RegisterBody } from './users.schemas';
+import UserModel from '../../models/user/user.model';
 
 enum UsersEndpoints {
-    register = '/api/users/register'
+    register = '/api/users/register',
+    login = '/api/users/login',
+    logout = '/api/users/logout',
+    verifyEmail = '/api/users/verify-email'
 }
 
-describe(`[POST ${UsersEndpoints.register}]`, () => {
+describe(`[POST ${UsersEndpoints.register}]: `, () => {
     beforeAll(async () => {
         await TestUtil.connectToTestDatabase();
     });
@@ -20,7 +24,7 @@ describe(`[POST ${UsersEndpoints.register}]`, () => {
         await TestUtil.disconnectFromTestDatabase();
     });
 
-    test('Cannot register the same email twice', async () => {
+    test(`[POST ${UsersEndpoints.register}]: Cannot register the same email twice`, async () => {
         const email = 'example.email@mail.utoronto.ca';
         const firstBody: RegisterBody = {
             email,
@@ -48,9 +52,9 @@ describe(`[POST ${UsersEndpoints.register}]`, () => {
         expect(res.body.success).toBe(false);
     });
 
-    test('Cannot register with missing fields', async () => {
+    test(`[POST ${UsersEndpoints.register}]: Cannot register with missing fields`, async () => {
         const exampleBody = {
-            email: 'rock.lee@mail.utoronto.ca',
+            email: 'example.email@mail.utoronto.ca',
             username: 'RandomUsername1',
             password: 'abcd12345``',
             confirmPassword: 'abcd12345``'
@@ -68,9 +72,9 @@ describe(`[POST ${UsersEndpoints.register}]`, () => {
         }
     });
 
-    test('Passwords are too short', async () => {
+    test(`[POST ${UsersEndpoints.register}]: Passwords are too short`, async () => {
         const body: RegisterBody = {
-            email: 'soos.ramirez@mail.utoronto.ca',
+            email: 'example.email@mail.utoronto.ca',
             username: 'Soos',
             password: '123',
             confirmPassword: '123'
@@ -81,9 +85,9 @@ describe(`[POST ${UsersEndpoints.register}]`, () => {
         expect(res.body.success).toBe(false);
     });
 
-    test('Passwords do not match', async () => {
+    test(`[POST ${UsersEndpoints.register}]: Passwords do not match`, async () => {
         const body: RegisterBody = {
-            email: 'stanford.pines@mail.utoronto.ca',
+            email: 'example.email@mail.utoronto.ca',
             username: 'Stanford Pines',
             password: 'gullible',
             confirmPassword: 'gulloble'
@@ -94,7 +98,7 @@ describe(`[POST ${UsersEndpoints.register}]`, () => {
         expect(res.body.success).toBe(false);
     });
 
-    test('One or more body fields are empty', async () => {
+    test(`[POST ${UsersEndpoints.register}]: One or more body fields are empty`, async () => {
         const exampleBody = {
             email: 'empty.fields@mail.utoronto.ca',
             username: 'EmptyFIELDS',
@@ -115,7 +119,7 @@ describe(`[POST ${UsersEndpoints.register}]`, () => {
         }
     });
 
-    test('Email does not match UofT email regex', async () => {
+    test(`[POST ${UsersEndpoints.register}]: Email does not match UofT email regex`, async () => {
         const nonUofTStudent: RegisterBody = {
             email: 'billciph3@uwaterloo.ca',
             username: 'B1ll Ciph3r',
@@ -130,16 +134,16 @@ describe(`[POST ${UsersEndpoints.register}]`, () => {
         expect(res.body.success).toBe(false);
     });
 
-    test('Successful registrations', async () => {
+    test(`[POST ${UsersEndpoints.register}]: Successful registrations`, async () => {
         const uTorontoStudent: RegisterBody = {
-            email: 'robert.herjavec@utoronto.ca',
+            email: 'example.email1@utoronto.ca',
             username: 'Robert Herjavec',
             password: 'fdslnhksdjk',
             confirmPassword: 'fdslnhksdjk'
         };
 
         const uTorontoProfessor: RegisterBody = {
-            email: 'daniel.zingaro@utoronto.ca',
+            email: 'example.email2@utoronto.ca',
             username: 'Dan',
             password: 'dAHJFAJjgfd',
             confirmPassword: 'dAHJFAJjgfd'
@@ -153,5 +157,80 @@ describe(`[POST ${UsersEndpoints.register}]`, () => {
             expect(res.status).toBe(201);
             expect(res.body.success).toBe(true);
         }
+    });
+
+    /**
+     * Successful attempt cannot be tested because it requires an actual token
+     * which is only accessible through your email inbox
+     */
+    test(`[GET ${UsersEndpoints.verifyEmail}]: Verification token is invalid`, async () => {
+        const res: request.Response = await request(app)
+            .get(`${UsersEndpoints.verifyEmail}?token=fake-token`)
+            .send();
+        expect(res.status).toBe(403);
+        expect(res.body.success).toBe(false);
+    });
+
+    test(`[POST ${UsersEndpoints.login}]: Invalid email`, async () => {
+        const res: request.Response = await request(app)
+            .post(UsersEndpoints.login)
+            .send({ email: 'example.email@mail.utoronto.ca', password: 'password1234' });
+
+        expect(res.status).toBe(401);
+    });
+
+    test(`[POST ${UsersEndpoints.login}]: Invalid password`, async () => {
+        const res: request.Response = await request(app)
+            .post(UsersEndpoints.login)
+            .send({ email: 'example.email@mail.utoronto.ca', password: '1234password' });
+
+        expect(res.status).toBe(401);
+    });
+
+    test(`[POST ${UsersEndpoints.login}]: Successful login`, async () => {
+        // Example model to log into
+        await UserModel.create({
+            email: 'example.email@mail.utoronto.ca',
+            username: 'Lee',
+            active: true,
+            password: 'password1234'
+        });
+
+        const res: request.Response = await request(app)
+            .post(UsersEndpoints.login)
+            .send({ email: 'example.email@mail.utoronto.ca', password: 'password1234' });
+
+        expect(res.status).toBe(200);
+        expect(res.body.success).toBe(true);
+    });
+
+    test(`[DELETE ${UsersEndpoints.logout}]: Successful logout`, async () => {
+        // Example model to log into
+        await UserModel.create({
+            email: 'example.email@mail.utoronto.ca',
+            username: 'Lee',
+            active: true,
+            password: 'password1234'
+        });
+
+        const agent = request.agent(app);
+
+        let res: request.Response;
+        res = await agent
+            .post(UsersEndpoints.login)
+            .send({ email: 'example.email@mail.utoronto.ca', password: 'password1234' });
+
+        expect(res.status).toBe(200);
+        expect(res.body.success).toBe(true);
+
+        res = await agent.delete(UsersEndpoints.logout).send();
+
+        expect(res.status).toBe(200);
+    });
+
+    test(`[DELETE ${UsersEndpoints.logout}]: Unsuccessful logout`, async () => {
+        // Logging out without being logged in
+        const res: request.Response = await request(app).delete(UsersEndpoints.logout).send();
+        expect(res.status).toBe(401);
     });
 });

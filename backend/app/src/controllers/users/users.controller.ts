@@ -1,5 +1,5 @@
 import { BaseController } from '../base.controller';
-import { Body, Post, Route, Tags, Middlewares, Security, Get, Request } from 'tsoa';
+import { Body, Post, Route, Tags, Middlewares, Security, Get, Request, Delete } from 'tsoa';
 import {
     LoginBody,
     LoginResponse,
@@ -70,6 +70,16 @@ export class UsersController extends BaseController {
 
         this.setStatus(resBody.code);
         return resBody;
+    }
+
+    @Security(PassportStrategies.local)
+    @Delete('logout')
+    public async logout(@Request() req: ExpressRequest): Promise<void> {
+        req.logout((err: any) => {
+            if (err) {
+                this.setStatus(401);
+            }
+        });
     }
 
     @Security(PassportStrategies.local)

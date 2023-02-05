@@ -234,6 +234,32 @@ export function RegisterRoutes(app: express.Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/users/logout',
+            authenticateMiddleware([{"local":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(UsersController)),
+            ...(fetchMiddlewares<RequestHandler>(UsersController.prototype.logout)),
+
+            function UsersController_logout(request: any, response: any, next: any) {
+            const args = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new UsersController();
+
+
+              const promise = controller.logout.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/users/me',
             authenticateMiddleware([{"local":[]}]),
             ...(fetchMiddlewares<RequestHandler>(UsersController)),

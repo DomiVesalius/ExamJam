@@ -367,6 +367,25 @@
 				}
 			}
 		},
+		"/users/logout": {
+			"delete": {
+				"operationId": "Logout",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Users"
+				],
+				"security": [
+					{
+						"local": []
+					}
+				],
+				"parameters": []
+			}
+		},
 		"/users/me": {
 			"get": {
 				"operationId": "Me",

@@ -3,6 +3,7 @@ import { Body, Post, Route, Tags, Middlewares, Security, Get, Request, Delete, Q
 import {
     LoginBody,
     LoginResponse,
+    LogoutResponse,
     RegisterBody,
     RegisterResponse,
     validRegisterSchema,
@@ -106,12 +107,24 @@ export class UsersController extends BaseController {
 
     @Security(PassportStrategies.local)
     @Delete('logout')
-    public async logout(@Request() req: ExpressRequest): Promise<void> {
+    public async logout(@Request() req: ExpressRequest): Promise<LogoutResponse> {
         req.logout((err: any) => {
             if (err) {
                 this.setStatus(401);
+            } else {
+                this.setStatus(200);
             }
         });
+
+        let resBody: LogoutResponse;
+
+        if (this.getStatus() == 200) {
+            resBody = { code: 200, success: true };
+        } else {
+            resBody = { code: 401, success: false };
+        }
+
+        return resBody;
     }
 
     @Security(PassportStrategies.local)

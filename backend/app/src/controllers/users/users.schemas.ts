@@ -38,3 +38,9 @@ export interface LoginResponse extends BaseResponse {}
  */
 
 export interface VerifyEmailResponse extends BaseResponse {}
+
+/**
+ * DELETE /logout schemas
+ */
+
+export interface LogoutResponse extends BaseResponse {}

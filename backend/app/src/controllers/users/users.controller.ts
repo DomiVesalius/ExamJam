@@ -1,11 +1,12 @@
 import { BaseController } from '../base.controller';
-import { Body, Post, Route, Tags, Middlewares, Security, Get, Request, Delete } from 'tsoa';
+import { Body, Post, Route, Tags, Middlewares, Security, Get, Request, Delete, Query } from 'tsoa';
 import {
     LoginBody,
     LoginResponse,
     RegisterBody,
     RegisterResponse,
-    validRegisterSchema
+    validRegisterSchema,
+    VerifyEmailResponse
 } from './users.schemas';
 
 import validationMiddleware from '../../middlewares/validation.middleware';
@@ -16,6 +17,9 @@ import { UsersService } from '../../models/user/users.service';
 import passport from 'passport';
 import PassportStrategies from '../../middlewares/passport.middleware';
 import { IUserModel } from '../../models/user/user.model';
+import { EmailService } from '../../services/email.service';
+import jwt from 'jsonwebtoken';
+import SERVER_CONFIG from '../../config/server.config';
 
 @Tags('Users')
 @Route(`users`)
@@ -48,6 +52,8 @@ export class UsersController extends BaseController {
             return res;
         }
 
+        await EmailService.sendVerificationEmail(user);
+
         const res: RegisterResponse = { code: 201, success: true, message: 'Registered' };
         this.setStatus(res.code);
 
@@ -60,9 +66,10 @@ export class UsersController extends BaseController {
         @Request() req: ExpressRequest,
         @Body() body: LoginBody
     ): Promise<LoginResponse> {
+        const user = <IUserModel>req.user;
+
         let resBody: LoginResponse;
         if (req.isAuthenticated()) {
-            const user = <IUserModel>req.user;
             resBody = { success: true, code: 200, data: { email: user.email } };
         } else {
             resBody = { success: false, code: 401, message: 'Invalid Credentials' };
@@ -70,6 +77,31 @@ export class UsersController extends BaseController {
 
         this.setStatus(resBody.code);
         return resBody;
+    }
+
+    @Get('verify-email')
+    public async verifyEmail(@Query() token: string): Promise<VerifyEmailResponse> {
+        let resBody: VerifyEmailResponse;
+
+        try {
+            const payload = <{ data: string }>jwt.verify(token, SERVER_CONFIG.verifyEmailJwtSecret);
+            const email = payload.data;
+
+            const user: IUserModel | null = await UsersService.getByEmail(email);
+            if (user) {
+                resBody = { code: 200, success: true, message: 'Email verified' };
+                await UsersService.activateUser(email);
+            } else {
+                resBody = { code: 404, success: false, errors: [`User with email '${email}'`] };
+            }
+
+            this.setStatus(resBody.code);
+            return resBody;
+        } catch (e) {
+            resBody = { code: 403, success: false, errors: ['Invalid token'] };
+            this.setStatus(resBody.code);
+            return resBody;
+        }
     }
 
     @Security(PassportStrategies.local)

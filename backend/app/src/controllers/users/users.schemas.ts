@@ -32,3 +32,9 @@ export interface LoginBody {
 }
 
 export interface LoginResponse extends BaseResponse {}
+
+/**
+ * GET /verify-email Schemas
+ */
+
+export interface VerifyEmailResponse extends BaseResponse {}

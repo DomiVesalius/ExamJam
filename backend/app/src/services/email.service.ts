@@ -15,6 +15,8 @@ const transporter = nodemailer.createTransport({
 
 export class EmailService {
     public static async sendVerificationEmail(user: IUserModel): Promise<Error | SentMessageInfo> {
+        if (process.env.NODE_ENV === 'test') return;
+
         const token = jwt.sign({ data: user.email }, SERVER_CONFIG.verifyEmailJwtSecret, {
             expiresIn: '1h'
         });

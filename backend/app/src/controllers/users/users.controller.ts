@@ -1,5 +1,5 @@
 import { BaseController } from '../base.controller';
-import { Body, Post, Route, Tags, Middlewares } from 'tsoa';
+import { Body, Post, Route, Tags, Middlewares, Security, Get, Request } from 'tsoa';
 import {
     LoginBody,
     LoginResponse,
@@ -7,9 +7,15 @@ import {
     RegisterResponse,
     validRegisterSchema
 } from './users.schemas';
+
 import validationMiddleware from '../../middlewares/validation.middleware';
-import { RequestHandler } from 'express';
+import { RequestHandler, Request as ExpressRequest } from 'express';
+
 import { UsersService } from '../../models/user/users.service';
+
+import passport from 'passport';
+import PassportStrategies from '../../middlewares/passport.middleware';
+import { IUserModel } from '../../models/user/user.model';
 
 @Tags('Users')
 @Route(`users`)
@@ -48,19 +54,27 @@ export class UsersController extends BaseController {
         return res;
     }
 
+    @Middlewares(passport.authenticate(PassportStrategies.local))
     @Post('login')
-    public async login(@Body() body: LoginBody): Promise<LoginResponse> {
-        if (!(await UsersService.comparePassword(body.email, body.password))) {
-            const res: LoginResponse = {
-                success: false,
-                code: 401,
-                errors: ['Invalid credentials']
-            };
-            this.setStatus(res.code);
-            return res;
+    public async login(
+        @Request() req: ExpressRequest,
+        @Body() body: LoginBody
+    ): Promise<LoginResponse> {
+        let resBody: LoginResponse;
+        if (req.isAuthenticated()) {
+            const user = <IUserModel>req.user;
+            resBody = { success: true, code: 200, data: { email: user.email } };
+        } else {
+            resBody = { success: false, code: 401, message: 'Invalid Credentials' };
         }
 
-        return { success: true, code: 200 };
-        // Valid credentials
+        this.setStatus(resBody.code);
+        return resBody;
+    }
+
+    @Security(PassportStrategies.local)
+    @Get('me')
+    public async me(@Request() req: ExpressRequest): Promise<any> {
+        return { user: req.user };
     }
 }

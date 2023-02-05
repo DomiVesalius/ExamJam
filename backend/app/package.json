@@ -7,7 +7,7 @@
     "dev": "nodemon",
     "format": "prettier --write src/",
     "gen": "tsoa spec-and-routes",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand --verbose"
   },
   "author": "",
   "license": "ISC",

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Navbar } from '../Navbar/Navbar';
 
 export interface LayoutProps {
     children?: React.ReactNode;
@@ -14,7 +15,12 @@ const PageLayout: React.FunctionComponent<LayoutProps> = (props: LayoutProps): J
         document.title = props.title;
     }, []);
 
-    return <>{props.children}</>;
+    return (
+        <>
+            // Insert Navbar here. e.g. <Navbar></Navbar>
+            {props.children}
+        </>
+    );
 };
 
 export default PageLayout;

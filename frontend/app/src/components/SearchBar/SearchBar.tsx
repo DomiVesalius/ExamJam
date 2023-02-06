@@ -1,5 +1,5 @@
 import React from 'react';
-import { alpha, createTheme, InputBase, styled, Autocomplete } from '@mui/material';
+import { alpha, createTheme, InputBase, styled, Autocomplete, Container } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
 interface SearchProps {
@@ -73,16 +73,18 @@ export const SearchBar = ({
         <Autocomplete renderInput={(params) => {
             const { InputLabelProps, InputProps, ...rest } = params;
             return (
-                <Search>
-                    <SearchIconWrapper>
-                        <SearchIcon />
-                    </SearchIconWrapper>
-                    <StyledInputBase
-                        {...params.InputProps}
-                        {...rest}
-                        placeholder={placeHolder}
-                    />
-                </Search>
+                <Container maxWidth="md">
+                    <Search>
+                        <SearchIconWrapper>
+                            <SearchIcon />
+                        </SearchIconWrapper>
+                        <StyledInputBase
+                            {...params.InputProps}
+                            {...rest}
+                            placeholder={placeHolder}
+                        />
+                    </Search>
+                </Container>
             );
         }} options={top100Films} getOptionLabel={ (option) => option.title }
         />

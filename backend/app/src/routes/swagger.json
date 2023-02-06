@@ -242,6 +242,35 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"LogoutResponse": {
+				"description": "DELETE /logout schemas",
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -431,8 +460,15 @@
 			"delete": {
 				"operationId": "Logout",
 				"responses": {
-					"204": {
-						"description": "No content"
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/LogoutResponse"
+								}
+							}
+						}
 					}
 				},
 				"tags": [

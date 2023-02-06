@@ -110,6 +110,18 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "LogoutResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "success": {"dataType":"boolean","required":true},
+            "code": {"ref":"HttpStatusCodeLiteral","required":true},
+            "message": {"dataType":"string"},
+            "data": {"dataType":"any"},
+            "errors": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"any"}]},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
 const validationService = new ValidationService(models);
 

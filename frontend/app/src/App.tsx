@@ -4,6 +4,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Profile from './pages/Profile/Profile';
 import PageLayout from './components/Layout/PageLayout';
 import { Typography } from '@mui/material';
+import RegistrationPage from './pages/Auth/RegistrationPage';
+import LoginPage from './pages/Auth/LoginPage';
 
 interface Person {
     _id: string;
@@ -19,7 +21,6 @@ interface Person {
  * @constructor
  */
 function App() {
-
     function Main() {
         return (
             <PageLayout title={App.name}>
@@ -33,6 +34,7 @@ function App() {
             <Routes>
                 <Route path={'/'} element={<Main />}></Route>
                 <Route path={'profile'} element={<Profile />}></Route>
+                <Route path={'register'} element={<RegistrationPage />} />
             </Routes>
         </BrowserRouter>
     );

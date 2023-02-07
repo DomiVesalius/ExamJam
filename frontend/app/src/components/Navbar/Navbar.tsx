@@ -31,6 +31,9 @@ interface NavbarProps {
 
     /** Placeholder for search bar */
     searchPlaceholder: string;
+
+    /** Color of app bar */
+    appbarColor?: "inherit" | "transparent" | "default" | "primary" | "secondary" | undefined
 }
 
 export const Navbar = ({
@@ -40,6 +43,7 @@ export const Navbar = ({
     searchDefaultColor,
     searchHoverColor,
     searchPlaceholder,
+    appbarColor,
     ...props
 }: NavbarProps) => {
 
@@ -124,7 +128,7 @@ export const Navbar = ({
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar>
+            <AppBar color={appbarColor}>
                 <Toolbar>
                     <IconButton
                         size="large"

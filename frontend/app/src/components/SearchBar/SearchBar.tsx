@@ -13,21 +13,7 @@ interface SearchProps {
     placeHolder: string;
 }
 
-/* styled('div') creates custom divs with start and end tag of the constant name */
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    '& .MuiInputBase-input': {
-        padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('md')]: {
-            width: '20ch',
-        },
-    },
-}));
+/** styled('div') creates custom divs with start and end tag of the constant name */
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
     padding: theme.spacing(0, 2),
@@ -45,6 +31,21 @@ export const SearchBar = ({
     placeHolder,
     ...props
 }: SearchProps) => {
+
+    const StyledInputBase = styled(InputBase)(({ theme }) => ({
+        color: 'inherit',
+        '& .MuiInputBase-input': {
+            padding: theme.spacing(1, 1, 1, 0),
+            // vertical padding + font size from searchIcon
+            paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+            transition: theme.transitions.create('width'),
+            width: '100%',
+            [theme.breakpoints.up('md')]: {
+                width: '20ch',
+            },
+        },
+    }));
+
     const Search = styled('div')(({ theme }) => ({
         position: 'relative',
         borderRadius: theme.shape.borderRadius,
@@ -73,20 +74,20 @@ export const SearchBar = ({
         <Autocomplete renderInput={(params) => {
             const { InputLabelProps, InputProps, ...rest } = params;
             return (
-                <Container maxWidth="md">
-                    <Search>
-                        <SearchIconWrapper>
-                            <SearchIcon />
-                        </SearchIconWrapper>
-                        <StyledInputBase
-                            {...params.InputProps}
-                            {...rest}
-                            placeholder={placeHolder}
-                        />
-                    </Search>
-                </Container>
+                <Search>
+                    <SearchIconWrapper>
+                        <SearchIcon />
+                    </SearchIconWrapper>
+                    <StyledInputBase
+                        {...params.InputProps}
+                        {...rest}
+                        placeholder={placeHolder}
+                    />
+                </Search>
             );
-        }} options={top100Films} getOptionLabel={ (option) => option.title }
+        }}
+                      options={top100Films}
+                      getOptionLabel={ (option) => option.title }
         />
     );
 };

@@ -17,9 +17,7 @@ import {
 } from '@mui/material';
 import HTTP from '../../../utils/http';
 
-export interface RegisterFormProps {
-    onSubmitCallback: Function;
-}
+export interface RegisterFormProps {}
 
 export interface RegisterFormValues {
     email: string;
@@ -28,7 +26,9 @@ export interface RegisterFormValues {
     confirmPassword: string;
 }
 
-const RegisterForm: React.FunctionComponent<RegisterFormProps> = (props: RegisterFormProps) => {
+const RegisterForm: React.FunctionComponent<RegisterFormProps> = () => {
+    const navigate = useNavigate();
+
     const initialValues: RegisterFormValues = {
         email: '',
         username: '',
@@ -58,10 +58,9 @@ const RegisterForm: React.FunctionComponent<RegisterFormProps> = (props: Registe
         validationSchema,
         onSubmit: async (values, { setSubmitting }) => {
             setSubmitting(true);
-
             try {
                 await HTTP.post('/users/register', values);
-                props.onSubmitCallback();
+                navigate('/login');
             } catch (e: any) {
                 const { response } = e;
                 if (response.status === 409) {

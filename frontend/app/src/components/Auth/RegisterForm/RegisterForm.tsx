@@ -1,6 +1,6 @@
 import React from 'react';
 import * as yup from 'yup';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { Form, FormikProvider, useFormik } from 'formik';
 
@@ -17,7 +17,9 @@ import {
 } from '@mui/material';
 import HTTP from '../../../utils/http';
 
-export interface RegisterFormProps {}
+export interface RegisterFormProps {
+    onSuccess: Function;
+}
 
 export interface RegisterFormValues {
     email: string;
@@ -26,9 +28,7 @@ export interface RegisterFormValues {
     confirmPassword: string;
 }
 
-const RegisterForm: React.FunctionComponent<RegisterFormProps> = () => {
-    const navigate = useNavigate();
-
+const RegisterForm: React.FunctionComponent<RegisterFormProps> = ({ onSuccess }) => {
     const initialValues: RegisterFormValues = {
         email: '',
         username: '',
@@ -60,7 +60,7 @@ const RegisterForm: React.FunctionComponent<RegisterFormProps> = () => {
             setSubmitting(true);
             try {
                 await HTTP.post('/users/register', values);
-                navigate('/login');
+                onSuccess();
             } catch (e: any) {
                 const { response } = e;
                 if (response.status === 409) {
@@ -151,9 +151,9 @@ const RegisterForm: React.FunctionComponent<RegisterFormProps> = () => {
                                         <Typography variant="subtitle1">Register</Typography>
                                     </Button>
                                     <CardActions>
-                                        <Button size="small" onClick={() => navigate('/login')}>
-                                            Already have an account?
-                                        </Button>
+                                        <Link to="/login">
+                                            <Button size="small">Already have an account?</Button>
+                                        </Link>
                                     </CardActions>
                                 </Stack>
                             </Form>

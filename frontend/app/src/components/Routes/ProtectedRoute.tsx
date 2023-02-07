@@ -3,7 +3,7 @@ import { useMainContext } from '../../contexts/Main/MainContext';
 import { useNavigate } from 'react-router-dom';
 
 interface ProtectedRouteProps {
-    children?: React.ReactNode[];
+    children?: React.ReactNode;
 }
 
 const ProtectedRoute: React.FunctionComponent<ProtectedRouteProps> = (props) => {
@@ -15,7 +15,7 @@ const ProtectedRoute: React.FunctionComponent<ProtectedRouteProps> = (props) => 
         if (!isAuthenticated) navigate('/login');
     }, [isAuthenticated, navigate]);
 
-    return <div>{props.children}</div>;
+    return <>{props.children}</>;
 };
 
 export default ProtectedRoute;

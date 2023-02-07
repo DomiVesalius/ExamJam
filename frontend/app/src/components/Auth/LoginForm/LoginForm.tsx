@@ -1,6 +1,6 @@
 import React from 'react';
 import * as yup from 'yup';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 
 import {
@@ -27,8 +27,6 @@ interface FormValues {
 
 const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
     const { setIsAuthenticated } = useMainContext();
-
-    const navigate = useNavigate();
 
     const initialValues: FormValues = {
         email: '',
@@ -102,9 +100,9 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
                                         <Typography variant="subtitle1">Login</Typography>
                                     </Button>
                                     <CardActions>
-                                        <Button size="small" onClick={() => navigate('/register')}>
-                                            Dont have an account?
-                                        </Button>
+                                        <Link to="/register">
+                                            <Button size="small">Dont have an account?</Button>
+                                        </Link>
                                     </CardActions>
                                 </Stack>
                             </Form>

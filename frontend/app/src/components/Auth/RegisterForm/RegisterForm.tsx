@@ -17,19 +17,19 @@ import {
 } from '@mui/material';
 import HTTP from '../../../utils/http';
 
-export interface RegisterFormProps {}
+export interface RegisterFormProps {
+    onSubmitCallback: Function;
+}
 
-interface FormValues {
+export interface RegisterFormValues {
     email: string;
     username: string;
     password: string;
     confirmPassword: string;
 }
 
-const RegisterForm: React.FunctionComponent<RegisterFormProps> = () => {
-    const navigate = useNavigate();
-
-    const initialValues: FormValues = {
+const RegisterForm: React.FunctionComponent<RegisterFormProps> = (props: RegisterFormProps) => {
+    const initialValues: RegisterFormValues = {
         email: '',
         username: '',
         password: '',
@@ -58,9 +58,10 @@ const RegisterForm: React.FunctionComponent<RegisterFormProps> = () => {
         validationSchema,
         onSubmit: async (values, { setSubmitting }) => {
             setSubmitting(true);
+
             try {
                 await HTTP.post('/users/register', values);
-                navigate('/login');
+                props.onSubmitCallback();
             } catch (e: any) {
                 const { response } = e;
                 if (response.status === 409) {
@@ -68,8 +69,6 @@ const RegisterForm: React.FunctionComponent<RegisterFormProps> = () => {
                 } else {
                     formik.setFieldError('email', 'Email is not a valid UofT email');
                 }
-                console.log(e.response);
-                console.log('bruh');
             }
 
             setSubmitting(false);

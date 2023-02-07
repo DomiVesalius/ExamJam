@@ -1,22 +1,22 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import LoginForm, { LoginFormProps } from './LoginForm';
+import LoginPage from './LoginPage';
+import MainContextProvider from '../../contexts/Main/MainContextProvider';
 import { withRouter } from 'storybook-addon-react-router-v6';
 
 export default {
-    title: `Components/Auth/${LoginForm.name}`,
-    component: LoginForm,
+    title: `Pages/${LoginPage.name}`,
+    component: LoginPage,
     decorators: [withRouter],
     parameters: {
         reactRouter: {
             routePath: '/login'
         }
     }
-} as ComponentMeta<typeof LoginForm>;
+} as ComponentMeta<typeof LoginPage>;
 
-const Template: ComponentStory<typeof LoginForm> = (args: LoginFormProps) => {
-    return <LoginForm />;
+const Template: ComponentStory<typeof LoginPage> = () => {
+    return <LoginPage />;
 };
 
 export const General = Template.bind({});
-General.args = {};

@@ -25,11 +25,17 @@ interface NavbarProps {
 
     /** Size of the container around the whole navbar */
     containerSize: false | Breakpoint | undefined;
+
+    numNotifications: number;
+
+    numMails: number;
 }
 
 export const Navbar = ({
     profileOptions,
     containerSize,
+    numNotifications,
+    numMails,
     ...props
 }: NavbarProps) => {
     const Search = styled('div')(({ theme }) => ({
@@ -137,8 +143,8 @@ export const Navbar = ({
             onClose={handleMobileMenuClose}
         >
             <MenuItem>
-                <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                    <Badge badgeContent={4} color="error">
+                <IconButton size="large" aria-label={`show ${numMails} new mails`} color="inherit">
+                    <Badge badgeContent={numMails} color="error">
                         <MailIcon />
                     </Badge>
                 </IconButton>
@@ -147,10 +153,10 @@ export const Navbar = ({
             <MenuItem>
                 <IconButton
                     size="large"
-                    aria-label="show 17 new notifications"
+                    aria-label={`show ${numNotifications} new notifications`}
                     color="inherit"
                 >
-                    <Badge badgeContent={17} color="error">
+                    <Badge badgeContent={numNotifications} color="error">
                         <NotificationsIcon />
                     </Badge>
                 </IconButton>
@@ -204,17 +210,20 @@ export const Navbar = ({
                         </Search>
                         <Box sx={{ flexGrow: 1 }} />
                         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                                <Badge badgeContent={4} color="error">
+                            <IconButton size="large"
+                                        aria-label={`show ${numMails} new mails`}
+                                        color="inherit"
+                            >
+                                <Badge badgeContent={numMails} color="error">
                                     <MailIcon />
                                 </Badge>
                             </IconButton>
                             <IconButton
                                 size="large"
-                                aria-label="show 17 new notifications"
+                                aria-label={`show ${numNotifications} new notifications`}
                                 color="inherit"
                             >
-                                <Badge badgeContent={17} color="error">
+                                <Badge badgeContent={numNotifications} color="error">
                                     <NotificationsIcon />
                                 </Badge>
                             </IconButton>

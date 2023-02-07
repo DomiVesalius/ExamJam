@@ -12,13 +12,11 @@ import {
     Container,
     Stack,
     TextField,
-    Typography,
-    Icon,
-    Grid
+    Typography
 } from '@mui/material';
-import LockPersonIcon from '@mui/icons-material/LockPerson';
 
 import HTTP from '../../../utils/http';
+import { useMainContext } from '../../../contexts/Main/MainContext';
 
 export interface LoginFormProps {}
 
@@ -28,6 +26,8 @@ interface FormValues {
 }
 
 const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
+    const { setIsAuthenticated } = useMainContext();
+
     const navigate = useNavigate();
 
     const initialValues: FormValues = {
@@ -37,20 +37,20 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
 
     const validationSchema = yup.object({
         email: yup.string().email().required('An email is required'),
-        username: yup.string().required('Username is required'),
         password: yup.string().required('Password is required')
     });
 
     const formik = useFormik({
         initialValues,
         validationSchema,
-        onSubmit: async (values, { setSubmitting }) => {
+        onSubmit: async (values, { setSubmitting, setFieldError }) => {
             setSubmitting(true);
             try {
                 const res = await HTTP.post('/users/login', values);
-                navigate('/dashboard');
-            } catch (e: any) {}
-
+                setIsAuthenticated(true);
+            } catch (e: any) {
+                setFieldError('password', 'Unexpected error. Try again.');
+            }
             setSubmitting(false);
         }
     });

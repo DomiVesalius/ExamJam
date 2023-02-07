@@ -17,7 +17,7 @@ const PageLayout: React.FunctionComponent<LayoutProps> = (props: LayoutProps): J
 
     return (
         <>
-            // Insert Navbar here. e.g. <Navbar></Navbar>
+            // Insert Navbar tag here.
             {props.children}
         </>
     );

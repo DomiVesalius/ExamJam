@@ -128,7 +128,7 @@ export const Navbar = ({
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar color={appbarColor}>
+            <AppBar color={appbarColor} position="static">
                 <Toolbar>
                     <IconButton
                         size="large"

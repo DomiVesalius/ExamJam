@@ -1,18 +1,11 @@
-import React, { FormEvent, useEffect, useState } from 'react';
-import HTTP from './utils/http';
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Profile from './pages/Profile/Profile';
 import PageLayout from './components/Layout/PageLayout';
 import { Typography } from '@mui/material';
 import RegistrationPage from './pages/Auth/RegistrationPage';
 import LoginPage from './pages/Auth/LoginPage';
-
-interface Person {
-    _id: string;
-    name: string;
-    SIN: number;
-    age: number;
-}
+import Dashboard from './pages/Dashboard/Dashboard';
 
 /**
  * For now this is just to show that the frontend and backend are connected.
@@ -34,6 +27,7 @@ function App() {
             <Routes>
                 <Route path={'/'} element={<Main />}></Route>
                 <Route path={'profile'} element={<Profile />}></Route>
+                <Route path={'dashboard'} element={<Dashboard />}></Route>
                 <Route path={'register'} element={<RegistrationPage />} />
                 <Route path={'login'} element={<LoginPage />} />
             </Routes>

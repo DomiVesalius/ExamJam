@@ -1,20 +1,13 @@
 import React from 'react';
 import {
-    alpha, AppBar,
-    Badge, Box,
-    Breakpoint,
-    Container,
-    InputBase,
+    AppBar,
+    Box,
     Menu,
     MenuItem,
-    SelectChangeEvent,
-    styled, Toolbar, Typography
+    Toolbar, Typography
 } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { AccountCircle } from '@mui/icons-material';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import MailIcon from '@mui/icons-material/Mail';
-import SearchIcon from '@mui/icons-material/Search';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import MenuIcon from '@mui/icons-material/Menu';
 import { SearchBar } from '../SearchBar/SearchBar';

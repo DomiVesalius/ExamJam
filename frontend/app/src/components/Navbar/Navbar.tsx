@@ -17,25 +17,36 @@ import MailIcon from '@mui/icons-material/Mail';
 import SearchIcon from '@mui/icons-material/Search';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import MenuIcon from '@mui/icons-material/Menu';
+import { SearchBar } from '../SearchBar/SearchBar';
 
 interface NavbarProps {
 
-    /** Options for when profile is clicked on */
-    profileOptions: string[];
+    /** User menu when account icon is clicked */
+    userMenu1: string;
 
-    /** Size of the container around the whole navbar */
-    containerSize: false | Breakpoint | undefined;
+    /** User menu when account icon is clicked */
+    userMenu2: string;
 
-    numNotifications: number;
+    /** Name of the Navbar */
+    navbarName: string;
 
-    numMails: number;
+    /** Default color of search bar */
+    searchDefaultColor: string;
+
+    /** Hover color of search bar */
+    searchHoverColor: string;
+
+    /** Placeholder for search bar */
+    searchPlaceholder: string;
 }
 
 export const Navbar = ({
-    profileOptions,
-    containerSize,
-    numNotifications,
-    numMails,
+    userMenu1,
+    userMenu2,
+    navbarName,
+    searchDefaultColor,
+    searchHoverColor,
+    searchPlaceholder,
     ...props
 }: NavbarProps) => {
     const Search = styled('div')(({ theme }) => ({
@@ -120,8 +131,8 @@ export const Navbar = ({
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+            <MenuItem onClick={handleMenuClose}>{userMenu1}</MenuItem>
+            <MenuItem onClick={handleMenuClose}>{userMenu2}</MenuItem>
         </Menu>
     );
 
@@ -142,26 +153,6 @@ export const Navbar = ({
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
         >
-            <MenuItem>
-                <IconButton size="large" aria-label={`show ${numMails} new mails`} color="inherit">
-                    <Badge badgeContent={numMails} color="error">
-                        <MailIcon />
-                    </Badge>
-                </IconButton>
-                <p>Messages</p>
-            </MenuItem>
-            <MenuItem>
-                <IconButton
-                    size="large"
-                    aria-label={`show ${numNotifications} new notifications`}
-                    color="inherit"
-                >
-                    <Badge badgeContent={numNotifications} color="error">
-                        <NotificationsIcon />
-                    </Badge>
-                </IconButton>
-                <p>Notifications</p>
-            </MenuItem>
             <MenuItem onClick={handleProfileMenuOpen}>
                 <IconButton
                     size="large"
@@ -178,84 +169,63 @@ export const Navbar = ({
     );
 
     return (
-        <Container maxWidth={containerSize}>
-            <Box sx={{ flexGrow: 1 }}>
-                <AppBar position="static">
-                    <Toolbar>
+        <Box sx={{ flexGrow: 1 }}>
+            <AppBar>
+                <Toolbar>
+                    <IconButton
+                        size="large"
+                        edge="start"
+                        color="inherit"
+                        aria-label="open drawer"
+                        sx={{ mr: 2 }}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography
+                        variant="h6"
+                        noWrap
+                        component="div"
+                        sx={{ display: { xs: 'none', sm: 'block' } }}
+                    >
+                        {navbarName}
+                    </Typography>
+                    {/* Search Bar from SearchBar.tsx */}
+                    <Box sx={{ flexGrow: 1 }}>
+                        <SearchBar hoverColor={searchHoverColor}
+                                   defaultColor={searchDefaultColor}
+                                   placeHolder={searchPlaceholder}
+                        />
+                    </Box>
+                    <Box sx={{ flexGrow: 1 }} />
+                    <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                         <IconButton
                             size="large"
-                            edge="start"
+                            edge="end"
+                            aria-label="account of current user"
+                            aria-controls={menuId}
+                            aria-haspopup="true"
+                            onClick={handleProfileMenuOpen}
                             color="inherit"
-                            aria-label="open drawer"
-                            sx={{ mr: 2 }}
                         >
-                            <MenuIcon />
+                            <AccountCircle />
                         </IconButton>
-                        <Typography
-                            variant="h6"
-                            noWrap
-                            component="div"
-                            sx={{ display: { xs: 'none', sm: 'block' } }}
+                    </Box>
+                    <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+                        <IconButton
+                            size="large"
+                            aria-label="show more"
+                            aria-controls={mobileMenuId}
+                            aria-haspopup="true"
+                            onClick={handleMobileMenuOpen}
+                            color="inherit"
                         >
-                            MUI
-                        </Typography>
-                        <Search>
-                            <SearchIconWrapper>
-                                <SearchIcon />
-                            </SearchIconWrapper>
-                            <StyledInputBase
-                                placeholder="Search…"
-                                inputProps={{ 'aria-label': 'search' }}
-                            />
-                        </Search>
-                        <Box sx={{ flexGrow: 1 }} />
-                        <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                            <IconButton size="large"
-                                        aria-label={`show ${numMails} new mails`}
-                                        color="inherit"
-                            >
-                                <Badge badgeContent={numMails} color="error">
-                                    <MailIcon />
-                                </Badge>
-                            </IconButton>
-                            <IconButton
-                                size="large"
-                                aria-label={`show ${numNotifications} new notifications`}
-                                color="inherit"
-                            >
-                                <Badge badgeContent={numNotifications} color="error">
-                                    <NotificationsIcon />
-                                </Badge>
-                            </IconButton>
-                            <IconButton
-                                size="large"
-                                edge="end"
-                                aria-label="account of current user"
-                                aria-controls={menuId}
-                                aria-haspopup="true"
-                                onClick={handleProfileMenuOpen}
-                                color="inherit"
-                            >
-                                <AccountCircle />
-                            </IconButton>
-                        </Box>
-                        <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-                            <IconButton
-                                size="large"
-                                aria-label="show more"
-                                aria-controls={mobileMenuId}
-                                aria-haspopup="true"
-                                onClick={handleMobileMenuOpen}
-                                color="inherit"
-                            >
-                                <MoreIcon />
-                            </IconButton>
-                        </Box>
-                    </Toolbar>
-                </AppBar>
-                {renderMobileMenu}
-                {renderMenu}
-            </Box>
-        </Container>
+                            <MoreIcon />
+                        </IconButton>
+                    </Box>
+                </Toolbar>
+            </AppBar>
+            {renderMobileMenu}
+            {renderMenu}
+        </Box>
     );
 }

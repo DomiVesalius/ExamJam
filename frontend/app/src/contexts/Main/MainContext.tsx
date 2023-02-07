@@ -1,11 +1,11 @@
 import { createContext, useContext } from 'react';
 
-export type MainContext = {
+export type MainContextType = {
     isAuthenticated: boolean;
     setIsAuthenticated: (v: boolean) => void;
 };
 
-export const MainContext = createContext<MainContext>({
+export const MainContext = createContext<MainContextType>({
     isAuthenticated: false,
     setIsAuthenticated: (v: boolean) => {}
 });

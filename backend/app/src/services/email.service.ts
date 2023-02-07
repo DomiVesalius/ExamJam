@@ -27,7 +27,7 @@ export class EmailService {
             subject: 'Verify your ExamJam account',
             text:
                 'Click the link below to verify your email and activate your account:' +
-                `\nlocalhost/api/user/verify-email?token=${token}\nThe token will expire in 1 hour.`
+                `\nlocalhost/api/users/verify-email?token=${token}\nThe token will expire in 1 hour.`
         };
 
         try {

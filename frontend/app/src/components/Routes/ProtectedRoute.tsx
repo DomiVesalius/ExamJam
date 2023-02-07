@@ -6,6 +6,13 @@ interface ProtectedRouteProps {
     children?: React.ReactNode;
 }
 
+/**
+ * This component is meant to be a wrapper for pages that are protected/require a user to be authenticated/logged-in
+ * For example: If a user is not logged in and attempts to access the dashboard, they will be redirected to the login
+ * page.
+ * @param props children are passed by nesting them within this component
+ * @constructor
+ */
 const ProtectedRoute: React.FunctionComponent<ProtectedRouteProps> = (props) => {
     const { isAuthenticated } = useMainContext();
 

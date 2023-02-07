@@ -6,6 +6,13 @@ interface UnprotectedRouteProps {
     children?: React.ReactNode;
 }
 
+/**
+ * This component is meant to be a wrapper for pages that are accessible by unauthenticated users
+ * For example: If a user is logged in and attempts to access the registration or login page, they will be redirected
+ * to the main dashboard.
+ * @param props children are passed by nesting them within this component
+ * @constructor
+ */
 const UnprotectedRoute: React.FunctionComponent<UnprotectedRouteProps> = (props) => {
     const { isAuthenticated } = useMainContext();
     const navigate = useNavigate();

@@ -19,7 +19,6 @@ import SendIcon from '@mui/icons-material/Send';
 import { VisibilityOff } from '@mui/icons-material';
 import EditIcon from '@mui/icons-material/Edit';
 import { Form, FormikProvider, useFormik } from 'formik';
-import * as yup from 'yup';
 
 function Profile() {
     const [showPassword, setShowPassword] = useState(false);
@@ -28,17 +27,6 @@ function Profile() {
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
     };
-
-    const changePassowrdValidationSchema = yup.object({
-        password: yup
-            .string()
-            .min(8, 'Password must be at least 8 characters')
-            .required('Password is required'),
-        confirmPassword: yup
-            .string()
-            .oneOf([yup.ref('password'), null], 'Passwords do not match')
-            .required('Confirm your password')
-    });
 
 
     return (

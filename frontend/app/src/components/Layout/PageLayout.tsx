@@ -12,7 +12,7 @@ export interface LayoutProps {
 const PageLayout: React.FunctionComponent<LayoutProps> = (props: LayoutProps): JSX.Element => {
     useEffect(() => {
         document.title = props.title;
-    }, []);
+    }, [props.title]);
 
     return <>{props.children}</>;
 };

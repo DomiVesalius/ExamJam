@@ -44,3 +44,24 @@ export interface VerifyEmailResponse extends BaseResponse {}
  */
 
 export interface LogoutResponse extends BaseResponse {}
+
+/**
+ * PATCH /change-password
+ */
+
+export interface ChangePasswordBody {
+    currentPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+}
+
+export const validChangePasswordSchema = yup.object().shape({
+    currentPassword: yup.string().required(),
+    newPassword: yup.string().required(),
+    confirmPassword: yup
+        .string()
+        .oneOf([yup.ref('newPassword'), null], 'Passwords do not match')
+        .required('Confirm your password')
+});
+
+export interface ChangePasswordResponse extends BaseResponse {}

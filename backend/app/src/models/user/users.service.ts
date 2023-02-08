@@ -46,4 +46,21 @@ export class UsersService {
             logger.error(`Failed to activate user account with email '${email}'`);
         }
     }
+
+    /**
+     * Given the email of the user, changes their password to the new one.
+     * @param email an existing user in the database with this email
+     * @param newPassword the new password to be updated to
+     * @return true if the change was a success. false otherwise
+     */
+    public static async changePassword(email: string, newPassword: string): Promise<boolean> {
+        const user = await UserModel.findOne({ email });
+
+        if (!user) return false;
+
+        user.password = newPassword;
+        user.save();
+
+        return true;
+    }
 }

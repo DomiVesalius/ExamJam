@@ -1,6 +1,20 @@
 import { BaseController } from '../base.controller';
-import { Body, Post, Route, Tags, Middlewares, Security, Get, Request, Delete, Query } from 'tsoa';
 import {
+    Body,
+    Post,
+    Route,
+    Tags,
+    Middlewares,
+    Security,
+    Get,
+    Request,
+    Delete,
+    Query,
+    Patch
+} from 'tsoa';
+import {
+    ChangePasswordBody,
+    ChangePasswordResponse,
     LoginBody,
     LoginResponse,
     LogoutResponse,
@@ -67,11 +81,11 @@ export class UsersController extends BaseController {
         @Request() req: ExpressRequest,
         @Body() body: LoginBody
     ): Promise<LoginResponse> {
-        const user = <IUserModel>req.user;
+        const user = req.user as string;
 
         let resBody: LoginResponse;
         if (req.isAuthenticated()) {
-            resBody = { success: true, code: 200, data: { email: user.email } };
+            resBody = { success: true, code: 200, data: { email: user } };
         } else {
             resBody = { success: false, code: 401, message: 'Invalid Credentials' };
         }
@@ -108,28 +122,54 @@ export class UsersController extends BaseController {
     @Security(PassportStrategies.local)
     @Delete('logout')
     public async logout(@Request() req: ExpressRequest): Promise<LogoutResponse> {
-        req.logout((err: any) => {
-            if (err) {
-                this.setStatus(401);
-            } else {
-                this.setStatus(200);
-            }
-        });
-
-        let resBody: LogoutResponse;
-
-        if (this.getStatus() == 200) {
-            resBody = { code: 200, success: true };
-        } else {
-            resBody = { code: 401, success: false };
-        }
-
+        req.logout(() => {});
+        const resBody: LogoutResponse = { code: 200, success: true };
+        this.setStatus(resBody.code);
         return resBody;
     }
 
     @Security(PassportStrategies.local)
     @Get('me')
     public async me(@Request() req: ExpressRequest): Promise<any> {
-        return { user: req.user };
+        return { email: req.user };
+    }
+
+    @Security(PassportStrategies.local)
+    @Patch('change-password')
+    public async changePassword(
+        @Request() req: ExpressRequest,
+        @Body() body: ChangePasswordBody
+    ): Promise<ChangePasswordResponse> {
+        const userEmail = req.user as string;
+        let resBody: ChangePasswordResponse;
+
+        // Current password is incorrect
+        if (!(await UsersService.comparePassword(userEmail, body.currentPassword))) {
+            resBody = {
+                code: 403,
+                success: false,
+                message: 'Incorrect password'
+            };
+
+            this.setStatus(resBody.code);
+            return resBody;
+        }
+
+        // Current password is correct
+        if (await UsersService.changePassword(userEmail, body.newPassword)) {
+            resBody = {
+                code: 200,
+                success: true
+            };
+        } else {
+            resBody = {
+                code: 500,
+                success: false
+            };
+        }
+
+        this.setStatus(resBody.code);
+
+        return resBody;
     }
 }

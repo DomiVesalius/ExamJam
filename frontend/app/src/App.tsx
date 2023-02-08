@@ -12,7 +12,6 @@ import { Typography } from '@mui/material';
  * @constructor
  */
 function App() {
-
     function Main() {
         return (
             <PageLayout title={App.name}>

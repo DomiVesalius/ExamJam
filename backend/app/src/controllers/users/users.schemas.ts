@@ -57,7 +57,7 @@ export interface ChangePasswordBody {
 
 export const validChangePasswordSchema = yup.object().shape({
     currentPassword: yup.string().required(),
-    newPassword: yup.string().required(),
+    newPassword: yup.string().min(8, 'Password must be at least 8 characters').required(),
     confirmPassword: yup
         .string()
         .oneOf([yup.ref('newPassword'), null], 'Passwords do not match')
@@ -65,3 +65,17 @@ export const validChangePasswordSchema = yup.object().shape({
 });
 
 export interface ChangePasswordResponse extends BaseResponse {}
+
+/**
+ * PATCH  /change-username
+ */
+
+export interface ChangeUsernameBody {
+    newUsername: string;
+}
+
+export const validChangeUsernameSchema = yup.object().shape({
+    newUsername: yup.string().min(1, 'Username too short').required()
+});
+
+export interface ChangeUsernameResponse extends BaseResponse {}

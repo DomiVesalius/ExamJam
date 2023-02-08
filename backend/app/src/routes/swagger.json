@@ -320,6 +320,47 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"ChangeUsernameResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ChangeUsernameBody": {
+				"description": "PATCH  /change-username",
+				"properties": {
+					"newUsername": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"newUsername"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -585,6 +626,42 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/ChangePasswordBody"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/users/change-username": {
+			"patch": {
+				"operationId": "ChangeUsername",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ChangeUsernameResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Users"
+				],
+				"security": [
+					{
+						"local": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ChangeUsernameBody"
 							}
 						}
 					}

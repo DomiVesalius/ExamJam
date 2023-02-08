@@ -15,11 +15,15 @@ import {
 import {
     ChangePasswordBody,
     ChangePasswordResponse,
+    ChangeUsernameBody,
+    ChangeUsernameResponse,
     LoginBody,
     LoginResponse,
     LogoutResponse,
     RegisterBody,
     RegisterResponse,
+    validChangePasswordSchema,
+    validChangeUsernameSchema,
     validRegisterSchema,
     VerifyEmailResponse
 } from './users.schemas';
@@ -131,10 +135,16 @@ export class UsersController extends BaseController {
     @Security(PassportStrategies.local)
     @Get('me')
     public async me(@Request() req: ExpressRequest): Promise<any> {
-        return { email: req.user };
+        const userEmail = req.user as string;
+        const user = await UsersService.getByEmail(userEmail);
+
+        if (!user) return {};
+
+        return { email: userEmail, username: user.username };
     }
 
     @Security(PassportStrategies.local)
+    @Middlewares<RequestHandler>(validationMiddleware(validChangePasswordSchema))
     @Patch('change-password')
     public async changePassword(
         @Request() req: ExpressRequest,
@@ -166,6 +176,31 @@ export class UsersController extends BaseController {
                 code: 500,
                 success: false
             };
+        }
+
+        this.setStatus(resBody.code);
+
+        return resBody;
+    }
+
+    @Security(PassportStrategies.local)
+    @Middlewares<RequestHandler>(validationMiddleware(validChangeUsernameSchema))
+    @Patch('change-username')
+    public async changeUsername(
+        @Request() req: ExpressRequest,
+        @Body() body: ChangeUsernameBody
+    ): Promise<ChangeUsernameResponse> {
+        const userEmail = req.user as string;
+        const { newUsername } = body;
+
+        let resBody: ChangeUsernameResponse;
+
+        const changed = await UsersService.changeUsername(userEmail, newUsername);
+
+        if (changed) {
+            resBody = { code: 200, success: true };
+        } else {
+            resBody = { code: 404, success: false };
         }
 
         this.setStatus(resBody.code);

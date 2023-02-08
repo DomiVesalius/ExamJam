@@ -63,4 +63,15 @@ export class UsersService {
 
         return true;
     }
+
+    public static async changeUsername(email: string, newUsername: string): Promise<boolean> {
+        const user = await UserModel.findOne({ email });
+
+        if (!user) return false;
+
+        user.username = newUsername;
+        user.save();
+
+        return true;
+    }
 }

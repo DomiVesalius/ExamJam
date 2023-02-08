@@ -6,11 +6,14 @@ import reportWebVitals from './reportWebVitals';
 
 import { store } from './redux/store';
 import { Provider } from 'react-redux';
+import MainContextProvider from './contexts/Main/MainContextProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
     <Provider store={store}>
-        <App />
+        <MainContextProvider>
+            <App />
+        </MainContextProvider>
     </Provider>
 );
 

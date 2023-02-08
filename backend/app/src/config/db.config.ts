@@ -16,6 +16,8 @@ const name = process.env.MONGO_NAME || '';
 const url = process.env.MONGO_URL || `mongodb://${host}:${port}/${name}`;
 
 function initializeConnection(): void {
+    if (process.env.NODE_ENV && process.env.NODE_ENV === 'test') return;
+
     mongoose.set('strictQuery', false); // gets rid of a warning
 
     mongoose
@@ -39,7 +41,7 @@ const DB_CONFIG: DBConfig = {
         useNewUrlParser: true,
         socketTimeoutMS: 10000,
         keepAlive: true,
-        autoIndex: false,
+        autoIndex: true,
         retryWrites: false
     }
 };

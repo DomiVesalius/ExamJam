@@ -5,13 +5,6 @@ import Profile from './pages/Profile/Profile';
 import PageLayout from './components/Layout/PageLayout';
 import { Typography } from '@mui/material';
 
-interface Person {
-    _id: string;
-    name: string;
-    SIN: number;
-    age: number;
-}
-
 /**
  * For now this is just to show that the frontend and backend are connected.
  * Frontend sends a request to the backend to create a random person. The person is saved in the DB and the frontend

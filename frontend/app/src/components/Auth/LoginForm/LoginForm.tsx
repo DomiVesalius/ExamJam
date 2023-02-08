@@ -47,7 +47,11 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
                 const res = await HTTP.post('/users/login', values);
                 setIsAuthenticated(true);
             } catch (e: any) {
-                setFieldError('password', 'Unexpected error. Try again.');
+                if (e.request.status === 401) {
+                    setFieldError('password', 'Incorrect password');
+                } else {
+                    setFieldError('password', 'Unexpected error. Try again.');
+                }
             }
             setSubmitting(false);
         }

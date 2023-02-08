@@ -1,10 +1,19 @@
-import { Button, FormControl, IconButton, InputAdornment, Stack, TextField } from '@mui/material';
+import {
+    Alert,
+    Button,
+    FormControl,
+    IconButton,
+    InputAdornment,
+    Stack,
+    TextField
+} from '@mui/material';
 import { VisibilityOff } from '@mui/icons-material';
 import Visibility from '@mui/icons-material/Visibility';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
 import * as yup from 'yup';
 import SendIcon from '@mui/icons-material/Send';
+import HTTP from '../../utils/http';
 
 export interface PasswordFormValues {
     currentPassword: string;
@@ -12,6 +21,12 @@ export interface PasswordFormValues {
     confirmPassword: string;
 }
 const ChangePasswordForm = () => {
+    const [showChangePasswordSuccess, setShowChangePasswordSuccess] = useState(false);
+
+    useEffect(() => {
+        setTimeout(() => setShowChangePasswordSuccess(false), 5000);
+    }, [showChangePasswordSuccess]);
+
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -32,15 +47,28 @@ const ChangePasswordForm = () => {
             .required('New password is required'),
         confirmPassword: yup
             .string()
-            .oneOf([yup.ref('password'), null], 'Passwords do not match')
+            .oneOf([yup.ref('newPassword'), null], 'Passwords do not match')
             .required('Confirm your password')
     });
 
     const passwordFormik = useFormik({
         initialValues,
         validationSchema: passwordValidationSchema,
-        onSubmit: async (values, { setSubmitting }) => {
+        onSubmit: async (values, { setSubmitting, setFieldError, resetForm }) => {
             setSubmitting(true);
+
+            try {
+                const res = await HTTP.patch('/users/change-password', values);
+                resetForm();
+
+                setShowChangePasswordSuccess(true);
+            } catch (e: any) {
+                if (e.response.status === 403) {
+                    setFieldError('currentPassword', 'Incorrect password');
+                } else {
+                    setFieldError('confirmPassword', 'An unknown error occurred');
+                }
+            }
 
             setSubmitting(false);
         }
@@ -141,6 +169,13 @@ const ChangePasswordForm = () => {
                     >
                         Send
                     </Button>
+                </Stack>
+                <Stack>
+                    {showChangePasswordSuccess && (
+                        <Alert onClose={() => setShowChangePasswordSuccess(false)}>
+                            Password successfully changed
+                        </Alert>
+                    )}
                 </Stack>
             </Form>
         </FormikProvider>

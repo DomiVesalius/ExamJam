@@ -1,6 +1,6 @@
 import { Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material';
 
-interface ExamCardProps {
+interface CourseCardProps {
 
     /** Title of Card */
     mainText: string;
@@ -24,7 +24,7 @@ interface ExamCardProps {
     redirectURL: string;
 }
 
-export const ExamCard = ({
+export const CourseCard = ({
     mainText,
     bodyText,
     imgPath,
@@ -32,7 +32,7 @@ export const ExamCard = ({
     width = 345,
     height = 140,
     redirectURL
-}: ExamCardProps) => {
+}: CourseCardProps) => {
 
     const redirect = () => {
         window.location.href = redirectURL;

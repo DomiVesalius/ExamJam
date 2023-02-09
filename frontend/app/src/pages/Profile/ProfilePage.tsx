@@ -41,10 +41,7 @@ const ProfilePage = () => {
                         sx={{ m: 1 }}
                         fullWidth
                     />
-                    <Stack direction="row" spacing={2} alignItems={'center'}>
-                        <h3>Change Password:</h3>
-                        <ChangePasswordForm />
-                    </Stack>
+                    <ChangePasswordForm />
                     <DeleteUserButton />
                 </Stack>
             </Container>

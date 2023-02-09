@@ -75,110 +75,113 @@ const ChangePasswordForm = () => {
     });
 
     return (
-        <FormikProvider value={passwordFormik}>
-            <Form onSubmit={passwordFormik.handleSubmit}>
-                <Stack direction="row" spacing={2} alignItems={'center'}>
-                    <FormControl>
-                        <TextField
-                            id="password"
-                            label="Password"
-                            name="currentPassword"
-                            type={'password'}
-                            onChange={passwordFormik.handleChange}
-                            value={passwordFormik.values.currentPassword}
-                            error={
-                                passwordFormik.touched.currentPassword &&
-                                Boolean(passwordFormik.errors.currentPassword)
-                            }
-                            helperText={
-                                passwordFormik.touched.currentPassword &&
-                                passwordFormik.errors.currentPassword
-                            }
-                        />
-                    </FormControl>
-                    <FormControl>
-                        <TextField
-                            id="newPassword"
-                            label="New Password"
-                            name="newPassword"
-                            type={showPassword ? 'text' : 'password'}
-                            onChange={passwordFormik.handleChange}
-                            value={passwordFormik.values.newPassword}
-                            error={
-                                passwordFormik.touched.newPassword &&
-                                Boolean(passwordFormik.errors.newPassword)
-                            }
-                            helperText={
-                                passwordFormik.touched.newPassword &&
-                                passwordFormik.errors.newPassword
-                            }
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
-                                            edge="end"
-                                        >
-                                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                )
-                            }}
-                        />
-                    </FormControl>
-                    <FormControl>
-                        <TextField
-                            id="confirmPassword"
-                            label="Confirm Password"
-                            name="confirmPassword"
-                            type={showPassword ? 'text' : 'password'}
-                            onChange={passwordFormik.handleChange}
-                            value={passwordFormik.values.confirmPassword}
-                            error={
-                                passwordFormik.touched.confirmPassword &&
-                                Boolean(passwordFormik.errors.confirmPassword)
-                            }
-                            helperText={
-                                passwordFormik.touched.confirmPassword &&
-                                passwordFormik.errors.confirmPassword
-                            }
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
-                                            edge="end"
-                                        >
-                                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                )
-                            }}
-                        />
-                    </FormControl>
-                    <Button
-                        variant="contained"
-                        type={'submit'}
-                        endIcon={<SendIcon />}
-                        size={'small'}
-                        disabled={passwordFormik.isSubmitting}
-                    >
-                        Send
-                    </Button>
-                </Stack>
-                <Stack>
-                    {showChangePasswordSuccess && (
-                        <Alert onClose={() => setShowChangePasswordSuccess(false)}>
-                            Password successfully changed
-                        </Alert>
-                    )}
-                </Stack>
-            </Form>
-        </FormikProvider>
+        <Stack direction="row" spacing={2} alignItems={'center'}>
+            <FormikProvider value={passwordFormik}>
+                <h3>Change Password:</h3>
+                <Form onSubmit={passwordFormik.handleSubmit}>
+                    <Stack direction="row" spacing={2} alignItems={'center'}>
+                        <FormControl>
+                            <TextField
+                                id="password"
+                                label="Password"
+                                name="currentPassword"
+                                type={'password'}
+                                onChange={passwordFormik.handleChange}
+                                value={passwordFormik.values.currentPassword}
+                                error={
+                                    passwordFormik.touched.currentPassword &&
+                                    Boolean(passwordFormik.errors.currentPassword)
+                                }
+                                helperText={
+                                    passwordFormik.touched.currentPassword &&
+                                    passwordFormik.errors.currentPassword
+                                }
+                            />
+                        </FormControl>
+                        <FormControl>
+                            <TextField
+                                id="newPassword"
+                                label="New Password"
+                                name="newPassword"
+                                type={showPassword ? 'text' : 'password'}
+                                onChange={passwordFormik.handleChange}
+                                value={passwordFormik.values.newPassword}
+                                error={
+                                    passwordFormik.touched.newPassword &&
+                                    Boolean(passwordFormik.errors.newPassword)
+                                }
+                                helperText={
+                                    passwordFormik.touched.newPassword &&
+                                    passwordFormik.errors.newPassword
+                                }
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                                edge="end"
+                                            >
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    )
+                                }}
+                            />
+                        </FormControl>
+                        <FormControl>
+                            <TextField
+                                id="confirmPassword"
+                                label="Confirm Password"
+                                name="confirmPassword"
+                                type={showPassword ? 'text' : 'password'}
+                                onChange={passwordFormik.handleChange}
+                                value={passwordFormik.values.confirmPassword}
+                                error={
+                                    passwordFormik.touched.confirmPassword &&
+                                    Boolean(passwordFormik.errors.confirmPassword)
+                                }
+                                helperText={
+                                    passwordFormik.touched.confirmPassword &&
+                                    passwordFormik.errors.confirmPassword
+                                }
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                                edge="end"
+                                            >
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    )
+                                }}
+                            />
+                        </FormControl>
+                        <Button
+                            variant="contained"
+                            type={'submit'}
+                            endIcon={<SendIcon />}
+                            size={'small'}
+                            disabled={passwordFormik.isSubmitting}
+                        >
+                            Send
+                        </Button>
+                    </Stack>
+                    <Stack>
+                        {showChangePasswordSuccess && (
+                            <Alert onClose={() => setShowChangePasswordSuccess(false)}>
+                                Password successfully changed
+                            </Alert>
+                        )}
+                    </Stack>
+                </Form>
+            </FormikProvider>
+        </Stack>
     );
 };
 

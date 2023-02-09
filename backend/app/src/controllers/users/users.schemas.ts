@@ -89,3 +89,9 @@ export interface ChangeBioBody {
 }
 
 export interface ChangeBioResponse extends BaseResponse {}
+
+/**
+ * DELETE /delete
+ */
+
+export interface DeleteUserResponse extends BaseResponse {}

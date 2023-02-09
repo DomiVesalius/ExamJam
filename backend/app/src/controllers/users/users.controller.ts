@@ -19,6 +19,7 @@ import {
     ChangePasswordResponse,
     ChangeUsernameBody,
     ChangeUsernameResponse,
+    DeleteUserResponse,
     LoginBody,
     LoginResponse,
     LogoutResponse,
@@ -41,6 +42,7 @@ import { IUserModel } from '../../models/user/user.model';
 import { EmailService } from '../../services/email.service';
 import jwt from 'jsonwebtoken';
 import SERVER_CONFIG from '../../config/server.config';
+import logger from '../../utils/logger.util';
 
 @Tags('Users')
 @Route(`users`)
@@ -230,6 +232,27 @@ export class UsersController extends BaseController {
 
         this.setStatus(resBody.code);
 
+        return resBody;
+    }
+
+    @Security(PassportStrategies.local)
+    @Delete('')
+    public async deleteUser(@Request() req: ExpressRequest): Promise<DeleteUserResponse> {
+        const userEmail = req.user as string;
+
+        const result = await UsersService.deleteUser(userEmail);
+
+        const resBody: DeleteUserResponse = {
+            code: result ? 200 : 500,
+            success: result
+        };
+
+        // After a successful deletion, request must be logged out to avoid future requests
+        // on a deleted users behalf.
+        if (resBody.code === 200)
+            req.logout(() => logger.info(`Deleted user '${userEmail}' and logging out`));
+
+        this.setStatus(resBody.code);
         return resBody;
     }
 }

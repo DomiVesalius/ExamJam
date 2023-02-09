@@ -90,4 +90,18 @@ export class UsersService {
 
         return true;
     }
+
+    /**
+     * Deletes the user with the given email
+     * @param email
+     * @return true if the user was successfully deleted. false otherwise
+     */
+    public static async deleteUser(email: string): Promise<boolean> {
+        try {
+            await UserModel.deleteOne({ email });
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
 }

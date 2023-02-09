@@ -5,7 +5,7 @@ import time
 import gridfs
 import concurrent.futures
 
-connection_string = "mongodb+srv://examjam:5w7O6pg4B5apbaWR@cluster0.g9pxqnk.mongodb.net/?retryWrites=true&w=majority"
+connection_string = "mongodb://localhost:27017/ExamJam"
 db = MongoClient(connection_string)['ExamJam']
 client = db['Course']
 exams = db['Exam']
@@ -64,18 +64,9 @@ def get_exams(list_of_courses):
                                 'courseCode': code,
                                 'link': exam_link,
                                 'files_id': files_id}
-                    exams.insert_one(new_exam)
-                    # fs_ls.append((exam_binary, new_exam))
-
-    # def upload_to_db(tup):
-    #     f_id = fs.put(tup[0])
-    #     tup[1]['files_id'] = f_id
-    #     exams.insert_one(tup[1])
-    #
-    # if len(fs_ls) > 0:
-    #     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-    #         executor.map(upload_to_db, fs_ls)
-    return list_of_courses[0]['courseCode'][0]
+                    empty = list(exams.find({'title': title}))
+                    if len(empty) == 0:
+                        exams.insert_one(new_exam)
 
 
 if __name__ == '__main__':
@@ -102,16 +93,11 @@ if __name__ == '__main__':
     W 191 - Done
     '''
     # courses = get_courses_by_first_letter()
-    # cs_courses = list(client.find({'courseCode': {'$regex': '^CSC'}}, {'_id': 0, 'courseCode': 1}))
-    math_courses = list(client.find({'courseCode': {'$regex': '^MAT'}}, {'_id': 0, 'courseCode': 1}))
     stats_courses = list(client.find({'courseCode': {'$regex': '^STA'}}, {'_id': 0, 'courseCode': 1}))
-    interested_courses = [math_courses, stats_courses]
-    for c in interested_courses:
-        st = time.time()
-        letter = get_exams(c)
-        et = time.time()
-        elapsed_time = et - st
-        with open('duration.txt', 'a') as f:
-            timeeeeeee = 'Execution time: ' + str(elapsed_time) + ' seconds \n'
-            f.write(timeeeeeee)
-
+    ls = []
+    get_exams(stats_courses[24:])
+    # index = 24
+    # for i, c in enumerate(stats_courses):
+    #     if c['courseCode'] == 'STA355':
+    #         print(i)
+    #         print(c)

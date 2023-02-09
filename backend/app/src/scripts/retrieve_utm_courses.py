@@ -26,7 +26,7 @@ def retrieve(site: str):
         program_area = list(d.find('div', {'class': 'views-field views-field-field-timetable-link'})
                             .findChildren('div', recursive=False))[0]
         program_area = program_area.get_text().split(':')[-1].split(',')
-        program_area = [i.split() for i in program_area]
+        program_area = [i.strip() for i in program_area]
 
         check = list(client.find({'courseCode': course_code}))
         if len(check) == 0:

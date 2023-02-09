@@ -48,7 +48,7 @@ def retrieve(school_course_site: str):
 
         course = Course(courseCode=course_code,
                         description=description,
-                        programArea=course_area,
+                        programArea=[course_area],
                         title=title,
                         campuses=campus)
         ls.append(course.dict())

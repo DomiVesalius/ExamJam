@@ -74,4 +74,20 @@ export class UsersService {
 
         return true;
     }
+
+    /**
+     * Updates the biography of a user with the given email
+     * @param email
+     * @param bio
+     */
+    public static async changeBio(email: string, bio: string): Promise<boolean> {
+        const user = await UserModel.findOne({ email });
+
+        if (!user) return false;
+
+        user.bio = bio;
+        user.save();
+
+        return true;
+    }
 }

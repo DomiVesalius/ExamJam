@@ -79,3 +79,13 @@ export const validChangeUsernameSchema = yup.object().shape({
 });
 
 export interface ChangeUsernameResponse extends BaseResponse {}
+
+/**
+ * PATCH /change-bio
+ */
+
+export interface ChangeBioBody {
+    bio: string;
+}
+
+export interface ChangeBioResponse extends BaseResponse {}

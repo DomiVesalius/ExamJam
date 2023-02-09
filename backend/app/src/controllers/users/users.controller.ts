@@ -13,6 +13,8 @@ import {
     Patch
 } from 'tsoa';
 import {
+    ChangeBioBody,
+    ChangeBioResponse,
     ChangePasswordBody,
     ChangePasswordResponse,
     ChangeUsernameBody,
@@ -140,7 +142,7 @@ export class UsersController extends BaseController {
 
         if (!user) return {};
 
-        return { email: userEmail, username: user.username };
+        return { email: userEmail, username: user.username, bio: user.bio };
     }
 
     @Security(PassportStrategies.local)
@@ -201,6 +203,29 @@ export class UsersController extends BaseController {
             resBody = { code: 200, success: true };
         } else {
             resBody = { code: 404, success: false };
+        }
+
+        this.setStatus(resBody.code);
+
+        return resBody;
+    }
+
+    @Security(PassportStrategies.local)
+    @Patch('change-bio')
+    public async changeBio(
+        @Request() req: ExpressRequest,
+        @Body() body: ChangeBioBody
+    ): Promise<ChangeBioResponse> {
+        const userEmail = req.user as string;
+        const { bio } = body;
+
+        const result = await UsersService.changeBio(userEmail, bio);
+
+        let resBody: ChangeBioResponse;
+        if (result) {
+            resBody = { code: 200, success: true };
+        } else {
+            resBody = { code: 500, success: true };
         }
 
         this.setStatus(resBody.code);

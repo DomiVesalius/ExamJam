@@ -6,6 +6,7 @@ import { Typography } from '@mui/material';
 import RegistrationPage from './pages/Auth/RegistrationPage';
 import LoginPage from './pages/Auth/LoginPage';
 import Dashboard from './pages/Dashboard/Dashboard';
+import CourseSearch from './pages/Dashboard/CourseSearch/CourseSearch';
 
 /**
  * For now this is just to show that the frontend and backend are connected.
@@ -28,6 +29,7 @@ function App() {
                 <Route path={'/'} element={<Main />}></Route>
                 <Route path={'profile'} element={<Profile />}></Route>
                 <Route path={'dashboard'} element={<Dashboard />}></Route>
+                <Route path={'dashboard/courses'} element={<CourseSearch />} />
                 <Route path={'register'} element={<RegistrationPage />} />
                 <Route path={'login'} element={<LoginPage />} />
             </Routes>

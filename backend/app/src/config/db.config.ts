@@ -12,7 +12,7 @@ type DBConfig = {
 
 const port = parseInt(process.env.MONGO_PORT || '27017');
 const host = process.env.MONGO_HOST || 'database';
-const name = process.env.MONGO_NAME || '';
+const name = process.env.MONGO_NAME || 'ExamJam';
 const url = process.env.MONGO_URL || `mongodb://${host}:${port}/${name}`;
 
 function initializeConnection(): void {

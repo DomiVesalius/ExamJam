@@ -7,7 +7,7 @@ export function expressAuthentication(
     scopes?: string[]
 ): Promise<any> {
     if (securityName == PassportStrategies.local) {
-        if (request.isAuthenticated()) return Promise.resolve({ user: request.user });
+        if (request.isAuthenticated()) return Promise.resolve(request.user);
 
         return Promise.reject({});
     }

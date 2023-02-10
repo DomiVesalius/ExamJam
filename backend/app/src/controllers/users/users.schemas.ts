@@ -44,3 +44,54 @@ export interface VerifyEmailResponse extends BaseResponse {}
  */
 
 export interface LogoutResponse extends BaseResponse {}
+
+/**
+ * PATCH /change-password
+ */
+
+export interface ChangePasswordBody {
+    currentPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+}
+
+export const validChangePasswordSchema = yup.object().shape({
+    currentPassword: yup.string().required(),
+    newPassword: yup.string().min(8, 'Password must be at least 8 characters').required(),
+    confirmPassword: yup
+        .string()
+        .oneOf([yup.ref('newPassword'), null], 'Passwords do not match')
+        .required('Confirm your password')
+});
+
+export interface ChangePasswordResponse extends BaseResponse {}
+
+/**
+ * PATCH  /change-username
+ */
+
+export interface ChangeUsernameBody {
+    newUsername: string;
+}
+
+export const validChangeUsernameSchema = yup.object().shape({
+    newUsername: yup.string().min(1, 'Username too short').required()
+});
+
+export interface ChangeUsernameResponse extends BaseResponse {}
+
+/**
+ * PATCH /change-bio
+ */
+
+export interface ChangeBioBody {
+    bio: string;
+}
+
+export interface ChangeBioResponse extends BaseResponse {}
+
+/**
+ * DELETE /delete
+ */
+
+export interface DeleteUserResponse extends BaseResponse {}

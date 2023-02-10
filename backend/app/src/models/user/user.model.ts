@@ -8,6 +8,7 @@ export interface IUser {
     email: string;
     active: boolean;
     password: string;
+    bio: string;
 }
 
 export interface IUserModel extends IUser, Document {}
@@ -21,7 +22,8 @@ const UserSchema: Schema = new Schema({
         validate: emailValidation
     },
     active: { type: Schema.Types.Boolean, default: false },
-    password: { type: Schema.Types.String, required: true }
+    password: { type: Schema.Types.String, required: true },
+    bio: { type: Schema.Types.String, default: '' }
 });
 
 /**

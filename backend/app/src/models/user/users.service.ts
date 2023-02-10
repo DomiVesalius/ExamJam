@@ -46,4 +46,62 @@ export class UsersService {
             logger.error(`Failed to activate user account with email '${email}'`);
         }
     }
+
+    /**
+     * Given the email of the user, changes their password to the new one.
+     * @param email an existing user in the database with this email
+     * @param newPassword the new password to be updated to
+     * @return true if the change was a success. false otherwise
+     */
+    public static async changePassword(email: string, newPassword: string): Promise<boolean> {
+        const user = await UserModel.findOne({ email });
+
+        if (!user) return false;
+
+        user.password = newPassword;
+        user.save();
+
+        return true;
+    }
+
+    public static async changeUsername(email: string, newUsername: string): Promise<boolean> {
+        const user = await UserModel.findOne({ email });
+
+        if (!user) return false;
+
+        user.username = newUsername;
+        user.save();
+
+        return true;
+    }
+
+    /**
+     * Updates the biography of a user with the given email
+     * @param email
+     * @param bio
+     */
+    public static async changeBio(email: string, bio: string): Promise<boolean> {
+        const user = await UserModel.findOne({ email });
+
+        if (!user) return false;
+
+        user.bio = bio;
+        user.save();
+
+        return true;
+    }
+
+    /**
+     * Deletes the user with the given email
+     * @param email
+     * @return true if the user was successfully deleted. false otherwise
+     */
+    public static async deleteUser(email: string): Promise<boolean> {
+        try {
+            await UserModel.deleteOne({ email });
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
 }

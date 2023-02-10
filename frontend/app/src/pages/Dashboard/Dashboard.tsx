@@ -8,7 +8,7 @@ const Dashboard: React.FunctionComponent = () => {
     const getUser = async () => {
         try {
             const res = await HTTP.get('/users/me');
-            return res.data.user.user.email;
+            return res.data.email;
         } catch (e) {
             return 'Failed to get user data';
         }

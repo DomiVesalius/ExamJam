@@ -6,6 +6,7 @@ import ChangePasswordForm from '../../components/ProfileForms/PasswordForm';
 import ChangeUsernameForm from '../../components/ProfileForms/UsernameForm';
 import DeleteUserButton from '../../components/ProfileForms/DeleteUserButton';
 import ProtectedRoute from '../../components/Routes/ProtectedRoute';
+import ChangeBioForm from '../../components/ProfileForms/BioForm';
 
 const ProfilePage = () => {
     return (
@@ -32,15 +33,7 @@ const ProfilePage = () => {
                             <ChangeUsernameForm />
                         </Stack>
                     </Stack>
-                    <TextField
-                        id="outlined-multiline-static"
-                        label="Bio"
-                        multiline
-                        rows={4}
-                        defaultValue="Enter a bio that describes you!"
-                        sx={{ m: 1 }}
-                        fullWidth
-                    />
+                    <ChangeBioForm />
                     <ChangePasswordForm />
                     <DeleteUserButton />
                 </Stack>

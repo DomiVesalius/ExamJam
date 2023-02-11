@@ -1,12 +1,12 @@
-import React, { FormEvent, useEffect, useState } from 'react';
-import HTTP from './utils/http';
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import ProfilePage from './pages/Profile/ProfilePage';
+import PageLayout from './components/Layout/PageLayout';
+import { Typography } from '@mui/material';
 
-interface Person {
-    _id: string;
-    name: string;
-    SIN: number;
-    age: number;
-}
+import RegistrationPage from './pages/Auth/RegistrationPage';
+import LoginPage from './pages/Auth/LoginPage';
+import Dashboard from './pages/Dashboard/Dashboard';
 
 /**
  * For now this is just to show that the frontend and backend are connected.
@@ -15,53 +15,24 @@ interface Person {
  * @constructor
  */
 function App() {
-    const getPeople = () => {
-        HTTP.get('/misc/random-person')
-            .then((r) => r.data)
-            .then((d) => setPeople(d.people));
-    };
-
-    const createPerson = (name: string) => {
-        HTTP.post('/misc/random-person', { name: name })
-            .then((r) => r.data)
-            .then(() => getPeople());
-    };
-
-    const handleSubmit = (e: FormEvent) => {
-        e.preventDefault();
-        // @ts-ignore
-        createPerson(e.target.personName.value);
-    };
-
-    const [people, setPeople] = useState<Array<Person>>([]);
-
-    useEffect(() => {
-        getPeople();
-    }, []);
+    function Main() {
+        return (
+            <PageLayout title={App.name}>
+                <Typography variant="h1">Welcome to the main page :]</Typography>
+            </PageLayout>
+        );
+    }
 
     return (
-        <div className="App">
-            {people.map((person) => {
-                return (
-                    <div style={{ margin: '10px', padding: '10px', border: '1px black solid' }}>
-                        <p>ID={person._id}</p>
-                        <p>Name={person.name}</p>
-                        <p>Age={person.age}</p>
-                        <p>SIN={person.SIN}</p>
-                    </div>
-                );
-            })}
-
-            <div>
-                <form onSubmit={(e) => handleSubmit(e)}>
-                    <label htmlFor="name">
-                        Name:
-                        <input id="name" name="personName" type="text" />
-                    </label>
-                    <button>Submit</button>
-                </form>
-            </div>
-        </div>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Main />}></Route>
+                <Route path="dashboard/profile" element={<ProfilePage />}></Route>
+                <Route path="dashboard" element={<Dashboard />}></Route>
+                <Route path="register" element={<RegistrationPage />} />
+                <Route path="login" element={<LoginPage />} />
+            </Routes>
+        </BrowserRouter>
     );
 }
 

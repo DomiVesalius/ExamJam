@@ -1,0 +1,26 @@
+pip install pymongo
+pip install beautifulsoup4
+pip install requests
+
+Once you have all of those installed, replace cookies with your cookies and format them like this:
+
+This how it looks when you copy from chrome/mozilla network tab
+{
+        "Request Cookies": {
+            "_ga": "GA1.2.558914513.1654707171",
+            "_ga_80VDTXHB7F": "GS1.1.1673238173.1.0.1673238174.0.0.0",
+            "_ga_9H2P504YR1": "GS1.1.1673236966.1.1.1673238172.0.0.0",
+            "ezproxy": "mPhbT93qJH6GGro",
+            "JSESSIONID": "FF7CB16C55F1627970171068937B2A4F"
+        }
+}
+modify it to match this
+
+cookies = {
+            "_ga": "GA1.2.558914513.1654707171",
+            "_ga_80VDTXHB7F": "GS1.1.1673238173.1.0.1673238174.0.0.0",
+            "_ga_9H2P504YR1": "GS1.1.1673236966.1.1.1673238172.0.0.0",
+            "ezproxy": "mPhbT93qJH6GGro",
+            "JSESSIONID": "FF7CB16C55F1627970171068937B2A4F"
+        }
+replace this va

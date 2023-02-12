@@ -21,7 +21,7 @@ passport.use(
                     if (process.env.NODE_ENV !== 'development' && !user.active) {
                         done(null, false);
                     } else {
-                        done(null, user);
+                        done(null, user.email);
                     }
                 } else {
                     // Since no user was found & there was no error, pass user as false to show
@@ -35,9 +35,9 @@ passport.use(
     )
 );
 
-passport.serializeUser((user: Express.User, done: DoneFunction) => done(null, user));
+passport.serializeUser((user: any, done: DoneFunction) => done(null, user));
 
-passport.deserializeUser((user: Express.User, done) => done(null, user));
+passport.deserializeUser((user: any, done) => done(null, user));
 
 enum PassportStrategies {
     local = 'local'

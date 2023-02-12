@@ -44,9 +44,8 @@
   * [020]
 
 ## Attendance
-* Mohammad Qadir
-* Kyuhyun Ryu
-* Harshit Gupta
-* Abhinav Meda
-* Allan Henriques
-* Ananth Chebolu
+* Mohammad Qadir 
+* Kyuhyun Ryu 
+* Abhinav Meda 
+* Ananth Chebolu 
+* Fernando Mancini

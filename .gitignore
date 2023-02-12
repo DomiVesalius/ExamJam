@@ -112,3 +112,6 @@ backend/app/build
 
 # Mac
 **/.DS_Store
+
+# Python
+__pycache__/

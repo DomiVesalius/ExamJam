@@ -1,8 +1,9 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Profile from './pages/Profile/Profile';
+import ProfilePage from './pages/Profile/ProfilePage';
 import PageLayout from './components/Layout/PageLayout';
 import { Typography } from '@mui/material';
+
 import RegistrationPage from './pages/Auth/RegistrationPage';
 import LoginPage from './pages/Auth/LoginPage';
 import Dashboard from './pages/Dashboard/Dashboard';
@@ -26,12 +27,12 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path={'/'} element={<Main />}></Route>
-                <Route path={'profile'} element={<Profile />}></Route>
-                <Route path={'dashboard'} element={<Dashboard />}></Route>
+                <Route path="/" element={<Main />}></Route>
+                <Route path="dashboard/profile" element={<ProfilePage />}></Route>
+                <Route path="dashboard" element={<Dashboard />}></Route>
+                <Route path="register" element={<RegistrationPage />} />
+                <Route path="login" element={<LoginPage />} />
                 <Route path={'dashboard/courses'} element={<CourseSearch />} />
-                <Route path={'register'} element={<RegistrationPage />} />
-                <Route path={'login'} element={<LoginPage />} />
             </Routes>
         </BrowserRouter>
     );

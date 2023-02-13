@@ -12,7 +12,8 @@ export class CoursesController extends BaseController {
     @Get('')
     public async getCourses(
         @Query() limit: number,
-        @Query() page: number
+        @Query() page: number,
+        @Query() keyword: string
     ): Promise<GetCoursesResponse> {
         const csc148 = {
             courseCode: 'CSC148H5',

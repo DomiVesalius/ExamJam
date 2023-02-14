@@ -1,5 +1,4 @@
 import CourseModel, { ICourseModel } from './course.model';
-import bcrypt from 'bcrypt';
 import logger from '../../utils/logger.util';
 
 export class CoursesService {
@@ -8,6 +7,15 @@ export class CoursesService {
         limit: number,
         keyword: string
     ): Promise<ICourseModel[]> {
-        return;
+        // TODO: Sort the results
+        return CourseModel.find({
+            $or: [
+                { title: new RegExp('^' + keyword + '$', 'i') },
+                { courseCode: new RegExp('^' + keyword + '$', 'i') },
+                { description: new RegExp('^' + keyword + '$', 'i') }
+            ]
+        })
+            .skip(pageNumber * limit)
+            .limit(limit);
     }
 }

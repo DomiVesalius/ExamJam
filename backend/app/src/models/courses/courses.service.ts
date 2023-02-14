@@ -16,7 +16,7 @@ export class CoursesService {
                 ]
             })
                 // TODO: Sort the results using Query.prototype.sort()
-
+                .sort({ title: 'asc', courseCode: 'asc', description: 'asc' })
                 .skip(pageNumber * limit)
                 .limit(limit)
         );

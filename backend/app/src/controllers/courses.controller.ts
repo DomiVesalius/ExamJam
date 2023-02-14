@@ -1,6 +1,7 @@
 import { BaseController } from './base.controller';
 import { Get, Query, Route, Tags, Request, Post, Body } from 'tsoa';
 import { Request as ExpressRequest } from 'express';
+import { CoursesService } from '../models/courses/courses.service';
 
 interface GetCoursesResponse {
     courseResults: { courseCode: string; courseName: string }[];
@@ -19,6 +20,9 @@ export class CoursesController extends BaseController {
             courseCode: 'CSC148H5',
             courseName: 'Intro to CS'
         };
+
+        const courses = await CoursesService.getCourses(page, limit, keyword);
+
         return { courseResults: [csc148] };
     }
 }

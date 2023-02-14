@@ -7,18 +7,15 @@ export class CoursesService {
         limit: number,
         keyword: string
     ): Promise<ICourseModel[]> {
-        return (
-            CourseModel.find({
-                $or: [
-                    { title: new RegExp('^' + keyword + '$', 'i') },
-                    { courseCode: new RegExp('^' + keyword + '$', 'i') },
-                    { description: new RegExp('^' + keyword + '$', 'i') }
-                ]
-            })
-                // TODO: Sort the results using Query.prototype.sort()
-                .sort({ title: 'asc', courseCode: 'asc', description: 'asc' })
-                .skip(pageNumber * limit)
-                .limit(limit)
-        );
+        return CourseModel.find({
+            $or: [
+                { title: new RegExp('^' + keyword + '$', 'i') },
+                { courseCode: new RegExp('^' + keyword + '$', 'i') },
+                { description: new RegExp('^' + keyword + '$', 'i') }
+            ]
+        })
+            .sort({ title: 'asc', courseCode: 'asc', description: 'asc' })
+            .skip(pageNumber * limit)
+            .limit(limit);
     }
 }

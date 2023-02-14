@@ -2,6 +2,7 @@ import { BaseController } from './base.controller';
 import { Get, Query, Route, Tags, Request, Post, Body } from 'tsoa';
 import { Request as ExpressRequest } from 'express';
 import { CoursesService } from '../models/courses/courses.service';
+import { ICourseModel } from '../models/courses/course.model';
 
 interface GetCoursesResponse {
     courseResults: { courseCode: string; courseName: string }[];
@@ -16,13 +17,19 @@ export class CoursesController extends BaseController {
         @Query() page: number,
         @Query() keyword: string
     ): Promise<GetCoursesResponse> {
-        const csc148 = {
-            courseCode: 'CSC148H5',
-            courseName: 'Intro to CS'
+        const courseResponse: GetCoursesResponse = {
+            courseResults: []
         };
 
-        const courses = await CoursesService.getCourses(page, limit, keyword);
+        CoursesService.getCourses(page, limit, keyword).then((courseModels) => {
+            for (let courseModel of courseModels) {
+                courseResponse.courseResults.push({
+                    courseCode: courseModel.courseCode,
+                    courseName: courseModel.title
+                });
+            }
+        });
 
-        return { courseResults: [csc148] };
+        return courseResponse;
     }
 }

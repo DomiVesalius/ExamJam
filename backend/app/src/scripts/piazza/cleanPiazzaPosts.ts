@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 import DB_CONFIG from '../../config/db.config';
 import logger from '../../utils/logger.util';
 import { RawPiazzaPostService } from '../../models/piazzaPosts/raw/rawPiazzaPost.service';
@@ -197,6 +197,11 @@ async function createChildren(
         if (type === CommentType.followUp || type == CommentType.feedback) {
             const rec_res = await createChildren(post, comment, child_children);
             results.push(...rec_res);
+
+            comment.children = [];
+            for (const ch of rec_res) {
+                comment.children.push(ch._id);
+            }
         }
     }
 

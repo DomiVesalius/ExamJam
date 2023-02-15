@@ -29,4 +29,12 @@ export class RawPiazzaPostService {
             return null;
         }
     }
+
+    public static async getAll(): Promise<Array<IRawPiazzaPostModel> | []> {
+        try {
+            return await RawPiazzaPostModel.find({});
+        } catch (e) {
+            return [];
+        }
+    }
 }

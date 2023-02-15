@@ -1,7 +1,7 @@
 import { performance } from 'perf_hooks';
 import logger from '../../utils/logger.util';
 import fetch, { Response } from 'node-fetch';
-import { RawPiazzaPostService } from '../../models/piazzaPosts/rawPiazzaPost.service';
+import { RawPiazzaPostService } from '../../models/piazzaPosts/raw/rawPiazzaPost.service';
 import DB_CONFIG from '../../config/db.config';
 import mongoose from 'mongoose';
 

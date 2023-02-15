@@ -11,3 +11,11 @@
             last portion `lc2onqw5fuz6h5`
 -   Provide the above items in the format that the script follows.
 -   Also ensure that MongoDB is running otherwise it will not work.
+
+## Cleaning Raw Piazza Data
+
+-   The previous script will scrape raw data. It is unfiltered and holds many irrelevant values
+-   The `cleanPiazzaPosts.ts` will go through all the raw scraped data within the database and
+    created filtered versions of it in the form of PiazzaPost and PiazzaComment models.
+    -   Both comments and post documents are saved into the database
+-   Note: This requires the database be up and running.

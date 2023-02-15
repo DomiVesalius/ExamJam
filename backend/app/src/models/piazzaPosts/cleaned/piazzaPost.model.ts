@@ -11,7 +11,6 @@ export interface IPiazzaPostModel extends Document {
     title: Schema.Types.String;
     content: Schema.Types.String;
     createdAt: Schema.Types.Date;
-    comments: Schema.Types.ObjectId[];
 }
 
 const PiazzaPostSchema = new Schema<IPiazzaPostModel>(
@@ -22,8 +21,7 @@ const PiazzaPostSchema = new Schema<IPiazzaPostModel>(
         postNumber: { type: Schema.Types.Number, required: true },
         title: { type: Schema.Types.String, required: true },
         content: { type: Schema.Types.String, required: false, default: '' }, // required is false because some posts have an empty body
-        createdAt: { type: Schema.Types.Date, required: true },
-        comments: [{ type: Schema.Types.ObjectId, ref: `${PiazzaCommentModelName}._id` }]
+        createdAt: { type: Schema.Types.Date, required: true }
     },
     { timestamps: false, versionKey: false, _id: false }
 );

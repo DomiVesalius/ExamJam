@@ -8,6 +8,7 @@ export class CoursesService {
         keyword: string
     ): Promise<ICourseModel[]> {
         return CourseModel.find({
+            // TODO: fix regex... not working as intended
             $or: [
                 { title: new RegExp('^' + keyword + '$', 'i') },
                 { courseCode: new RegExp('^' + keyword + '$', 'i') },

@@ -16,7 +16,7 @@ export class CoursesService {
             ]
         })
             .sort({ title: 'asc', courseCode: 'asc', description: 'asc' })
-            .skip(pageNumber * limit)
+            .skip((pageNumber - 1) * limit)
             .limit(limit);
     }
 }

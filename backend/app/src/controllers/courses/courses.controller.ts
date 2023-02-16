@@ -14,6 +14,13 @@ export class CoursesController extends BaseController {
         @Query() page: number,
         @Query() keyword: string
     ): Promise<GetCoursesResponse> {
+        if (page <= 0 || limit <= 0) {
+            return {
+                success: false,
+                code: 404,
+                data: []
+            };
+        }
         const courseModels = await CoursesService.getCourses(page, limit, keyword);
 
         return {

@@ -17,7 +17,7 @@ export class CoursesController extends BaseController {
         if (page <= 0 || limit <= 0) {
             return {
                 success: false,
-                code: 404,
+                code: 400,
                 data: []
             };
         }

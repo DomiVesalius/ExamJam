@@ -6,13 +6,16 @@ import DB_CONFIG from '../../config/db.config';
 import mongoose from 'mongoose';
 
 /**
- * Cookies are required for the scraping scripts to work because all the
+ * Cookies and CSRF Tokens are required for the scraping scripts to work because all the
  * information requires you to be authenticated.
  * A single user does not have access to every piazza forum so these cookies
  * are identified by the name of the user.
  */
-const COOKIES = {
-    domi: 'REPLACE THIS WITH A COOKIE STRING'
+const COOKIES_AND_CSRF = {
+    domi: {
+        csrfToken: 'REPLACE THIS WITH YOUR OWN CSRF TOKEN',
+        cookies: 'REPLACE THIS WITH YOUR OWN COOKIES'
+    }
 };
 
 /**
@@ -21,7 +24,8 @@ const COOKIES = {
  */
 const USER_TO_FORUMS_MAP = {
     domi: {
-        cookies: COOKIES.domi,
+        cookies: COOKIES_AND_CSRF.domi.cookies,
+        csrfToken: COOKIES_AND_CSRF.domi.csrfToken,
         forums: [
             {
                 forumId: 'jw2uhydb1dljb',
@@ -73,13 +77,13 @@ async function scrapeAllForums(): Promise<void> {
             logger.info(`Connected to database @ ${DB_CONFIG.url}`);
 
             for (const value of Object.values(USER_TO_FORUMS_MAP)) {
-                const { cookies, forums } = value;
+                const { cookies, forums, csrfToken } = value;
 
                 for (const forum of forums) {
                     logger.info(`[STARTED] ${forum.courseCode}`);
                     const startTime = performance.now();
 
-                    await scrapeForum(forum, cookies);
+                    await scrapeForum(forum, cookies, csrfToken);
 
                     const endTime = performance.now();
                     logger.info(
@@ -101,12 +105,17 @@ async function scrapeAllForums(): Promise<void> {
  * - Saves that data into the RawPiazzaPost collection
  * @param forumInfo An object containing the forum id and the name of the course it is for
  * @param cookies cookies that can be used to access the forum
+ * @param csrfToken also required to access the forum
  */
-async function scrapeForum(forumInfo: ForumInfo, cookies: string): Promise<void> {
+async function scrapeForum(
+    forumInfo: ForumInfo,
+    cookies: string,
+    csrfToken: string
+): Promise<void> {
     const { courseCode, forumId } = forumInfo;
 
     logger.info(`[${courseCode}/${forumId}]: Requesting Feed`);
-    const feedResponse = await getFeed(forumId, cookies);
+    const feedResponse = await getFeed(forumId, cookies, csrfToken);
     const feedData = await feedResponse.json();
 
     logger.info(`[${courseCode}/${forumId}]: Extracting Post Numbers`);
@@ -115,7 +124,7 @@ async function scrapeForum(forumInfo: ForumInfo, cookies: string): Promise<void>
     let i = 1;
     for (const num of postNumbers) {
         logger.info(`[${courseCode}/${forumId}]: Requesting Post #${num}`);
-        const postResponse = await getPost(forumId, num, cookies);
+        const postResponse = await getPost(forumId, num, cookies, csrfToken);
         const postData = await postResponse.json();
 
         const rawPost = await RawPiazzaPostService.create(postData, courseCode, num, forumId);
@@ -141,8 +150,9 @@ async function scrapeForum(forumInfo: ForumInfo, cookies: string): Promise<void>
  * Sends an HTTP request to retrieve the feed for a specific forum
  * @param forumId the id of the forum
  * @param cookies allow access to the forum
+ * @param csrfToken also allows access to the forum
  */
-async function getFeed(forumId: string, cookies: string): Promise<Response> {
+async function getFeed(forumId: string, cookies: string, csrfToken: string): Promise<Response> {
     return await fetch('https://piazza.com/logic/api?method=network.get_my_feed', {
         headers: {
             'User-Agent':
@@ -150,7 +160,7 @@ async function getFeed(forumId: string, cookies: string): Promise<Response> {
             Accept: 'application/json, text/plain, */*',
             'Accept-Language': 'en-CA,en-US;q=0.7,en;q=0.3',
             'Content-Type': 'application/json',
-            'CSRF-Token': '0qeVrCh6x4KKlHd3fkEhGZF1',
+            'CSRF-Token': csrfToken,
             'Sec-Fetch-Dest': 'empty',
             'Sec-Fetch-Mode': 'cors',
             'Sec-Fetch-Site': 'same-origin',
@@ -203,8 +213,14 @@ async function extractPostNumbers(forumId: string, feedData: any): Promise<Array
  * @param forumId the forum to which the post belongs
  * @param postNumber the number identifier of the post within the forum
  * @param cookies allow access to the information
+ * @param csrfToken also allows access to the forum information
  */
-async function getPost(forumId: string, postNumber: number, cookies: string): Promise<Response> {
+async function getPost(
+    forumId: string,
+    postNumber: number,
+    cookies: string,
+    csrfToken: string
+): Promise<Response> {
     return await fetch('https://piazza.com/logic/api?method=content.get', {
         headers: {
             'User-Agent':
@@ -212,7 +228,7 @@ async function getPost(forumId: string, postNumber: number, cookies: string): Pr
             Accept: 'application/json, text/plain, */*',
             'Accept-Language': 'en-CA,en-US;q=0.7,en;q=0.3',
             'Content-Type': 'application/json',
-            'CSRF-Token': '0qeVrCh6x4KKlHd3fkEhGZF1',
+            'CSRF-Token': csrfToken,
             'Sec-Fetch-Dest': 'empty',
             'Sec-Fetch-Mode': 'cors',
             'Sec-Fetch-Site': 'same-origin',

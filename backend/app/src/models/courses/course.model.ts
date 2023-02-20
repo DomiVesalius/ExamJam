@@ -15,7 +15,7 @@ export interface ICourseModel extends ICourse, Document {}
 
 const CourseSchema: Schema = new Schema(
     {
-        courseCode: { type: Schema.Types.String, required: true },
+        courseCode: { type: Schema.Types.String, required: true, unique: true },
         title: { type: Schema.Types.String, required: true },
         description: { type: Schema.Types.String, required: true },
         programArea: { required: true, type: Array<Schema.Types.String> },

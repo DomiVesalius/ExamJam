@@ -22,7 +22,7 @@ export class CoursesController extends BaseController {
                 errors: 'Invalid page number or limit',
                 page: page,
                 limit: limit,
-                totalPages: 0
+                totalPages: -1
             };
         }
         const courseModels = await CoursesService.getCourses(page, limit, keyword);

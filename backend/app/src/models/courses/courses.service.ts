@@ -34,9 +34,6 @@ export class CoursesService {
     ): Promise<number> {
         return CourseModel.find({
             $or: [{ title: new RegExp(keyword, 'i') }, { courseCode: new RegExp(keyword, 'i') }]
-        })
-            .sort({ courseCode: 'asc', title: 'asc' })
-            .skip((pageNumber - 1) * limit)
-            .countDocuments();
+        }).countDocuments();
     }
 }

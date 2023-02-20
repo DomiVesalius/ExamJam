@@ -2,7 +2,7 @@ import { BaseController } from '../base.controller';
 import { Get, Query, Route, Tags, Request, Post, Body } from 'tsoa';
 import { Request as ExpressRequest } from 'express';
 import { CoursesService } from '../../models/courses/courses.service';
-import { ICourseModel } from '../../models/courses/course.model';
+import courseModel, { ICourseModel } from '../../models/courses/course.model';
 import { GetCoursesResponse } from './courses.schemas';
 
 @Tags('Courses')
@@ -19,7 +19,10 @@ export class CoursesController extends BaseController {
                 success: false,
                 code: 400,
                 data: [],
-                errors: 'Invalid page number or limit'
+                errors: 'Invalid page number or limit',
+                page: page,
+                limit: limit,
+                totalPages: 0
             };
         }
         const courseModels = await CoursesService.getCourses(page, limit, keyword);
@@ -27,7 +30,10 @@ export class CoursesController extends BaseController {
         return {
             success: true,
             code: 200,
-            data: courseModels
+            data: courseModels,
+            page: page,
+            limit: limit,
+            totalPages: courseModels.length / limit
         };
     }
 }

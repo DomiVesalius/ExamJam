@@ -2,6 +2,12 @@ import CourseModel, { ICourseModel } from './course.model';
 import logger from '../../utils/logger.util';
 
 export class CoursesService {
+    /**
+     * Gets all courses that match the given keyword.
+     * @param pageNumber number of page to be returned
+     * @param limit number of courses per page
+     * @param keyword keyword to be matched against courseCode and title
+     */
     public static async getCourses(
         pageNumber: number,
         limit: number,

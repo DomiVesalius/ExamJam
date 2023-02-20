@@ -14,11 +14,12 @@ export class CoursesController extends BaseController {
         @Query() page: number,
         @Query() keyword: string
     ): Promise<GetCoursesResponse> {
-        if (page <= 0 || limit <= 0) {
+        if (page <= 0 || limit <= 0 || limit > 10) {
             return {
                 success: false,
                 code: 400,
-                data: []
+                data: [],
+                errors: 'Invalid page number or limit'
             };
         }
         const courseModels = await CoursesService.getCourses(page, limit, keyword);

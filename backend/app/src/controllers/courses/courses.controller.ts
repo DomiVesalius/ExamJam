@@ -26,7 +26,7 @@ export class CoursesController extends BaseController {
             };
         }
 
-        const totalNumCourses = await CoursesService.getTotalNumCourses(page, limit, keyword);
+        const totalNumCourses = await CoursesService.getTotalNumCourses(keyword);
         const totalPages = Math.ceil(totalNumCourses / limit);
 
         if (totalPages < page) {

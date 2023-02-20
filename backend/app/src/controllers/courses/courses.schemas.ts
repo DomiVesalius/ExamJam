@@ -19,7 +19,7 @@ export interface GetCoursesResponse extends BaseResponse {
 
     /**
      * Total number of pages as per matching results and limit
-     * Calculated as: total number of matching results / limit
+     * Calculated as: ceil(total number of matching results / limit)
      */
     totalPages: number;
 }

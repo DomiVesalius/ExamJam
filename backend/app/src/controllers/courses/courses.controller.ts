@@ -27,13 +27,27 @@ export class CoursesController extends BaseController {
         }
         const courseModels = await CoursesService.getCourses(page, limit, keyword);
 
+        const totalPages = Math.ceil(courseModels.length / limit);
+
+        if (totalPages < page) {
+            return {
+                success: false,
+                code: 400,
+                data: [],
+                errors: 'Page number exceeds total number of pages',
+                page: page,
+                limit: limit,
+                totalPages: -1
+            };
+        }
+
         return {
             success: true,
             code: 200,
             data: courseModels,
             page: page,
             limit: limit,
-            totalPages: courseModels.length / limit
+            totalPages: totalPages
         };
     }
 }

@@ -25,9 +25,9 @@ export class CoursesController extends BaseController {
                 totalPages: -1
             };
         }
-        const courseModels = await CoursesService.getCourses(page, limit, keyword);
 
-        const totalPages = Math.ceil(courseModels.length / limit);
+        const totalNumCourses = await CoursesService.getTotalNumCourses(page, limit, keyword);
+        const totalPages = Math.ceil(totalNumCourses / limit);
 
         if (totalPages < page) {
             return {
@@ -37,9 +37,11 @@ export class CoursesController extends BaseController {
                 errors: 'Page number exceeds total number of pages',
                 page: page,
                 limit: limit,
-                totalPages: -1
+                totalPages: totalPages
             };
         }
+
+        const courseModels = await CoursesService.getCourses(page, limit, keyword);
 
         return {
             success: true,

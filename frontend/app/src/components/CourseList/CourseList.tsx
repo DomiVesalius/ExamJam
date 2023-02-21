@@ -35,5 +35,7 @@ export const CourseList = ({ numCourses, rowSpacing, colSpacing }: CourseListPro
                 ))}
             </Grid>
         </Box>
+        // TODO: Create prev and next buttons.
+        // TODO: prev button should be disabled at page 1. next button should be disabled at end of totalPages.
     );
 };

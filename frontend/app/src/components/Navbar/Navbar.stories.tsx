@@ -2,12 +2,16 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { Navbar } from './Navbar';
+import { withRouter } from 'storybook-addon-react-router-v6';
 
 export default {
     title: 'Navbar',
     component: Navbar,
+    decorators: [withRouter],
     parameters: {
-        layout: 'centered'
+        reactRouter: {
+            routePath: '/'
+        }
     }
 } as ComponentMeta<typeof Navbar>;
 

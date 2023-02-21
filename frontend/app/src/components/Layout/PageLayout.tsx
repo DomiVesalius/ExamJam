@@ -8,8 +8,7 @@ export interface LayoutProps {
 }
 
 /**
- * Primary layout for the ExamJam application. Currently, there are no other components but using this
- * to create Page components will improve code extensibility.
+ * Primary layout for the ExamJam application.
  */
 const PageLayout: React.FunctionComponent<LayoutProps> = (props: LayoutProps): JSX.Element => {
     useEffect(() => {

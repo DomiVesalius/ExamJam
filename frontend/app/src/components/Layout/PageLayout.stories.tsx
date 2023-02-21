@@ -3,10 +3,17 @@ import { Provider } from 'react-redux';
 import { store } from '../../redux/store';
 
 import PageLayout, { LayoutProps } from './PageLayout';
+import { withRouter } from 'storybook-addon-react-router-v6';
 
 export default {
     title: `Components/${PageLayout.name}`,
-    component: PageLayout
+    component: PageLayout,
+    decorators: [withRouter],
+    parameters: {
+        reactRouter: {
+            routePath: '/'
+        }
+    }
 } as ComponentMeta<typeof PageLayout>;
 
 const Template: ComponentStory<typeof PageLayout> = (args: LayoutProps) => {

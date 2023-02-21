@@ -1,7 +1,6 @@
 import { Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material';
 
 interface CourseCardProps {
-
     /** Title of Card */
     mainText: string;
 
@@ -28,25 +27,19 @@ export const CourseCard = ({
     mainText,
     bodyText,
     imgPath,
-    imgAlt = "",
+    imgAlt = '',
     width = 345,
     height = 140,
     redirectURL
 }: CourseCardProps) => {
-
     const redirect = () => {
         window.location.href = redirectURL;
-    }
+    };
 
     return (
-        <Card sx={{ maxWidth: width }}>
+        <Card sx={{ width: width }}>
             <CardActionArea onClick={redirect}>
-                <CardMedia
-                    component="img"
-                    height={`${height}`}
-                    image={imgPath}
-                    alt={imgAlt}
-                />
+                <CardMedia component="img" height={`${height}`} image={imgPath} alt={imgAlt} />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
                         {mainText}

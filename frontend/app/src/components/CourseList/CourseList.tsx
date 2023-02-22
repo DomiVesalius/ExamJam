@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Pagination, Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import React from 'react';
 
@@ -8,9 +8,17 @@ interface CourseListProps {
     numCourses: number;
     rowSpacing: number;
     colSpacing: number;
+    numPages: number;
+    paginationSpacing: number;
 }
 
-export const CourseList = ({ numCourses, rowSpacing, colSpacing }: CourseListProps) => {
+export const CourseList = ({
+    numCourses,
+    rowSpacing,
+    colSpacing,
+    numPages,
+    paginationSpacing
+}: CourseListProps) => {
     const courseList: React.ReactElement[] = [];
 
     for (let i = 0; i < numCourses; i++) {
@@ -28,14 +36,30 @@ export const CourseList = ({ numCourses, rowSpacing, colSpacing }: CourseListPro
     }
 
     return (
+        /** TODO: Create prev and next buttons.
+         *  TODO: prev button should be disabled at page 1. next button should be disabled at end of totalPages.
+         */
         <Box>
-            <Grid container rowSpacing={rowSpacing} columnSpacing={colSpacing}>
+            <Grid
+                container
+                rowSpacing={rowSpacing}
+                columnSpacing={colSpacing}
+                justifyContent={{
+                    xs: 'center',
+                    sm: 'start',
+                    md: 'start'
+                }}
+                alignItems="center"
+            >
                 {courseList.map((element) => (
                     <Grid>{element}</Grid>
                 ))}
             </Grid>
+            <Box paddingTop="5%" display="flex" justifyContent="center" alignItems="center">
+                <Stack spacing={paginationSpacing}>
+                    <Pagination count={numPages} />
+                </Stack>
+            </Box>
         </Box>
-        // TODO: Create prev and next buttons.
-        // TODO: prev button should be disabled at page 1. next button should be disabled at end of totalPages.
     );
 };

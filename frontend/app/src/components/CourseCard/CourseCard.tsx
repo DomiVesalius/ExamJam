@@ -36,6 +36,11 @@ export const CourseCard = ({
         window.location.href = redirectURL;
     };
 
+    let bodyTextShrink: string = '';
+    if (bodyText.length > 120) {
+        bodyTextShrink = bodyText.substring(0, 120) + '...';
+    }
+
     return (
         <Card sx={{ width: width }}>
             <CardActionArea onClick={redirect}>
@@ -45,7 +50,7 @@ export const CourseCard = ({
                         {mainText}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        {bodyText}
+                        {bodyTextShrink}
                     </Typography>
                 </CardContent>
             </CardActionArea>

@@ -1,11 +1,10 @@
 import { Box, Pagination, Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { CourseCard } from '../CourseCard/CourseCard';
-import http from '../../utils/http';
+import HTTP from '../../utils/http';
 import useSWR from 'swr';
-import { GetCoursesResponse } from '../../../../../backend/app/src/controllers/courses/courses.schemas';
 
 interface CourseListProps {
     numCourses: number;
@@ -18,31 +17,21 @@ interface CourseListProps {
     queryKeyword: string;
 }
 
-function fetchCourses(
-    queryLimit: number,
-    queryPage: number,
-    queryKeyword: string
-): React.ReactElement[] {
-    const fetcher = (url: string) => http.post(url).then((res) => res.data);
-    const api: string = `/courses?limit=${queryLimit}&page=${queryPage}&keyword=${queryKeyword}`;
-    const { data, error } = useSWR(api, fetcher);
-    if (error) return [];
+function createCourseCards(data: any): React.ReactElement[] {
     const courseCards: React.ReactElement[] = [];
-    data.map((item: GetCoursesResponse) => {
-        const courses = item.data;
-        for (let course of courses) {
-            courseCards.push(
-                <CourseCard
-                    mainText={course.courseCode + ': ' + course.title}
-                    bodyText={course.description}
-                    imgPath={'https://source.unsplash.com/random'}
-                    width={345}
-                    height={140}
-                    redirectURL="#"
-                />
-            );
-        }
-    });
+    console.log(data.data);
+    for (let course of data.data) {
+        courseCards.push(
+            <CourseCard
+                mainText={course.courseCode + ': ' + course.title}
+                bodyText={course.description}
+                imgPath={'https://source.unsplash.com/random'}
+                width={345}
+                height={140}
+                redirectURL="#"
+            />
+        );
+    }
     return courseCards;
 }
 
@@ -56,8 +45,25 @@ export const CourseList: React.FunctionComponent<CourseListProps> = ({
     queryPage,
     queryKeyword
 }: CourseListProps) => {
-    const courseList: React.ReactElement[] = fetchCourses(queryLimit, queryPage, queryKeyword);
+    const fetcher = (url: string) => HTTP.get(url).then((res) => res.data);
+    const url: string = `/courses?limit=${queryLimit}&page=${queryPage}&keyword=${queryKeyword}`;
+    const { data, error } = useSWR(url, fetcher);
 
+    const [courseList, setCourseList] = useState<React.ReactElement[]>([]);
+
+    useEffect(() => {
+        if (data) {
+            setCourseList(createCourseCards(data));
+        }
+
+        if (error) console.log(error);
+    }, [data, error]);
+
+    if (error) {
+        return <div>Error</div>;
+    }
+
+    // if (queryLimit == 0 && queryPage == 0 && queryKeyword == undefined) {
     // for (let i = 0; i < numCourses; i++) {
     //     courseList.push(
     //         <CourseCard
@@ -71,8 +77,10 @@ export const CourseList: React.FunctionComponent<CourseListProps> = ({
     //         />
     //     );
     // }
+    // }
 
     /** Fetching data from DB */
+    // courseList = fetchCourses(queryLimit, queryPage, queryKeyword);
 
     return (
         /** TODO: Create prev and next buttons.

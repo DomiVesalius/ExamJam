@@ -3,8 +3,8 @@ import Grid from '@mui/material/Unstable_Grid2';
 import React, { useEffect, useState } from 'react';
 
 import { CourseCard } from '../CourseCard/CourseCard';
-import HTTP from '../../utils/http';
 import useSWR from 'swr';
+import axios from 'axios';
 
 interface CourseListProps {
     numCourses: number;
@@ -41,11 +41,19 @@ export const CourseList: React.FunctionComponent<CourseListProps> = ({
     colSpacing,
     numPages,
     paginationSpacing,
-    queryLimit,
-    queryPage,
-    queryKeyword
+    queryLimit = 5,
+    queryPage = 1,
+    queryKeyword = 'csc'
 }: CourseListProps) => {
-    const fetcher = (url: string) => HTTP.get(url).then((res) => res.data);
+    const fetcher = (url: string) =>
+        axios
+            .create({
+                baseURL: 'http://localhost:8080/api',
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: false
+            })
+            .get(url)
+            .then((res) => res.data);
     const url: string = `/courses?limit=${queryLimit}&page=${queryPage}&keyword=${queryKeyword}`;
     const { data, error } = useSWR(url, fetcher);
 
@@ -63,24 +71,11 @@ export const CourseList: React.FunctionComponent<CourseListProps> = ({
         return <div>Error</div>;
     }
 
-    // if (queryLimit == 0 && queryPage == 0 && queryKeyword == undefined) {
-    // for (let i = 0; i < numCourses; i++) {
-    //     courseList.push(
-    //         <CourseCard
-    //             mainText="Course Title"
-    //             bodyText="Course Description"
-    //             imgPath="https://source.unsplash.com/random"
-    //             imgAlt="Course Image"
-    //             width={345}
-    //             height={140}
-    //             redirectURL="#"
-    //         />
-    //     );
-    // }
-    // }
-
     /** Fetching data from DB */
-    // courseList = fetchCourses(queryLimit, queryPage, queryKeyword);
+    /** HTTP from utils/http.ts uses storybook port, 3001. But backend uses port 8080.
+     * Using Axios doesn't help either since we need to allow CORS from backend.
+     * TODO: Need to fix.
+     */
 
     return (
         /** TODO: Create prev and next buttons.

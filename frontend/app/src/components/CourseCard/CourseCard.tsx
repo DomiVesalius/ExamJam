@@ -41,13 +41,18 @@ export const CourseCard = ({
         bodyTextShrink = bodyText.substring(0, 120) + '...';
     }
 
+    let headerTextShrink: string = '';
+    if (mainText.length > 20) {
+        headerTextShrink = mainText.substring(0, 44) + '...';
+    }
+
     return (
-        <Card sx={{ width: width }}>
+        <Card sx={{ width: width, height: height + 180 }}>
             <CardActionArea onClick={redirect}>
                 <CardMedia component="img" height={`${height}`} image={imgPath} alt={imgAlt} />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
-                        {mainText}
+                        {headerTextShrink}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                         {bodyTextShrink}

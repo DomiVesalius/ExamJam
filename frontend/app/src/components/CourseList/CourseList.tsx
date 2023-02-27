@@ -18,9 +18,8 @@ interface CourseListProps {
     queryKeyword: string;
 }
 
-function createCourseCards(data: any): React.ReactElement[] {
+function createCourseCards(data: any): [React.ReactElement[], number] {
     const courseCards: React.ReactElement[] = [];
-    console.log(data.data);
     for (let course of data.data) {
         courseCards.push(
             <CourseCard
@@ -33,7 +32,7 @@ function createCourseCards(data: any): React.ReactElement[] {
             />
         );
     }
-    return courseCards;
+    return [courseCards, data.totalPages];
 }
 
 export const CourseList: React.FunctionComponent<CourseListProps> = ({
@@ -46,15 +45,20 @@ export const CourseList: React.FunctionComponent<CourseListProps> = ({
     queryPage = 1,
     queryKeyword = 'csc'
 }: CourseListProps) => {
+    const [page, setPage] = React.useState(queryPage);
     const fetcher = (url: string) => http.get(url).then((res) => res.data);
-    const url: string = `/courses?limit=${queryLimit}&page=${queryPage}&keyword=${queryKeyword}`;
+    const url: string = `/courses?limit=${queryLimit}&page=${page}&keyword=${queryKeyword}`;
     const { data, error } = useSWR(url, fetcher);
 
     const [courseList, setCourseList] = useState<React.ReactElement[]>([]);
 
+    const [totalPages, setTotalPages] = React.useState(1);
+
     useEffect(() => {
         if (data) {
-            setCourseList(createCourseCards(data));
+            const courseCards = createCourseCards(data);
+            setCourseList(courseCards[0]);
+            setTotalPages(courseCards[1]);
         }
 
         if (error) {
@@ -66,16 +70,11 @@ export const CourseList: React.FunctionComponent<CourseListProps> = ({
         return <div>ERROR</div>;
     }
 
-    /** Fetching data from DB */
-    /** HTTP from utils/http.ts uses storybook port, 3001. But backend uses port 8080.
-     * Using Axios doesn't help either since we need to allow CORS from backend.
-     * TODO: Need to fix.
-     */
+    const handleChangePage = (event: React.ChangeEvent<unknown>, newPage: number) => {
+        setPage(newPage);
+    };
 
     return (
-        /** TODO: Create prev and next buttons.
-         *  TODO: prev button should be disabled at page 1. next button should be disabled at end of totalPages.
-         */
         <Box>
             <Grid
                 container
@@ -94,7 +93,7 @@ export const CourseList: React.FunctionComponent<CourseListProps> = ({
             </Grid>
             <Box paddingTop="5%" display="flex" justifyContent="center" alignItems="center">
                 <Stack spacing={paginationSpacing}>
-                    <Pagination count={numPages} />
+                    <Pagination count={totalPages} onChange={handleChangePage} />
                 </Stack>
             </Box>
         </Box>

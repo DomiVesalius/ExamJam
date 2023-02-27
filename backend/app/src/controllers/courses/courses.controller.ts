@@ -1,7 +1,7 @@
 import { BaseController, } from '../base.controller';
 import { Get, Route, Tags, Request, Path } from 'tsoa';
 import { Request as ExpressRequest } from 'express';
-import { CourseService } from './courses.service';
+import { CourseService } from '../../models/courses/courses.service';
 import { CourseResponse } from './courses.schema';
 
 

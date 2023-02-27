@@ -13,9 +13,11 @@ import apiRouter from './routes/apiRouter';
 
 import passport from 'passport';
 import sessionMiddleware from './middlewares/session.middleware';
+import cors from 'cors';
 
 const app: Express = express();
 
+app.use(cors());
 // Logging requests
 app.use(loggingMiddleware);
 

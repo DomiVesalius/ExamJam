@@ -17,7 +17,12 @@ import cors from 'cors';
 
 const app: Express = express();
 
-app.use(cors());
+app.use(
+    cors({
+        origin: ['http://localhost:3001', '*'],
+        credentials: true
+    })
+);
 // Logging requests
 app.use(loggingMiddleware);
 

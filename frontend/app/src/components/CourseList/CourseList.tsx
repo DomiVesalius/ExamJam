@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { CourseCard } from '../CourseCard/CourseCard';
 import useSWR from 'swr';
 import axios from 'axios';
+import http from '../../utils/http';
 
 interface CourseListProps {
     numCourses: number;
@@ -45,15 +46,7 @@ export const CourseList: React.FunctionComponent<CourseListProps> = ({
     queryPage = 1,
     queryKeyword = 'csc'
 }: CourseListProps) => {
-    const fetcher = (url: string) =>
-        axios
-            .create({
-                baseURL: 'http://localhost:8080/api',
-                headers: { 'Content-Type': 'application/json' },
-                withCredentials: false
-            })
-            .get(url)
-            .then((res) => res.data);
+    const fetcher = (url: string) => http.get(url).then((res) => res.data);
     const url: string = `/courses?limit=${queryLimit}&page=${queryPage}&keyword=${queryKeyword}`;
     const { data, error } = useSWR(url, fetcher);
 
@@ -64,11 +57,13 @@ export const CourseList: React.FunctionComponent<CourseListProps> = ({
             setCourseList(createCourseCards(data));
         }
 
-        if (error) console.log(error);
+        if (error) {
+            console.log(error);
+        }
     }, [data, error]);
 
     if (error) {
-        return <div>Error</div>;
+        return <div>ERROR</div>;
     }
 
     /** Fetching data from DB */

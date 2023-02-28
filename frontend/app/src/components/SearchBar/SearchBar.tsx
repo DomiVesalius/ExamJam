@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { KeyboardEventHandler } from 'react';
 import { alpha, createTheme, InputBase, styled, Autocomplete, Container } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
@@ -11,6 +11,8 @@ interface SearchProps {
 
     /** Placeholder text in search */
     placeHolder: string;
+
+    handleKeyPress?: KeyboardEventHandler<HTMLDivElement>;
 }
 
 /** styled('div') creates custom divs with start and end tag of the constant name */
@@ -22,16 +24,16 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
     pointerEvents: 'none',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
 }));
 
 export const SearchBar = ({
     hoverColor,
     defaultColor,
     placeHolder,
+    handleKeyPress,
     ...props
 }: SearchProps) => {
-
     const StyledInputBase = styled(InputBase)(({ theme }) => ({
         color: 'inherit',
         '& .MuiInputBase-input': {
@@ -41,9 +43,9 @@ export const SearchBar = ({
             transition: theme.transitions.create('width'),
             width: '100%',
             [theme.breakpoints.up('md')]: {
-                width: '20ch',
-            },
-        },
+                width: '20ch'
+            }
+        }
     }));
 
     const Search = styled('div')(({ theme }) => ({
@@ -51,43 +53,44 @@ export const SearchBar = ({
         borderRadius: theme.shape.borderRadius,
         backgroundColor: alpha(defaultColor ? defaultColor : theme.palette.primary.main, 0.15),
         '&:hover': {
-            backgroundColor: alpha(hoverColor ? hoverColor : theme.palette.primary.main, 0.25),
+            backgroundColor: alpha(hoverColor ? hoverColor : theme.palette.primary.main, 0.25)
         },
         marginRight: theme.spacing(2),
         marginLeft: 0,
         width: '100%',
         [theme.breakpoints.up('sm')]: {
-            marginLeft: theme.spacing(3),
-            width: 'auto',
-        },
+            width: 'auto'
+        }
     }));
 
     const top100Films = [
-        { title: "The Shawshank Redemption", year: 1994 },
-        { title: "The Godfather", year: 1972 },
-        { title: "The Godfather: Part II", year: 1974 },
-        { title: "The Dark Knight", year: 2008 },
-        { title: "12 Angry Men", year: 1957 }
+        { title: 'The Shawshank Redemption', year: 1994 },
+        { title: 'The Godfather', year: 1972 },
+        { title: 'The Godfather: Part II', year: 1974 },
+        { title: 'The Dark Knight', year: 2008 },
+        { title: '12 Angry Men', year: 1957 }
     ];
 
     return (
-        <Autocomplete renderInput={(params) => {
-            const { InputLabelProps, InputProps, ...rest } = params;
-            return (
-                <Search>
-                    <SearchIconWrapper>
-                        <SearchIcon />
-                    </SearchIconWrapper>
-                    <StyledInputBase
-                        {...params.InputProps}
-                        {...rest}
-                        placeholder={placeHolder}
-                    />
-                </Search>
-            );
-        }}
-                      options={top100Films}
-                      getOptionLabel={ (option) => option.title }
+        <Autocomplete
+            renderInput={(params) => {
+                const { InputLabelProps, InputProps, ...rest } = params;
+                return (
+                    <Search>
+                        <SearchIconWrapper>
+                            <SearchIcon />
+                        </SearchIconWrapper>
+                        <StyledInputBase
+                            {...params.InputProps}
+                            {...rest}
+                            placeholder={placeHolder}
+                            onKeyPress={handleKeyPress}
+                        />
+                    </Search>
+                );
+            }}
+            options={top100Films}
+            getOptionLabel={(option) => option.title}
         />
     );
 };

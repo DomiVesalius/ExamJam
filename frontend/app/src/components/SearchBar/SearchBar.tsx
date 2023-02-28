@@ -1,5 +1,5 @@
-import React, { KeyboardEventHandler } from 'react';
-import { alpha, createTheme, InputBase, styled, Autocomplete, Container } from '@mui/material';
+import React, { KeyboardEventHandler, MouseEventHandler } from 'react';
+import { alpha, InputBase, styled, Button, Box } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
 interface SearchProps {
@@ -12,6 +12,7 @@ interface SearchProps {
     /** Placeholder text in search */
     placeHolder: string;
 
+    /** Optional function to handle key press for search bar */
     handleKeyPress?: KeyboardEventHandler<HTMLDivElement>;
 }
 
@@ -31,8 +32,7 @@ export const SearchBar = ({
     hoverColor,
     defaultColor,
     placeHolder,
-    handleKeyPress,
-    ...props
+    handleKeyPress
 }: SearchProps) => {
     const StyledInputBase = styled(InputBase)(({ theme }) => ({
         color: 'inherit',
@@ -57,40 +57,28 @@ export const SearchBar = ({
         },
         marginRight: theme.spacing(2),
         marginLeft: 0,
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            width: 'auto'
-        }
+        width: '60%'
     }));
 
-    const top100Films = [
-        { title: 'The Shawshank Redemption', year: 1994 },
-        { title: 'The Godfather', year: 1972 },
-        { title: 'The Godfather: Part II', year: 1974 },
-        { title: 'The Dark Knight', year: 2008 },
-        { title: '12 Angry Men', year: 1957 }
-    ];
-
     return (
-        <Autocomplete
-            renderInput={(params) => {
-                const { InputLabelProps, InputProps, ...rest } = params;
-                return (
-                    <Search>
-                        <SearchIconWrapper>
-                            <SearchIcon />
-                        </SearchIconWrapper>
-                        <StyledInputBase
-                            {...params.InputProps}
-                            {...rest}
-                            placeholder={placeHolder}
-                            onKeyPress={handleKeyPress}
-                        />
-                    </Search>
-                );
-            }}
-            options={top100Films}
-            getOptionLabel={(option) => option.title}
-        />
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Search>
+                <SearchIconWrapper>
+                    <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase placeholder={placeHolder} onKeyPress={handleKeyPress} />
+            </Search>
+            <div onClick={() => handleKeyPress}>
+                <Button
+                    variant="outlined"
+                    size="medium"
+                    sx={{
+                        ml: -1
+                    }}
+                >
+                    Search
+                </Button>
+            </div>
+        </Box>
     );
 };

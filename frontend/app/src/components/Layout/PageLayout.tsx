@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 import { Navbar } from '../Navbar/Navbar';
-import Profile from '../../pages/Profile/Profile';
-import { Container } from '@mui/material';
 
 export interface LayoutProps {
     children?: React.ReactNode;
@@ -19,12 +17,13 @@ const PageLayout: React.FunctionComponent<LayoutProps> = (props: LayoutProps): J
 
     return (
         <>
-            <Navbar userMenu1="Profile"
-                    userMenu2="Logout"
-                    navbarName="Exam Jam"
-                    searchDefaultColor="#FFFFFF"
-                    searchHoverColor="#FFFFFF"
-                    searchPlaceholder="Search for courses..."
+            <Navbar
+                userMenu1="Profile"
+                userMenu2="Logout"
+                navbarName="Exam Jam"
+                searchDefaultColor="#FFFFFF"
+                searchHoverColor="#FFFFFF"
+                searchPlaceholder="Search for courses..."
             />
             {props.children}
         </>

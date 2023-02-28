@@ -13,9 +13,16 @@ import apiRouter from './routes/apiRouter';
 
 import passport from 'passport';
 import sessionMiddleware from './middlewares/session.middleware';
+import cors from 'cors';
 
 const app: Express = express();
 
+app.use(
+    cors({
+        origin: ['http://localhost:3001', '*'],
+        credentials: true
+    })
+);
 // Logging requests
 app.use(loggingMiddleware);
 

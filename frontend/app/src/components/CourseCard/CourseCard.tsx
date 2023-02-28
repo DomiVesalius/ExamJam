@@ -27,9 +27,9 @@ export const CourseCard = ({
     mainText,
     bodyText,
     imgPath,
-    imgAlt = '',
-    width = 345,
-    height = 140,
+    imgAlt,
+    width,
+    height,
     redirectURL
 }: CourseCardProps) => {
     const redirect = () => {

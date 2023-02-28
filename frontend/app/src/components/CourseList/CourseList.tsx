@@ -10,7 +10,6 @@ import http from '../../utils/http';
 interface CourseListProps {
     rowSpacing: number;
     colSpacing: number;
-    paginationSpacing: number;
     queryLimit: number;
     queryPage: number;
     queryKeyword: string;
@@ -34,9 +33,8 @@ function createCourseCards(data: any): [React.ReactElement[], number] {
 }
 
 export const CourseList: React.FunctionComponent<CourseListProps> = ({
-    rowSpacing,
-    colSpacing,
-    paginationSpacing,
+    rowSpacing = 2,
+    colSpacing = 2,
     queryLimit = 5,
     queryPage = 1,
     queryKeyword = 'csc'
@@ -88,7 +86,7 @@ export const CourseList: React.FunctionComponent<CourseListProps> = ({
                 ))}
             </Grid>
             <Box paddingTop="5%" display="flex" justifyContent="center" alignItems="center">
-                <Stack spacing={paginationSpacing}>
+                <Stack>
                     <Pagination count={totalPages} onChange={handleChangePage} />
                 </Stack>
             </Box>

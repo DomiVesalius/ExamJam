@@ -8,10 +8,8 @@ import axios from 'axios';
 import http from '../../utils/http';
 
 interface CourseListProps {
-    numCourses: number;
     rowSpacing: number;
     colSpacing: number;
-    numPages: number;
     paginationSpacing: number;
     queryLimit: number;
     queryPage: number;
@@ -36,10 +34,8 @@ function createCourseCards(data: any): [React.ReactElement[], number] {
 }
 
 export const CourseList: React.FunctionComponent<CourseListProps> = ({
-    numCourses,
     rowSpacing,
     colSpacing,
-    numPages,
     paginationSpacing,
     queryLimit = 5,
     queryPage = 1,

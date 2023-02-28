@@ -34,15 +34,15 @@ interface NavbarProps {
 }
 
 export const Navbar = ({
-    userMenu1,
-    userMenu2,
-    navbarName,
-    searchDefaultColor,
-    searchHoverColor,
-    searchPlaceholder,
-    appbarColor,
-    ...props
-}: NavbarProps) => {
+                           userMenu1,
+                           userMenu2,
+                           navbarName,
+                           searchDefaultColor,
+                           searchHoverColor,
+                           searchPlaceholder,
+                           appbarColor,
+                           ...props
+                       }: NavbarProps) => {
     const { isAuthenticated } = useMainContext();
 
     const [anchorEl, setAnchorEl] = React.useState(null);

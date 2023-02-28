@@ -8,6 +8,7 @@ import RegistrationPage from './pages/Auth/RegistrationPage';
 import LoginPage from './pages/Auth/LoginPage';
 import Dashboard from './pages/Dashboard/Dashboard';
 import PathConstants from './utils/pathConstants';
+import CourseSearch from './pages/Dashboard/CourseSearch/CourseSearch';
 
 /**
  * For now this is just to show that the frontend and backend are connected.
@@ -30,6 +31,7 @@ function App() {
                 <Route path={PathConstants.rootPage} element={<Main />}></Route>
                 <Route path={PathConstants.profilePage} element={<ProfilePage />}></Route>
                 <Route path={PathConstants.dashboard} element={<Dashboard />}></Route>
+                <Route path={PathConstants.courseSearch} element={<CourseSearch />}></Route>
                 <Route path={PathConstants.registerPage} element={<RegistrationPage />} />
                 <Route path={PathConstants.loginPage} element={<LoginPage />} />
             </Routes>

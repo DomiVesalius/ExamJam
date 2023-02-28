@@ -36,22 +36,22 @@ export const CourseCard = ({
         window.location.href = redirectURL;
     };
 
-    let bodyTextShrink: string = '';
+    let bodyTextShrink: string = bodyText;
     if (bodyText.length > 120) {
-        bodyTextShrink = bodyText.substring(0, 120) + '...';
+        bodyTextShrink = bodyText.substring(0, 116) + '...';
     }
 
-    let headerTextShrink: string = '';
-    if (mainText.length > 20) {
-        headerTextShrink = mainText.substring(0, 44) + '...';
+    let headerTextShrink: string = mainText;
+    if (mainText.length > 25) {
+        headerTextShrink = mainText.substring(0, 25) + '...';
     }
 
     return (
-        <Card sx={{ width: width, height: height + 180 }}>
+        <Card sx={{ width: width }}>
             <CardActionArea onClick={redirect}>
                 <CardMedia component="img" height={`${height}`} image={imgPath} alt={imgAlt} />
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
+                    <Typography gutterBottom variant="h6" component="div">
                         {headerTextShrink}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">

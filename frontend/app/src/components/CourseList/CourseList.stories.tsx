@@ -14,4 +14,10 @@ export default {
 const Template: ComponentStory<typeof CourseList> = (args) => <CourseList {...args} />;
 
 export const Default = Template.bind({});
-Default.args = {};
+Default.args = {
+    rowSpacing: 2,
+    colSpacing: 2,
+    queryLimit: 5,
+    queryPage: 1,
+    queryKeyword: 'csc'
+};

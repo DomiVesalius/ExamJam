@@ -33,11 +33,11 @@ function createCourseCards(data: any): [React.ReactElement[], number] {
 }
 
 export const CourseList: React.FunctionComponent<CourseListProps> = ({
-    rowSpacing = 2,
-    colSpacing = 2,
-    queryLimit = 5,
-    queryPage = 1,
-    queryKeyword = 'csc'
+    rowSpacing,
+    colSpacing,
+    queryLimit,
+    queryPage,
+    queryKeyword
 }: CourseListProps) => {
     const [page, setPage] = React.useState(queryPage);
     const fetcher = (url: string) => http.get(url).then((res) => res.data);

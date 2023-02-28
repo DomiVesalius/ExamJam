@@ -80,6 +80,7 @@ export const CourseList: React.FunctionComponent<CourseListProps> = ({
                     md: 'start'
                 }}
                 alignItems="center"
+                marginLeft={1}
             >
                 {courseList.map((element) => (
                     <Grid>{element}</Grid>

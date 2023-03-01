@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 
 import { CourseCard } from '../CourseCard/CourseCard';
 import useSWR from 'swr';
-import axios from 'axios';
 import http from '../../utils/http';
 
 interface CourseListProps {

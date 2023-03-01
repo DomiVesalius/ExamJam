@@ -1,5 +1,5 @@
 import React, { KeyboardEventHandler, MouseEventHandler, useState } from 'react';
-import { alpha, Box, TextField, InputAdornment } from '@mui/material';
+import { alpha, Box, TextField, InputAdornment, Button } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { Form, FormikProvider, useFormik } from 'formik';
 
@@ -43,14 +43,30 @@ export const SearchBar = ({ hoverColor, defaultColor, placeHolder, handleSubmit 
                         placeholder={placeHolder}
                         value={searchFormik.values.query}
                         onChange={searchFormik.handleChange}
-                        fullWidth
                         sx={{
                             backgroundColor: alpha(defaultColor, 0.15),
                             '&:hover': {
                                 backgroundColor: alpha(hoverColor, 0.25)
-                            }
+                            },
+                            width: '84%'
                         }}
                     />
+                    <Box
+                        alignItems="center"
+                        justifySelf="center"
+                        display="inline-flex"
+                        sx={{ ml: 1, mt: 1 }}
+                    >
+                        <Button
+                            endIcon={<SearchIcon />}
+                            variant="outlined"
+                            size="large"
+                            sx={{ textAlign: 'center' }}
+                            type="submit"
+                        >
+                            Search
+                        </Button>
+                    </Box>
                 </Form>
             </FormikProvider>
         </Box>

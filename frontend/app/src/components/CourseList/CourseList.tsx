@@ -55,9 +55,7 @@ export const CourseList: React.FunctionComponent<CourseListProps> = ({
             setTotalPages(courseCards[1]);
         }
 
-        if (error) {
-            console.log(error);
-        }
+        if (error) console.log(error);
     }, [data, error]);
 
     if (error) {

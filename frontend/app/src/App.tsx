@@ -6,6 +6,7 @@ import { Typography } from '@mui/material';
 
 import RegistrationPage from './pages/Auth/RegistrationPage';
 import LoginPage from './pages/Auth/LoginPage';
+import ExamPage from './pages/Exam/ExamPage';
 import Dashboard from './pages/Dashboard/Dashboard';
 import PathConstants from './utils/pathConstants';
 
@@ -32,6 +33,7 @@ function App() {
                 <Route path={PathConstants.dashboard} element={<Dashboard />}></Route>
                 <Route path={PathConstants.registerPage} element={<RegistrationPage />} />
                 <Route path={PathConstants.loginPage} element={<LoginPage />} />
+                <Route path={PathConstants.examPage} element={<ExamPage />} />
             </Routes>
         </BrowserRouter>
     );

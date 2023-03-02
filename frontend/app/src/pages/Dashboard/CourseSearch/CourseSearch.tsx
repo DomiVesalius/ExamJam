@@ -1,4 +1,4 @@
-import React, { KeyboardEventHandler, MouseEventHandler, useState } from 'react';
+import React, { useState } from 'react';
 import { CourseList } from '../../../components/CourseList/CourseList';
 import { SearchBar } from '../../../components/SearchBar/SearchBar';
 import PageLayout from '../../../components/Layout/PageLayout';

@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import { Navbar } from '../Navbar/Navbar';
+import { Container, Grid, Stack } from '@mui/material';
 
 export interface LayoutProps {
     children?: React.ReactNode;
@@ -6,15 +8,30 @@ export interface LayoutProps {
 }
 
 /**
- * Primary layout for the ExamJam application. Currently, there are no other components but using this
- * to create Page components will improve code extensibility.
+ * Primary layout for the ExamJam application.
  */
 const PageLayout: React.FunctionComponent<LayoutProps> = (props: LayoutProps): JSX.Element => {
     useEffect(() => {
         document.title = props.title;
     }, [props.title]);
 
-    return <>{props.children}</>;
+    return (
+        <Grid container spacing={3}>
+            <Grid item xs={12}>
+                <Navbar
+                    userMenu1="Profile"
+                    userMenu2="Logout"
+                    navbarName="Exam Jam"
+                    searchDefaultColor="#FFFFFF"
+                    searchHoverColor="#FFFFFF"
+                    searchPlaceholder="Search for courses..."
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <Container>{props.children}</Container>
+            </Grid>
+        </Grid>
+    );
 };
 
 export default PageLayout;

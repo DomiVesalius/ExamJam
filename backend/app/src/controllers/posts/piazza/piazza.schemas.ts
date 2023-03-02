@@ -6,3 +6,7 @@ export interface GetPiazzaPostsResponse extends BaseResponse {
     limit: number;
     data: PostObject[];
 }
+
+export interface GetPiazzaPostResponse extends BaseResponse {
+    data: PostObject | null;
+}

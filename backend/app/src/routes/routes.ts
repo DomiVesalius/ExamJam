@@ -111,6 +111,18 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "GetPiazzaPostResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "success": {"dataType":"boolean","required":true},
+            "code": {"ref":"HttpStatusCodeLiteral","required":true},
+            "message": {"dataType":"string"},
+            "data": {"dataType":"union","subSchemas":[{"ref":"PostObject"},{"dataType":"enum","enums":[null]}],"required":true},
+            "errors": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"any"}]},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "RegisterResponse": {
         "dataType": "refObject",
         "properties": {
@@ -338,7 +350,7 @@ export function RegisterRoutes(app: express.Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/api/piazza/:courseCode',
+        app.get('/api/piazza/courses/:courseCode',
             ...(fetchMiddlewares<RequestHandler>(PiazzaController)),
             ...(fetchMiddlewares<RequestHandler>(PiazzaController.prototype.getPiazzaPostsForCourse)),
 
@@ -359,6 +371,32 @@ export function RegisterRoutes(app: express.Router) {
 
 
               const promise = controller.getPiazzaPostsForCourse.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/piazza/forums/:forumId/posts/:postNumber',
+            ...(fetchMiddlewares<RequestHandler>(PiazzaController)),
+            ...(fetchMiddlewares<RequestHandler>(PiazzaController.prototype.getPiazzaPost)),
+
+            function PiazzaController_getPiazzaPost(request: any, response: any, next: any) {
+            const args = {
+                    forumId: {"in":"path","name":"forumId","required":true,"dataType":"string"},
+                    postNumber: {"in":"path","name":"postNumber","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new PiazzaController();
+
+
+              const promise = controller.getPiazzaPost.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);

@@ -1,5 +1,4 @@
 import CourseModel, { ICourseModel } from './course.model';
-import logger from '../../utils/logger.util';
 
 export class CoursesService {
     /**

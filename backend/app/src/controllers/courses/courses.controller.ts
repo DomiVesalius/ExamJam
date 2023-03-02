@@ -1,8 +1,6 @@
 import { BaseController } from '../base.controller';
-import { Get, Query, Route, Tags, Request, Post, Body } from 'tsoa';
-import { Request as ExpressRequest } from 'express';
+import { Get, Query, Route, Tags } from 'tsoa';
 import { CoursesService } from '../../models/courses/courses.service';
-import courseModel, { ICourseModel } from '../../models/courses/course.model';
 import { GetCoursesResponse } from './courses.schemas';
 
 @Tags('Courses')

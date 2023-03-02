@@ -2,13 +2,13 @@ import { BaseController } from '../base.controller';
 import { Get, Query, Route, Security, Tags } from 'tsoa';
 import { CoursesService } from '../../models/courses/courses.service';
 import { GetCoursesResponse } from './courses.schemas';
-import PassportStrategies from '../../middlewares/passport.middleware';
+// import PassportStrategies from '../../middlewares/passport.middleware';
 
 @Tags('Courses')
 @Route('courses')
 export class CoursesController extends BaseController {
     @Get('')
-    @Security(PassportStrategies.local)
+    // @Security(PassportStrategies.local)
     public async getCourses(
         @Query() limit: number,
         @Query() page: number,

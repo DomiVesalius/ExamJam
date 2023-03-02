@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 
 import { CourseCard } from '../CourseCard/CourseCard';
 import useSWR from 'swr';
-import axios from 'axios';
 import http from '../../utils/http';
 
 interface CourseListProps {
@@ -55,9 +54,7 @@ export const CourseList: React.FunctionComponent<CourseListProps> = ({
             setTotalPages(courseCards[1]);
         }
 
-        if (error) {
-            console.log(error);
-        }
+        if (error) console.log(error);
     }, [data, error]);
 
     if (error) {
@@ -80,6 +77,7 @@ export const CourseList: React.FunctionComponent<CourseListProps> = ({
                     md: 'start'
                 }}
                 alignItems="center"
+                marginLeft={1}
             >
                 {courseList.map((element) => (
                     <Grid>{element}</Grid>

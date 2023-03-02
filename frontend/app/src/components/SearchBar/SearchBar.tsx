@@ -1,6 +1,7 @@
 import React from 'react';
-import { alpha, createTheme, InputBase, styled, Autocomplete, Container } from '@mui/material';
+import { alpha, Box, TextField, InputAdornment, Button } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { Form, FormikProvider, useFormik } from 'formik';
 
 interface SearchProps {
     /** Color of Search Bar when hovering */
@@ -11,83 +12,63 @@ interface SearchProps {
 
     /** Placeholder text in search */
     placeHolder: string;
+
+    /** Function to set state for 'Enter' key press for search bar */
+    handleSubmit: React.Dispatch<React.SetStateAction<string>>;
 }
 
-/** styled('div') creates custom divs with start and end tag of the constant name */
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-}));
-
-export const SearchBar = ({
-    hoverColor,
-    defaultColor,
-    placeHolder,
-    ...props
-}: SearchProps) => {
-
-    const StyledInputBase = styled(InputBase)(({ theme }) => ({
-        color: 'inherit',
-        '& .MuiInputBase-input': {
-            padding: theme.spacing(1, 1, 1, 0),
-            // vertical padding + font size from searchIcon
-            paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-            transition: theme.transitions.create('width'),
-            width: '100%',
-            [theme.breakpoints.up('md')]: {
-                width: '20ch',
-            },
-        },
-    }));
-
-    const Search = styled('div')(({ theme }) => ({
-        position: 'relative',
-        borderRadius: theme.shape.borderRadius,
-        backgroundColor: alpha(defaultColor ? defaultColor : theme.palette.primary.main, 0.15),
-        '&:hover': {
-            backgroundColor: alpha(hoverColor ? hoverColor : theme.palette.primary.main, 0.25),
-        },
-        marginRight: theme.spacing(2),
-        marginLeft: 0,
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            marginLeft: theme.spacing(3),
-            width: 'auto',
-        },
-    }));
-
-    const top100Films = [
-        { title: "The Shawshank Redemption", year: 1994 },
-        { title: "The Godfather", year: 1972 },
-        { title: "The Godfather: Part II", year: 1974 },
-        { title: "The Dark Knight", year: 2008 },
-        { title: "12 Angry Men", year: 1957 }
-    ];
+export const SearchBar = ({ hoverColor, defaultColor, placeHolder, handleSubmit }: SearchProps) => {
+    const searchFormik = useFormik({
+        initialValues: { query: '' },
+        onSubmit: async (values) => {
+            handleSubmit(values.query);
+        }
+    });
 
     return (
-        <Autocomplete renderInput={(params) => {
-            const { InputLabelProps, InputProps, ...rest } = params;
-            return (
-                <Search>
-                    <SearchIconWrapper>
-                        <SearchIcon />
-                    </SearchIconWrapper>
-                    <StyledInputBase
-                        {...params.InputProps}
-                        {...rest}
+        <Box sx={{ justifyContent: 'center', width: '100%' }}>
+            <FormikProvider value={searchFormik}>
+                <Form>
+                    <TextField
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <SearchIcon />
+                                </InputAdornment>
+                            )
+                        }}
+                        id="query"
+                        name="query"
+                        label="Search"
                         placeholder={placeHolder}
+                        value={searchFormik.values.query}
+                        onChange={searchFormik.handleChange}
+                        sx={{
+                            backgroundColor: alpha(defaultColor, 0.15),
+                            '&:hover': {
+                                backgroundColor: alpha(hoverColor, 0.25)
+                            },
+                            width: '84%'
+                        }}
                     />
-                </Search>
-            );
-        }}
-                      options={top100Films}
-                      getOptionLabel={ (option) => option.title }
-        />
+                    <Box
+                        alignItems="center"
+                        justifySelf="center"
+                        display="inline-flex"
+                        sx={{ ml: 1, mt: 1 }}
+                    >
+                        <Button
+                            endIcon={<SearchIcon />}
+                            variant="outlined"
+                            size="large"
+                            sx={{ textAlign: 'center' }}
+                            type="submit"
+                        >
+                            Search
+                        </Button>
+                    </Box>
+                </Form>
+            </FormikProvider>
+        </Box>
     );
 };

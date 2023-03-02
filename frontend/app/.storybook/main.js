@@ -7,6 +7,7 @@ module.exports = {
         '@storybook/preset-create-react-app',
         'storybook-addon-react-router-v6'
     ],
+    env: (config) => ({ ...config, REACT_APP_SERVER_ENDPOINT: 'http://localhost:8080/api' }),
     framework: '@storybook/react',
     core: {
         builder: '@storybook/builder-webpack5'

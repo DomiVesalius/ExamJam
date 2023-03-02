@@ -10,14 +10,15 @@ export enum CommentType {
     feedback = 'feedback'
 }
 
-export interface IPiazzaCommentModel extends Document {
-    _id: Schema.Types.String;
-    postId: Schema.Types.String;
-    type: Schema.Types.String;
-    content: Schema.Types.String;
-    parentId: Schema.Types.String | null;
-    children: Schema.Types.ObjectId[];
+export interface IPiazzaComment {
+    postId: string;
+    type: string;
+    content: string;
+    parentId: string | null;
+    children: string[];
 }
+
+export interface IPiazzaCommentModel extends Document, IPiazzaComment {}
 
 const PiazzaCommentSchema = new Schema<IPiazzaCommentModel>(
     {

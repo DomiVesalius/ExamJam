@@ -3,15 +3,16 @@ import { PiazzaCommentModelName } from './piazzaComment.model';
 
 export const PiazzaPostModelName = 'PiazzaPost';
 
-export interface IPiazzaPostModel extends Document {
-    _id: Schema.Types.String;
-    courseCode: Schema.Types.String;
-    forumId: Schema.Types.String;
-    postNumber: Schema.Types.Number;
-    title: Schema.Types.String;
-    content: Schema.Types.String;
-    createdAt: Schema.Types.Date;
+export interface IPiazzaPost {
+    courseCode: string;
+    forumId: string;
+    postNumber: number;
+    title: string;
+    content: string;
+    createdAt: Date;
 }
+
+export interface IPiazzaPostModel extends Document, IPiazzaPost {}
 
 const PiazzaPostSchema = new Schema<IPiazzaPostModel>(
     {

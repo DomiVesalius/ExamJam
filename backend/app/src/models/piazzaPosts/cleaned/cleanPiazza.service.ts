@@ -72,7 +72,11 @@ export class CleanPiazzaService {
         }
     }
 
-    public static async getPostsOfCourse(courseCode: string, page: number, limit: number) {
+    public static async getPostsOfCourse(
+        courseCode: string,
+        page: number,
+        limit: number
+    ): Promise<PostObject[]> {
         try {
             const coursePosts = await PiazzaPostModel.find({ courseCode })
                 .sort({ postNumber: 1 })
@@ -93,7 +97,7 @@ export class CleanPiazzaService {
         }
     }
 
-    public static async getCommentsOfPost(postId: string) {
+    public static async getCommentsOfPost(postId: string): Promise<CommentObject[]> {
         try {
             // Getting the non-children comments first
             const topLevelComments = await PiazzaCommentModel.find({ postId, parentId: null });
@@ -119,6 +123,23 @@ export class CleanPiazzaService {
             return comments;
         } catch (e) {
             return [];
+        }
+    }
+
+    public static async getPost(forumId: string, postNumber: number): Promise<PostObject | null> {
+        try {
+            const postId = `class/${forumId}/post/${postNumber}`;
+            const piazzaPost = await PiazzaPostModel.findById(postId);
+
+            if (!piazzaPost) return null;
+
+            const postObj = this.getPostObject(piazzaPost);
+            const commentsOfPost = await this.getCommentsOfPost(postObj._id);
+            postObj.comments.push(...commentsOfPost);
+
+            return postObj;
+        } catch (e) {
+            return null;
         }
     }
 

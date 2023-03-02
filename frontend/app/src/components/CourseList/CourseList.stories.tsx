@@ -4,7 +4,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { CourseList } from './CourseList';
 
 export default {
-    title: 'CourseList',
+    title: `Components/${CourseList.name}`,
     component: CourseList,
     parameters: {
         layout: 'centered'

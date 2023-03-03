@@ -45,6 +45,10 @@ export interface CreateCommentFields {
 }
 
 export class CleanPiazzaService {
+    public static async getTotalNumberOfPosts(courseCode: string): Promise<number> {
+        return PiazzaPostModel.find({ courseCode }).countDocuments();
+    }
+
     public static async createPiazzaPost(
         fields: CreatePiazzaPostFields
     ): Promise<IPiazzaPostModel | null> {

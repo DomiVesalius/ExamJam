@@ -392,6 +392,10 @@
 					"limit": {
 						"type": "number",
 						"format": "double"
+					},
+					"totalPages": {
+						"type": "number",
+						"format": "double"
 					}
 				},
 				"required": [
@@ -399,6 +403,7 @@
 					"code",
 					"page",
 					"limit",
+					"totalPages",
 					"data"
 				],
 				"type": "object",

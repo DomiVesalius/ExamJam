@@ -158,6 +158,7 @@ const models: TsoaRoute.Models = {
             "errors": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"any"}]},
             "page": {"dataType":"double","required":true},
             "limit": {"dataType":"double","required":true},
+            "totalPages": {"dataType":"double","required":true},
         },
         "additionalProperties": false,
     },

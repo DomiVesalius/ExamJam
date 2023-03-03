@@ -52,6 +52,9 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"ICourseModel": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
+			},
 			"HttpStatusCodeLiteral": {
 				"type": "number",
 				"enum": [
@@ -115,6 +118,332 @@
 					510,
 					511
 				]
+			},
+			"CourseResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/ICourseModel"
+							}
+						],
+						"nullable": true
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IExamModel": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
+			},
+			"GetExamsResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IExamModel"
+						},
+						"type": "array"
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GetCoursesResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/ICourseModel"
+						},
+						"type": "array",
+						"description": "Array of courses from the database"
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					},
+					"page": {
+						"type": "number",
+						"format": "double",
+						"description": "Page number of courses returned"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double",
+						"description": "Limit from request"
+					},
+					"totalPages": {
+						"type": "number",
+						"format": "double",
+						"description": "Total number of pages as per matching results and limit\nCalculated as: ceil(total number of matching results / limit)"
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"data",
+					"page",
+					"limit",
+					"totalPages"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ChildCommentObject": {
+				"properties": {
+					"_id": {
+						"type": "string"
+					},
+					"postId": {
+						"type": "string"
+					},
+					"parentId": {
+						"type": "string",
+						"nullable": true
+					},
+					"type": {
+						"type": "string"
+					},
+					"content": {
+						"type": "string"
+					},
+					"children": {
+						"items": {},
+						"type": "array"
+					}
+				},
+				"required": [
+					"_id",
+					"postId",
+					"parentId",
+					"type",
+					"content",
+					"children"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CommentObject": {
+				"properties": {
+					"_id": {
+						"type": "string"
+					},
+					"postId": {
+						"type": "string"
+					},
+					"parentId": {
+						"type": "string",
+						"nullable": true
+					},
+					"type": {
+						"type": "string"
+					},
+					"content": {
+						"type": "string"
+					},
+					"children": {
+						"items": {
+							"$ref": "#/components/schemas/ChildCommentObject"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"_id",
+					"postId",
+					"parentId",
+					"type",
+					"content",
+					"children"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"PostObject": {
+				"properties": {
+					"courseCode": {
+						"type": "string"
+					},
+					"forumId": {
+						"type": "string"
+					},
+					"postNumber": {
+						"type": "number",
+						"format": "double"
+					},
+					"title": {
+						"type": "string"
+					},
+					"content": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"_id": {
+						"type": "string"
+					},
+					"comments": {
+						"items": {
+							"$ref": "#/components/schemas/CommentObject"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"courseCode",
+					"forumId",
+					"postNumber",
+					"title",
+					"content",
+					"createdAt",
+					"_id",
+					"comments"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GetPiazzaPostsResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/PostObject"
+						},
+						"type": "array"
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					},
+					"page": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"totalPages": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"page",
+					"limit",
+					"totalPages",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GetPiazzaPostResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/PostObject"
+							}
+						],
+						"nullable": true
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
 			},
 			"RegisterResponse": {
 				"properties": {
@@ -521,6 +850,117 @@
 				"parameters": []
 			}
 		},
+		"/courses/{courseCode}": {
+			"get": {
+				"operationId": "GetCourse",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CourseResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Courses"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "courseCode",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/courses/{courseCode}/exams": {
+			"get": {
+				"operationId": "GetExams",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GetExamsResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Courses"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "courseCode",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/courses": {
+			"get": {
+				"operationId": "GetCourses",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GetCoursesResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Courses"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "limit",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "keyword",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/exams/files/{examId}": {
 			"get": {
 				"operationId": "GetFile",
@@ -540,6 +980,102 @@
 						"required": true,
 						"schema": {
 							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/piazza/courses/{courseCode}": {
+			"get": {
+				"operationId": "GetPiazzaPostsForCourse",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GetPiazzaPostsResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Retrieves posts related to the given course code with pagination parameters",
+				"tags": [
+					"Piazza"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "Must be a valid code for a course at UofT",
+						"in": "path",
+						"name": "courseCode",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"description": "page number",
+						"in": "query",
+						"name": "page",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"description": "the max amount of records to retrieve",
+						"in": "query",
+						"name": "limit",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/piazza/forums/{forumId}/posts/{postNumber}": {
+			"get": {
+				"operationId": "GetPiazzaPost",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GetPiazzaPostResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Retrieves data (including comments) for a piazza post with the given id",
+				"tags": [
+					"Piazza"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "the id of the original piazza forum that the post was scraped from",
+						"in": "path",
+						"name": "forumId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"description": "the number of the original post on the original piazza forum",
+						"in": "path",
+						"name": "postNumber",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
 						}
 					}
 				]

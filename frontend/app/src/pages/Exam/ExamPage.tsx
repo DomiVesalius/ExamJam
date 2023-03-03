@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PageLayout from '../../components/Layout/PageLayout';
 import ProtectedRoute from '../../components/Routes/ProtectedRoute';
 import Exam from '../../components/Exam/Exam';
 import { useParams } from "react-router-dom";
+import Typography from "@mui/material/Typography";
 
 const ExamPage: React.FunctionComponent = () => {
     const routeParams = useParams();
@@ -20,7 +21,7 @@ const ExamPage: React.FunctionComponent = () => {
         // <ProtectedRoute>
             <PageLayout title="ExamPage">
                 <div>
-                    <h1>Exam {examId} for course {courseId}</h1>
+                    <Typography variant="h1" gutterBottom>Exam {examId} for course {courseId}</Typography>
                     <Exam courseId={courseId} examId={examId}/>
                 </div>
             </PageLayout>

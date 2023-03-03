@@ -1,5 +1,6 @@
 import React from 'react';
 import PDFViewer from "./PDFViewer/PDFViewer";
+import Typography from '@mui/material/Typography';
 
 interface ExamProps {
     courseId: string;
@@ -7,10 +8,8 @@ interface ExamProps {
 }
 
 const Exam: React.FunctionComponent<ExamProps> = (props: ExamProps) => {
-    // IMPLEMENT THE END POINT HERE
     return (
-        <h1>Exam {props.examId} for course {props.courseId}</h1>
-        // <PDFViewer pdf={}/>
+        <><PDFViewer pdf={`api/exams/files/${props.examId}`}/></>
     );
 };
 

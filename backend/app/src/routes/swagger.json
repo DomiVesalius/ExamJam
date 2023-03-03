@@ -52,6 +52,58 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"ObjectId": {
+				"type": "string",
+				"description": "A class representation of the BSON ObjectId type."
+			},
+			"Document": {
+				"properties": {},
+				"type": "object",
+				"additionalProperties": {}
+			},
+			"GridFSFile": {
+				"properties": {
+					"_id": {
+						"$ref": "#/components/schemas/ObjectId"
+					},
+					"length": {
+						"type": "number",
+						"format": "double"
+					},
+					"chunkSize": {
+						"type": "number",
+						"format": "double"
+					},
+					"filename": {
+						"type": "string"
+					},
+					"contentType": {
+						"type": "string"
+					},
+					"aliases": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"metadata": {
+						"$ref": "#/components/schemas/Document"
+					},
+					"uploadDate": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"_id",
+					"length",
+					"chunkSize",
+					"filename",
+					"uploadDate"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"HttpStatusCodeLiteral": {
 				"type": "number",
 				"enum": [
@@ -519,6 +571,57 @@
 				],
 				"security": [],
 				"parameters": []
+			}
+		},
+		"/file/{courseCode}/{examId}": {
+			"get": {
+				"operationId": "GetFile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/GridFSFile"
+										},
+										{
+											"type": "string",
+											"enum": [
+												"Exam not found",
+												"File not found",
+												"Internal Server Error"
+											]
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"File"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "courseCode",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "examId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/users/register": {

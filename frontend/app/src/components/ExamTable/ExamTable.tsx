@@ -87,7 +87,7 @@ export const ExamTable: React.FunctionComponent<CourseTableProps> = ({ courseCod
                                     scope="row"
                                     sx={{ fontWeight: 'bold' }}
                                 >
-                                    <Link href={`exams/${row.id}`}>{row.name}</Link>
+                                    <Link href={`${courseCode}/exams/${row.id}`}>{row.name}</Link>
                                 </StyledTableCell>
                                 <StyledTableCell align="left">
                                     <Link href={row.link}>Link to original exam</Link>

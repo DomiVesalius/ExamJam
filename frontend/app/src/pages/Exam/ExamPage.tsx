@@ -10,7 +10,7 @@ import useSWR from "swr";
 
 const ExamPage: React.FunctionComponent = () => {
     const routeParams = useParams();
-    const courseId = routeParams["courseId"];
+    const courseId = routeParams["courseCode"];
     const examId = routeParams["examId"];
 
     const [examTitle, setExamTitle] = useState<string>('');

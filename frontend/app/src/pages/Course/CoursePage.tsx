@@ -20,6 +20,7 @@ import {
 } from '@mui/material';
 import useSWR from 'swr';
 import http from '../../utils/http';
+import { CourseTitle } from '../../components/CourseTitle/CourseTitle';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -86,20 +87,11 @@ const CoursePage = () => {
                         pb: 6
                     }}
                 >
-                    <Container maxWidth="md">
-                        <Typography
-                            component="h1"
-                            variant="h2"
-                            align="left"
-                            color="text.primary"
-                            gutterBottom
-                        >
-                            {`${course.courseCode} - ${course.title}`}
-                        </Typography>
-                        <Typography variant="h5" align="left" color="text.secondary" paragraph>
-                            {course.description}
-                        </Typography>
-                    </Container>
+                    <CourseTitle
+                        courseCode={course.courseCode}
+                        description={course.description}
+                        title={course.title}
+                    />
                     <Container
                         sx={{
                             pt: 2,

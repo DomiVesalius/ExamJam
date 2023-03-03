@@ -155,6 +155,96 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IExamModel": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
+			},
+			"GetExamsResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IExamModel"
+						},
+						"type": "array"
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GetCoursesResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/ICourseModel"
+						},
+						"type": "array",
+						"description": "Array of courses from the database"
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					},
+					"page": {
+						"type": "number",
+						"format": "double",
+						"description": "Page number of courses returned"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double",
+						"description": "Limit from request"
+					},
+					"totalPages": {
+						"type": "number",
+						"format": "double",
+						"description": "Total number of pages as per matching results and limit\nCalculated as: ceil(total number of matching results / limit)"
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"data",
+					"page",
+					"limit",
+					"totalPages"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"RegisterResponse": {
 				"properties": {
 					"success": {
@@ -583,6 +673,86 @@
 					{
 						"in": "path",
 						"name": "courseCode",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/courses/{courseCode}/exams": {
+			"get": {
+				"operationId": "GetExams",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GetExamsResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Courses"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "courseCode",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/courses": {
+			"get": {
+				"operationId": "GetCourses",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GetCoursesResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Courses"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "limit",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "keyword",
 						"required": true,
 						"schema": {
 							"type": "string"

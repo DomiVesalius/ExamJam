@@ -1,5 +1,14 @@
 import { BaseResponse } from '../base.controller';
 import { ICourseModel } from '../../models/courses/course.model';
+import { IExamModel } from '../../models/exams/exam.model';
+
+export interface CourseResponse extends BaseResponse {
+    data: ICourseModel | null;
+}
+
+export interface GetExamsResponse extends BaseResponse {
+    data: Array<IExamModel>;
+}
 
 export interface GetCoursesResponse extends BaseResponse {
     /**
@@ -22,8 +31,4 @@ export interface GetCoursesResponse extends BaseResponse {
      * Calculated as: ceil(total number of matching results / limit)
      */
     totalPages: number;
-}
-
-export interface CourseResponse extends BaseResponse {
-    data: ICourseModel | null;
 }

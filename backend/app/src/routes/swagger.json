@@ -521,6 +521,30 @@
 				"parameters": []
 			}
 		},
+		"/exams/files/{examId}": {
+			"get": {
+				"operationId": "GetFile",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Exam"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "examId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/users/register": {
 			"post": {
 				"operationId": "Register",

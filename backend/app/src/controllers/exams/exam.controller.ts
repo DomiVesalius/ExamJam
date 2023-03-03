@@ -44,7 +44,7 @@ const getExamFileMiddleware: RequestHandler = async (req: Request, res: Response
 @Route('exams')
 @Tags('Exam')
 export class ExamController extends Controller {
-    @Get('{examId}')
+    @Get('files/{examId}')
     @Middlewares<RequestHandler>(getExamFileMiddleware)
     public async getFile(@Path() examId: string) {}
 }

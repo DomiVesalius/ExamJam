@@ -521,7 +521,7 @@
 				"parameters": []
 			}
 		},
-		"/exams/{examId}": {
+		"/exams/files/{examId}": {
 			"get": {
 				"operationId": "GetFile",
 				"responses": {

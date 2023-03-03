@@ -1,66 +1,89 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
     Box,
     Container,
-    CssBaseline, Paper,
+    CssBaseline,
+    Paper,
     Stack,
-    styled, Table, TableBody,
+    styled,
+    Table,
+    TableBody,
     TableCell,
-    tableCellClasses, TableContainer, TableHead,
+    tableCellClasses,
+    TableContainer,
+    TableHead,
     TableRow,
     Typography,
-    Button, Link
+    Button,
+    Link
 } from '@mui/material';
+import useSWR from 'swr';
+import http from '../../utils/http';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
+        color: theme.palette.common.white
     },
     [`&.${tableCellClasses.body}`]: {
-        fontSize: 14,
-    },
+        fontSize: 14
+    }
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
+        backgroundColor: theme.palette.action.hover
     },
     // hide last border
     '&:last-child td, &:last-child th': {
-        border: 0,
-    },
+        border: 0
+    }
 }));
 
-function createData(
-    name: string,
-    data: string,
-) {
-    return { name, data};
+function createData(name: string, data: string) {
+    return { name, data };
 }
 
 const rows = [
-    createData('Easy Exam', "blah blah blah blah"),
+    createData('Easy Exam', 'blah blah blah blah'),
     createData('Hard Exam', 'blah blah blah blah'),
     createData('Ultra hard Exam', 'blah blah blah blah'),
-    createData('Easy peasy exam', 'blah blah blah blah'),
+    createData('Easy peasy exam', 'blah blah blah blah')
 ];
 
-const url = SERVER_CONFIG
+const fetcher = (url: string) => http.get(url).then((res) => res.data);
 
 const CoursePage = () => {
-    let {courseCode} = useParams();
+    let { courseCode } = useParams();
+    const [course, setCourse] = useState({
+        courseCode: '',
+        title: '',
+        description: ''
+    });
+    console.log(courseCode);
+    const url: string = `/courses/${courseCode}`;
+    const { data, error } = useSWR(url, fetcher);
+
+    useEffect(() => {
+        if (data) {
+            setCourse({
+                courseCode: data.data.courseCode,
+                title: data.data.title,
+                description: data.data.description
+            });
+        }
+    }, [data]);
+
     return (
         <Stack spacing={2} alignItems={'center'}>
             <CssBaseline />
             <main>
-                {/* Hero unit */}
                 <Box
                     sx={{
                         bgcolor: 'background.paper',
                         pt: 8,
-                        pb: 6,
+                        pb: 6
                     }}
                 >
                     <Container maxWidth="md">
@@ -71,21 +94,24 @@ const CoursePage = () => {
                             color="text.primary"
                             gutterBottom
                         >
-                            {courseCode}
+                            {`${course.courseCode} - ${course.title}`}
                         </Typography>
                         <Typography variant="h5" align="center" color="text.secondary" paragraph>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Nullam placerat vulputate augue, nec vulputate diam egestas vitae.
-                            Maecenas sed iaculis orci, eget viverra est. Proin et magna purus.
-                            Ut volutpat orci in tellus egestas ultrices. Fusce commodo sapien magna,
+                            {course.description}
                         </Typography>
                     </Container>
-                    <Container sx={{
-                        pt: 2,
-                        pb: 2,
-                    }} maxWidth="md">
+                    <Container
+                        sx={{
+                            pt: 2,
+                            pb: 2
+                        }}
+                        maxWidth="md"
+                    >
                         <TableContainer component={Paper}>
-                            <Table sx={{ minWidth: 700, fontWeight: 'bold' }} aria-label="customized table">
+                            <Table
+                                sx={{ minWidth: 700, fontWeight: 'bold' }}
+                                aria-label="customized table"
+                            >
                                 <TableHead>
                                     <TableRow>
                                         <StyledTableCell>Exam</StyledTableCell>
@@ -96,11 +122,19 @@ const CoursePage = () => {
                                 <TableBody>
                                     {rows.map((row) => (
                                         <StyledTableRow key={row.name}>
-                                            <StyledTableCell component="th" scope="row" sx={{ fontWeight: 'bold' }}>
+                                            <StyledTableCell
+                                                component="th"
+                                                scope="row"
+                                                sx={{ fontWeight: 'bold' }}
+                                            >
                                                 <Link href="#">{row.name}</Link>
                                             </StyledTableCell>
-                                            <StyledTableCell align="right">{row.data}</StyledTableCell>
-                                            <StyledTableCell align="right"><Button variant="contained">Create Post</Button></StyledTableCell>
+                                            <StyledTableCell align="right">
+                                                {row.data}
+                                            </StyledTableCell>
+                                            <StyledTableCell align="right">
+                                                <Button variant="contained">Create Post</Button>
+                                            </StyledTableCell>
                                         </StyledTableRow>
                                     ))}
                                 </TableBody>

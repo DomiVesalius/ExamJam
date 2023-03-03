@@ -90,13 +90,13 @@ const CoursePage = () => {
                         <Typography
                             component="h1"
                             variant="h2"
-                            align="center"
+                            align="left"
                             color="text.primary"
                             gutterBottom
                         >
                             {`${course.courseCode} - ${course.title}`}
                         </Typography>
-                        <Typography variant="h5" align="center" color="text.secondary" paragraph>
+                        <Typography variant="h5" align="left" color="text.secondary" paragraph>
                             {course.description}
                         </Typography>
                     </Container>
@@ -115,7 +115,7 @@ const CoursePage = () => {
                                 <TableHead>
                                     <TableRow>
                                         <StyledTableCell>Exam</StyledTableCell>
-                                        <StyledTableCell align="right">More info</StyledTableCell>
+                                        <StyledTableCell align="left">More info</StyledTableCell>
                                         <StyledTableCell align="right"></StyledTableCell>
                                     </TableRow>
                                 </TableHead>
@@ -129,7 +129,7 @@ const CoursePage = () => {
                                             >
                                                 <Link href="#">{row.name}</Link>
                                             </StyledTableCell>
-                                            <StyledTableCell align="right">
+                                            <StyledTableCell align="left">
                                                 {row.data}
                                             </StyledTableCell>
                                             <StyledTableCell align="right">

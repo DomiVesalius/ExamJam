@@ -1,8 +1,5 @@
 import { Request, Response, Router } from 'express';
 import swaggerUi from 'swagger-ui-express';
-import {ExamService} from "../services/exam.service";
-import {FileController} from "../controllers/exam.controller";
-import mongoose from "mongoose";
 
 const apiRouter: Router = Router();
 
@@ -10,51 +7,6 @@ const apiRouter: Router = Router();
 
 apiRouter.use('/docs', swaggerUi.serve, async (_req: Request, res: Response) => {
     return res.send(swaggerUi.generateHTML(await import('./swagger.json')));
-});
-
-// Router for getting an exam file. This is a GET request to /api/files/{courseCode}/{examId}
-apiRouter.use('/files/:courseCode/:examId', async (req: Request, res: Response) => {
-    try {
-        // Get the course code and exam id from the request parameters
-        const { courseCode, examId } = req.params;
-        // Get the exam from the database
-        const exam = await ExamService.getExam(examId);
-        if (!exam) {
-            res.status(404);
-            return 'Exam not found';
-        }
-        // Get the file id of the exam
-        const files_id = exam.files_id;
-
-        // If the file id is not found, return a 404 error
-        if (!files_id) {
-            res.status(404);
-            return 'File not found';
-        }
-
-        // Set up a GridFS bucket
-        const bucket = await new FileController().getGridFSBucket();
-        // Get the course from the database and check if it exists
-        const course = mongoose.connection.db.collection("Course").find({courseCode: courseCode}).toArray();
-        if (!course) {
-            res.status(404);
-            return 'Course not found';
-        }
-
-        const file = (await bucket.find(files_id).toArray())[0];
-        if (!file) {
-          res.status(404)
-          return "File not found";
-        }
-        const downloadStream = bucket.openDownloadStream(file._id);
-        downloadStream.pipe(res);
-        res.setHeader('Content-Disposition', `attachment; filename=./${files_id}.pdf`);
-        res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Length', `${file.length}`);
-    } catch (err) {
-        res.status(500);
-        return "Internal Server Error";
-    }
 });
 
 export default apiRouter;

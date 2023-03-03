@@ -7,8 +7,7 @@ export class ExamService {
      */
     public static async getExam(examId: string): Promise<IExamModel | null> {
         try {
-            const exam = await ExamModel.findById(examId);
-            return exam;
+            return await ExamModel.findById(examId);
         }
         catch (e) {
             return null;

@@ -13,8 +13,8 @@ const PDFViewer: React.FunctionComponent<PDFViewerProps> = (props: PDFViewerProp
     const defaultLayoutPluginInstance = defaultLayoutPlugin();
     return (
         <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.3.122/build/pdf.worker.min.js">
-            <div style={{ border: '1px solid rgba(0, 0, 0, 0.3)', height: '1100px'}}>
-                <Viewer fileUrl={props.pdf} plugins={[defaultLayoutPluginInstance]}  />
+            <div style={{ border: '1px solid rgba(0, 0, 0, 0.3)'}}>
+                <Viewer fileUrl={props.pdf} plugins={[defaultLayoutPluginInstance]} />
             </div>
         </Worker>
     );

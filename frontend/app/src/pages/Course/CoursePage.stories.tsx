@@ -18,12 +18,37 @@ export default {
 
 const Template: ComponentStory<typeof CoursePage> = () => {
     return (
-        <MemoryRouter initialEntries={['/dashboard/courses/CSC301']}>
+        <MemoryRouter initialEntries={[`/dashboard/courses/CSC309`]}>
             <Routes>
-                <Route path={'dashboard/courses/:courseCode'} element={<CoursePage />} />
+                <Route
+                    path={'dashboard/courses/:courseCode'}
+                    element={
+                        <MainContextProvider>
+                            <CoursePage />
+                        </MainContextProvider>
+                    }
+                />
             </Routes>
         </MemoryRouter>
     );
 };
 
-export const General = Template.bind({});
+const Template2: ComponentStory<typeof CoursePage> = () => {
+    return (
+        <MemoryRouter initialEntries={[`/dashboard/courses/ANT101`]}>
+            <Routes>
+                <Route
+                    path={'dashboard/courses/:courseCode'}
+                    element={
+                        <MainContextProvider>
+                            <CoursePage />
+                        </MainContextProvider>
+                    }
+                />
+            </Routes>
+        </MemoryRouter>
+    );
+};
+
+export const HasMultipleExams = Template.bind({});
+export const HasNoExams = Template2.bind({});

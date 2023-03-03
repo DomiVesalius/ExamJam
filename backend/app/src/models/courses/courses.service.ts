@@ -29,4 +29,13 @@ export class CoursesService {
             $or: [{ title: new RegExp(keyword, 'i') }, { courseCode: new RegExp(keyword, 'i') }]
         }).countDocuments();
     }
+
+    public static async getByCourseId(courseCode: string): Promise<ICourseModel | null> {
+        courseCode = courseCode.toUpperCase();
+        try {
+            return await CourseModel.findOne({ courseCode });
+        } catch (e) {
+            return null;
+        }
+    }
 }

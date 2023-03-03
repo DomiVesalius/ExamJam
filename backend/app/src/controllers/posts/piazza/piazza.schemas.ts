@@ -4,6 +4,7 @@ import { PostObject } from '../../../models/piazzaPosts/cleaned/cleanPiazza.serv
 export interface GetPiazzaPostsResponse extends BaseResponse {
     page: number;
     limit: number;
+    totalPages: number;
     data: PostObject[];
 }
 

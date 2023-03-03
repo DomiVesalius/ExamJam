@@ -22,6 +22,7 @@ export class PiazzaController extends BaseController {
         @Query() page: number,
         @Query() limit: number
     ): Promise<GetPiazzaPostsResponse> {
+        courseCode = courseCode.toUpperCase();
         if (page < PiazzaController.MIN_PAGE || limit < PiazzaController.MIN_LIMIT) {
             this.setStatus(400);
             return {
@@ -29,12 +30,16 @@ export class PiazzaController extends BaseController {
                 code: 400,
                 page,
                 limit,
+                totalPages: -1,
                 errors: ['page or limit query parameters are invalid'],
                 data: []
             };
         }
 
         if (limit > PiazzaController.MAX_LIMIT) limit = PiazzaController.MAX_LIMIT;
+
+        const totalPiazzaPosts = await CleanPiazzaService.getTotalNumberOfPosts(courseCode);
+        const totalPages = Math.ceil(totalPiazzaPosts / limit);
 
         const posts = await CleanPiazzaService.getPostsOfCourse(
             courseCode.toUpperCase(),
@@ -49,6 +54,7 @@ export class PiazzaController extends BaseController {
                 code: 200,
                 page,
                 limit,
+                totalPages,
                 data: posts
             };
         } else {
@@ -57,6 +63,7 @@ export class PiazzaController extends BaseController {
                 code: 404,
                 page,
                 limit,
+                totalPages,
                 errors: [
                     'Page and limit query parameters may be out of range',
                     'The provided course code may not exist'

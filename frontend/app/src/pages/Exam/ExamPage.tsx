@@ -4,6 +4,7 @@ import ProtectedRoute from '../../components/Routes/ProtectedRoute';
 import Exam from '../../components/Exam/Exam';
 import { useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
+import {Stack} from "@mui/material";
 
 const ExamPage: React.FunctionComponent = () => {
     const routeParams = useParams();
@@ -20,10 +21,11 @@ const ExamPage: React.FunctionComponent = () => {
     return (
         // <ProtectedRoute>
             <PageLayout title="ExamPage">
-                <div>
+                <Stack direction="column" spacing={2}>
                     <Typography variant="h1" gutterBottom>Exam {examId} for course {courseId}</Typography>
                     <Exam courseId={courseId} examId={examId}/>
-                </div>
+                    <Typography>Exam Done</Typography>
+                </Stack>
             </PageLayout>
         // </ProtectedRoute>
     );

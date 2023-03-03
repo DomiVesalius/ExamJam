@@ -9,6 +9,7 @@ module.exports = {
     ],
     env: (config) => ({ ...config, REACT_APP_SERVER_ENDPOINT: 'http://localhost:8080/api' }),
     framework: '@storybook/react',
+    env: (config) => ({ ...config, REACT_APP_SERVER_ENDPOINT: 'http://localhost:8080/api' }),
     core: {
         builder: '@storybook/builder-webpack5'
     }

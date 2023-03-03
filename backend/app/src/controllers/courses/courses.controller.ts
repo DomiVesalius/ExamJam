@@ -1,14 +1,33 @@
 import { BaseController } from '../base.controller';
-import { Get, Query, Route, Security, Tags } from 'tsoa';
 import { CoursesService } from '../../models/courses/courses.service';
-import { GetCoursesResponse } from './courses.schemas';
+import { GetCoursesResponse, CourseResponse, GetExamsResponse } from './courses.schemas';
+import { ExamService } from '../../models/exams/exam.service';
+import { Get, Query, Route, Tags, Security, Path } from 'tsoa';
 // import PassportStrategies from '../../middlewares/passport.middleware';
 
 @Tags('Courses')
 @Route('courses')
 export class CoursesController extends BaseController {
-    @Get('')
+    @Get('{courseCode}')
+    public async getCourse(@Path() courseCode: string): Promise<CourseResponse> {
+        const course = await CoursesService.getByCourseId(courseCode);
+        const code = course ? 200 : 404;
+        this.setStatus(code);
+        const success = !!course;
+        return { data: course, success: success, code: code };
+    }
+
+    @Get('{courseCode}/exams')
+    public async getExams(@Path() courseCode: string): Promise<GetExamsResponse> {
+        const exams = await ExamService.getByCourseId(courseCode);
+        const code = exams.length ? 200 : 404;
+        this.setStatus(code);
+        const success = !!exams.length;
+        return { data: exams, success: success, code: code };
+    }
+
     // @Security(PassportStrategies.local)
+    @Get('')
     public async getCourses(
         @Query() limit: number,
         @Query() page: number,

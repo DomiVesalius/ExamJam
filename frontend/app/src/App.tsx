@@ -3,10 +3,10 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ProfilePage from './pages/Profile/ProfilePage';
 import PageLayout from './components/Layout/PageLayout';
 import { Typography } from '@mui/material';
-
 import RegistrationPage from './pages/Auth/RegistrationPage';
 import LoginPage from './pages/Auth/LoginPage';
 import Dashboard from './pages/Dashboard/Dashboard';
+import CoursePage from './pages/Course/CoursePage';
 import PathConstants from './utils/pathConstants';
 import CourseSearch from './pages/Dashboard/CourseSearch/CourseSearch';
 
@@ -34,6 +34,7 @@ function App() {
                 <Route path={PathConstants.courseSearch} element={<CourseSearch />}></Route>
                 <Route path={PathConstants.registerPage} element={<RegistrationPage />} />
                 <Route path={PathConstants.loginPage} element={<LoginPage />} />
+                <Route path={PathConstants.coursePage} element={<CoursePage />} />
             </Routes>
         </BrowserRouter>
     );

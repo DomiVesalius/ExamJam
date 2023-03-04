@@ -5,6 +5,7 @@ enum PathConstants {
     loginPage = '/login',
     rootPage = '/',
     courseSearch = '/dashboard/course-search',
+    examPage = '/dashboard/courses/:courseCode/exams/:examId',
     coursePage = 'dashboard/courses/:courseCode'
 }
 

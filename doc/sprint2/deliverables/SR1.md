@@ -60,7 +60,8 @@
 -   Ananth Chebolu
     -   
 -   Mohammad Qadir
-    -   
+    - Best: Completing a robust authentication system and having it work properly. I also enjoyed learning how to test REST APIs using Jest and supertest.
+    - Worst: Having the team drop by 2 people in the last few days before the deadline and having to start and finish their work since they did not start their tasks.
 -   Fernando Mancini
     -   
 -   Abhinav Meda

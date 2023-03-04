@@ -58,7 +58,8 @@
     -   Best: Working with MUI and React on frontend to create components and test through Storybook.
     -   Worst: Debugging CORS from backend and allowing Storybook's port to connect to backend endpoint.
 -   Ananth Chebolu
-    -   
+    -   Best: Working with a npm module to render a PDF file.
+    -   Worst: 2/7 partners dropping the course.
 -   Mohammad Qadir
     -   
 -   Fernando Mancini

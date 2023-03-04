@@ -61,4 +61,5 @@
 -   Fernando Mancini
     -   
 -   Abhinav Meda
-    -   
+    -  Best: Improving my skills with webscraping in Python and using the collected data for something useful.
+    -  Worst: Getting blocked by UToronto websites for sending too many requests to the library website. 	

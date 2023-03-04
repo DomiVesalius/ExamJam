@@ -6,7 +6,7 @@
 -   Fernando Mancini
 -   Abhinav Meda
 
-## Unfinished Tasks
+## Unfinished Tasks from sprint 1
 
 -   Course Search
     -   Create backend endpoint to fetch course info from database.

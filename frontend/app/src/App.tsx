@@ -3,10 +3,13 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ProfilePage from './pages/Profile/ProfilePage';
 import PageLayout from './components/Layout/PageLayout';
 import { Typography } from '@mui/material';
-
 import RegistrationPage from './pages/Auth/RegistrationPage';
 import LoginPage from './pages/Auth/LoginPage';
+import ExamPage from './pages/Exam/ExamPage';
 import Dashboard from './pages/Dashboard/Dashboard';
+import CoursePage from './pages/Course/CoursePage';
+import PathConstants from './utils/pathConstants';
+import CourseSearch from './pages/Dashboard/CourseSearch/CourseSearch';
 
 /**
  * For now this is just to show that the frontend and backend are connected.
@@ -26,11 +29,14 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Main />}></Route>
-                <Route path="dashboard/profile" element={<ProfilePage />}></Route>
-                <Route path="dashboard" element={<Dashboard />}></Route>
-                <Route path="register" element={<RegistrationPage />} />
-                <Route path="login" element={<LoginPage />} />
+                <Route path={PathConstants.rootPage} element={<Main />}></Route>
+                <Route path={PathConstants.profilePage} element={<ProfilePage />}></Route>
+                <Route path={PathConstants.dashboard} element={<Dashboard />}></Route>
+                <Route path={PathConstants.courseSearch} element={<CourseSearch />}></Route>
+                <Route path={PathConstants.registerPage} element={<RegistrationPage />} />
+                <Route path={PathConstants.loginPage} element={<LoginPage />} />
+                <Route path={PathConstants.examPage} element={<ExamPage />} />
+                <Route path={PathConstants.coursePage} element={<CoursePage />} />
             </Routes>
         </BrowserRouter>
     );

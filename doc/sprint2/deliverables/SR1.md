@@ -9,48 +9,33 @@
 ## Unfinished Tasks
 
 -   Course Search
-    -   Create search bar + navbar components in frontend.
     -   Create backend endpoint to fetch course info from database.
         -   including course names, course codes, descriptions, etc.
     -   Implement search results page such that on POST request to database with keyword, all courses matching the keyword is returned as course cards.
         -   Pagination should also be included for users to skip to different pages of search results.
--   Navigation
-    -   Route all important pages from specific components in frontend UI.
-        -   Examples:
-            -   Logout button => Main page (logged out)
-            -   Search icon => Course search page
-            -   Profile icon => User's profile
-            -   Profile dropdown (dashboard) => User's dashboard
-
--   Scrape past piazza posts
-    -   Develop a script to scrape past piazza posts from archived UofT courses.
-        -   Purpose: To use these past posts as a starting dataset for other features/user stories.
-
-    -   Scrape as many past piazza forums as possible and add to database.
-
--   Course Page
-    -   When a course card is clicked through course search, all relevant information about the course should be displayed.
-    -   This includes links to all exams for the course, as well as a feed of posts made related to exams in the course.
 -   Exam Page
     -   View the selected exam from above course page as (embedded) PDF on browser.
-
-
 
 ## Practices to Continue During Next Sprint
 
 1.   Holding standups every other day (or as many as possible) to notify others what everyone is currently working on.
-1.   
+2. Using storybook for testing frontend components
 
 ## New Practices to Use During Next Sprint
 
-1.   
+1.   Starting our tasks earlier to avoid having to do the bulk of the work in the last week. This would also avoid any blockers for others
+2. Referencing the documentation for specific technologies rather than rely on YouTube videos
+3. Doing additional testing for completed tasks prior to creating pull requests
+4. Updating trello more frequently
+5. Distribute user stories/work based on others schedule and strengths
 
 ## Harmful Practices to Stop Using Next Sprint
 
 1.   Daily standups.
      -   Reduce to standups every other day.
 2.   Although some may be busy on certain days/weeks due to other courses, they should try to spend some time with the project each day so that their workload doesn't pile up towards the deadline.
-3.   
+3. Stop leaving sprint deliverables to the last minute
+4. Underestimating the workload of separate tasks
 
 ## Best/Worst Experience During Sprint 1
 

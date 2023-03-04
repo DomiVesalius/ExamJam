@@ -44,7 +44,7 @@ const ExamPage: React.FunctionComponent = () => {
             <PageLayout title="ExamPage">
                 <Stack direction="column" spacing={2}>
                     <Typography variant="h4" gutterBottom>{examTitle}</Typography>
-                    <Exam courseId={courseId} examId={examId}/>
+                    <Exam courseCode={courseId} examId={examId}/>
                 </Stack>
             </PageLayout>
         // </ProtectedRoute>

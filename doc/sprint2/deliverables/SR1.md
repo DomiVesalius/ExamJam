@@ -55,8 +55,8 @@
 ## Best/Worst Experience During Sprint 1
 
 -   Kyuhyun Ryu
-    -   Best: Working with MUI and React on frontend to create components and test through Storybook.
-    -   Worst: Debugging CORS from backend and allowing Storybook's port to connect to backend endpoint.
+    -   Best: Working with new tech stack such as React and MUI to design the search bar.
+    -   Worst: Because Harshit dropped the course and was part of my user story, I felt overwhelmed by the work needed to do. There was also some communication issues between him and I.
 -   Ananth Chebolu
     -   Best: Working with a npm module to render a PDF file.
     -   Worst: 2/7 partners dropping the course.

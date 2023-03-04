@@ -1,8 +1,8 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import ExamPage from "./ExamPage";
+import ExamPage from './ExamPage';
 import MainContextProvider from '../../contexts/Main/MainContextProvider';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import PathConstants from "../../utils/pathConstants";
+import PathConstants from '../../utils/pathConstants';
 
 export default {
     title: `Pages/${ExamPage.name}`,

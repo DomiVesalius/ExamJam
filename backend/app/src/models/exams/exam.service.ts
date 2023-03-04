@@ -1,4 +1,4 @@
-import ExamModel, {IExamModel} from "./exam.model";
+import ExamModel, { IExamModel } from './exam.model';
 
 export class ExamService {
     /**

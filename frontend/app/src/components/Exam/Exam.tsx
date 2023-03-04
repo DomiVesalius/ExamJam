@@ -1,5 +1,5 @@
 import React from 'react';
-import PDFViewer from "./PDFViewer/PDFViewer";
+import PDFViewer from './PDFViewer/PDFViewer';
 
 interface ExamProps {
     courseCode: string;
@@ -8,16 +8,16 @@ interface ExamProps {
 }
 
 const Exam: React.FunctionComponent<ExamProps> = (props: ExamProps) => {
-    let pdf = "";
+    let pdf = '';
     if (props.pdf) {
         pdf = props.pdf;
     } else {
-        pdf = `/api/exams/files/${props.examId}`
+        pdf = `/api/exams/files/${props.examId}`;
     }
 
     return (
         <>
-            <PDFViewer pdf={pdf} width={"60vw"} height={"90vh"}/>
+            <PDFViewer pdf={pdf} width={'60vw'} height={'90vh'} />
         </>
     );
 };

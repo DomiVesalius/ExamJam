@@ -2,7 +2,7 @@ import { Controller, Get, Route, Tags, Path, Middlewares } from 'tsoa';
 import { ExamService } from '../../models/exams/exam.service';
 import mongoose from 'mongoose';
 import { Request, RequestHandler, Response } from 'express';
-import {GetExamByIdResponse} from "./exam.schemas";
+import { GetExamByIdResponse } from './exam.schemas';
 
 const getExamFileMiddleware: RequestHandler = async (req: Request, res: Response) => {
     try {
@@ -53,16 +53,15 @@ export class ExamController extends Controller {
     public async getExamById(@Path() examId: string): Promise<GetExamByIdResponse> {
         const examDoc = await ExamService.getExam(examId);
 
-        const code = examDoc ? 200 : 404
-        const success = !!examDoc
+        const code = examDoc ? 200 : 404;
+        const success = !!examDoc;
 
-        this.setStatus(code)
+        this.setStatus(code);
 
         return {
             code,
             success,
             data: examDoc
         };
-
     }
 }

@@ -1,17 +1,17 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import PageLayout from '../../components/Layout/PageLayout';
 import ProtectedRoute from '../../components/Routes/ProtectedRoute';
 import Exam from '../../components/Exam/Exam';
-import { useParams } from "react-router-dom";
-import Typography from "@mui/material/Typography";
-import {Stack} from "@mui/material";
-import http from "../../utils/http";
-import useSWR from "swr";
+import { useParams } from 'react-router-dom';
+import Typography from '@mui/material/Typography';
+import { Stack } from '@mui/material';
+import http from '../../utils/http';
+import useSWR from 'swr';
 
 const ExamPage: React.FunctionComponent = () => {
     const routeParams = useParams();
-    const courseId = routeParams["courseCode"];
-    const examId = routeParams["examId"];
+    const courseId = routeParams['courseCode'];
+    const examId = routeParams['examId'];
 
     const [examTitle, setExamTitle] = useState<string>('');
 
@@ -21,7 +21,7 @@ const ExamPage: React.FunctionComponent = () => {
 
     useEffect(() => {
         if (data) {
-            setExamTitle(data.data.title)
+            setExamTitle(data.data.title);
         }
 
         if (error) console.log(error);
@@ -41,12 +41,14 @@ const ExamPage: React.FunctionComponent = () => {
 
     return (
         // <ProtectedRoute>
-            <PageLayout title="ExamPage">
-                <Stack direction="column" spacing={2}>
-                    <Typography variant="h4" gutterBottom>{examTitle}</Typography>
-                    <Exam courseCode={courseId} examId={examId}/>
-                </Stack>
-            </PageLayout>
+        <PageLayout title="ExamPage">
+            <Stack direction="column" spacing={2}>
+                <Typography variant="h4" gutterBottom>
+                    {examTitle}
+                </Typography>
+                <Exam courseCode={courseId} examId={examId} />
+            </Stack>
+        </PageLayout>
         // </ProtectedRoute>
     );
 };

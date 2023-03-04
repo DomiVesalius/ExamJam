@@ -64,7 +64,8 @@
     - Best: Completing a robust authentication system and having it work properly. I also enjoyed learning how to test REST APIs using Jest and supertest.
     - Worst: Having the team drop by 2 people in the last few days before the deadline and having to start and finish their work since they did not start their tasks.
 -   Fernando Mancini
-    -   
+    -  Best: Getting the form to work properly and to be have it properly connected to the backend
+    -  Worst: Having 2 groupmates drop out mid sprint, including my feature partner.  
 -   Abhinav Meda
     -  Best: Improving my skills with webscraping in Python and using the collected data for something useful.
     -  Worst: Getting blocked by UToronto websites for sending too many requests to the library website. 	

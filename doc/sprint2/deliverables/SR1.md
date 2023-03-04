@@ -31,6 +31,9 @@
 -   Course Page
     -   When a course card is clicked through course search, all relevant information about the course should be displayed.
     -   This includes links to all exams for the course, as well as a feed of posts made related to exams in the course.
+-   Exam Page
+    -   View the selected exam from above course page as (embedded) PDF on browser.
+
 
 
 ## Practices to Continue During Next Sprint

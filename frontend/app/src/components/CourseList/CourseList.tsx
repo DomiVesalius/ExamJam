@@ -6,12 +6,18 @@ import { CourseCard } from '../CourseCard/CourseCard';
 import useSWR from 'swr';
 import http from '../../utils/http';
 
+export enum endpointTypes {
+    courses = 'courses',
+    bookmarks = 'bookmarks'
+}
+
 interface CourseListProps {
     rowSpacing: number;
     colSpacing: number;
     queryLimit: number;
     queryPage: number;
     queryKeyword: string;
+    endpoint?: endpointTypes;
 }
 
 function createCourseCards(data: any): [React.ReactElement[], number] {
@@ -36,11 +42,14 @@ export const CourseList: React.FunctionComponent<CourseListProps> = ({
     colSpacing,
     queryLimit,
     queryPage,
-    queryKeyword
+    queryKeyword,
+    endpoint = endpointTypes.courses
 }: CourseListProps) => {
     const [page, setPage] = React.useState(queryPage);
     const fetcher = (url: string) => http.get(url).then((res) => res.data);
-    const url: string = `/courses?limit=${queryLimit}&page=${page}&keyword=${queryKeyword}`;
+    let url: string = `/${endpointTypes.courses}?limit=${queryLimit}&page=${page}&keyword=${queryKeyword}`;
+    if (endpoint == endpointTypes.bookmarks)
+        url = `/${endpointTypes.bookmarks}?limit=${queryLimit}&page=${page}&type=${queryKeyword}`;
     const { data, error } = useSWR(url, fetcher);
 
     const [courseList, setCourseList] = useState<React.ReactElement[]>([]);

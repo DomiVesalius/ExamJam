@@ -1,1170 +1,1345 @@
 {
-    "components": {
-        "examples": {},
-        "headers": {},
-        "parameters": {},
-        "requestBodies": {},
-        "responses": {},
-        "schemas": {
-            "PingResponse": {
-                "properties": {
-                    "message": {
-                        "type": "string"
-                    }
-                },
-                "required": ["message"],
-                "type": "object",
-                "additionalProperties": false
-            },
-            "CreateRandomPersonParams": {
-                "properties": {
-                    "name": {
-                        "type": "string"
-                    }
-                },
-                "required": ["name"],
-                "type": "object",
-                "additionalProperties": false
-            },
-            "FlattenMaps_T_": {
-                "properties": {},
-                "type": "object"
-            },
-            "IRandomPersonModel": {
-                "$ref": "#/components/schemas/FlattenMaps_T_"
-            },
-            "RandomPeopleArray": {
-                "properties": {
-                    "people": {
-                        "items": {
-                            "$ref": "#/components/schemas/IRandomPersonModel"
-                        },
-                        "type": "array"
-                    }
-                },
-                "required": ["people"],
-                "type": "object",
-                "additionalProperties": false
-            },
-            "ICourseModel": {
-                "$ref": "#/components/schemas/FlattenMaps_T_"
-            },
-            "HttpStatusCodeLiteral": {
-                "type": "number",
-                "enum": [
-                    100, 101, 102, 200, 201, 202, 203, 204, 205, 206, 207, 208, 226, 300, 301, 302,
-                    303, 304, 305, 307, 308, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410,
-                    411, 412, 413, 414, 415, 416, 417, 418, 422, 423, 424, 426, 428, 429, 431, 451,
-                    500, 501, 502, 503, 504, 505, 506, 507, 508, 510, 511
-                ]
-            },
-            "CourseResponse": {
-                "properties": {
-                    "success": {
-                        "type": "boolean"
-                    },
-                    "code": {
-                        "$ref": "#/components/schemas/HttpStatusCodeLiteral"
-                    },
-                    "message": {
-                        "type": "string"
-                    },
-                    "data": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/ICourseModel"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "errors": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {}
-                        ]
-                    }
-                },
-                "required": ["success", "code", "data"],
-                "type": "object",
-                "additionalProperties": false
-            },
-            "IExamModel": {
-                "$ref": "#/components/schemas/FlattenMaps_T_"
-            },
-            "GetExamsResponse": {
-                "properties": {
-                    "success": {
-                        "type": "boolean"
-                    },
-                    "code": {
-                        "$ref": "#/components/schemas/HttpStatusCodeLiteral"
-                    },
-                    "message": {
-                        "type": "string"
-                    },
-                    "data": {
-                        "items": {
-                            "$ref": "#/components/schemas/IExamModel"
-                        },
-                        "type": "array"
-                    },
-                    "errors": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {}
-                        ]
-                    }
-                },
-                "required": ["success", "code", "data"],
-                "type": "object",
-                "additionalProperties": false
-            },
-            "GetCoursesResponse": {
-                "properties": {
-                    "success": {
-                        "type": "boolean"
-                    },
-                    "code": {
-                        "$ref": "#/components/schemas/HttpStatusCodeLiteral"
-                    },
-                    "message": {
-                        "type": "string"
-                    },
-                    "data": {
-                        "items": {
-                            "$ref": "#/components/schemas/ICourseModel"
-                        },
-                        "type": "array",
-                        "description": "Array of courses from the database"
-                    },
-                    "errors": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {}
-                        ]
-                    },
-                    "page": {
-                        "type": "number",
-                        "format": "double",
-                        "description": "Page number of courses returned"
-                    },
-                    "limit": {
-                        "type": "number",
-                        "format": "double",
-                        "description": "Limit from request"
-                    },
-                    "totalPages": {
-                        "type": "number",
-                        "format": "double",
-                        "description": "Total number of pages as per matching results and limit\nCalculated as: ceil(total number of matching results / limit)"
-                    }
-                },
-                "required": ["success", "code", "data", "page", "limit", "totalPages"],
-                "type": "object",
-                "additionalProperties": false
-            },
-            "ChildCommentObject": {
-                "properties": {
-                    "_id": {
-                        "type": "string"
-                    },
-                    "postId": {
-                        "type": "string"
-                    },
-                    "parentId": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "type": {
-                        "type": "string"
-                    },
-                    "content": {
-                        "type": "string"
-                    },
-                    "children": {
-                        "items": {},
-                        "type": "array"
-                    }
-                },
-                "required": ["_id", "postId", "parentId", "type", "content", "children"],
-                "type": "object",
-                "additionalProperties": false
-            },
-            "CommentObject": {
-                "properties": {
-                    "_id": {
-                        "type": "string"
-                    },
-                    "postId": {
-                        "type": "string"
-                    },
-                    "parentId": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "type": {
-                        "type": "string"
-                    },
-                    "content": {
-                        "type": "string"
-                    },
-                    "children": {
-                        "items": {
-                            "$ref": "#/components/schemas/ChildCommentObject"
-                        },
-                        "type": "array"
-                    }
-                },
-                "required": ["_id", "postId", "parentId", "type", "content", "children"],
-                "type": "object",
-                "additionalProperties": false
-            },
-            "PostObject": {
-                "properties": {
-                    "courseCode": {
-                        "type": "string"
-                    },
-                    "forumId": {
-                        "type": "string"
-                    },
-                    "postNumber": {
-                        "type": "number",
-                        "format": "double"
-                    },
-                    "title": {
-                        "type": "string"
-                    },
-                    "content": {
-                        "type": "string"
-                    },
-                    "createdAt": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "_id": {
-                        "type": "string"
-                    },
-                    "comments": {
-                        "items": {
-                            "$ref": "#/components/schemas/CommentObject"
-                        },
-                        "type": "array"
-                    }
-                },
-                "required": [
-                    "courseCode",
-                    "forumId",
-                    "postNumber",
-                    "title",
-                    "content",
-                    "createdAt",
-                    "_id",
-                    "comments"
-                ],
-                "type": "object",
-                "additionalProperties": false
-            },
-            "GetPiazzaPostsResponse": {
-                "properties": {
-                    "success": {
-                        "type": "boolean"
-                    },
-                    "code": {
-                        "$ref": "#/components/schemas/HttpStatusCodeLiteral"
-                    },
-                    "message": {
-                        "type": "string"
-                    },
-                    "data": {
-                        "items": {
-                            "$ref": "#/components/schemas/PostObject"
-                        },
-                        "type": "array"
-                    },
-                    "errors": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {}
-                        ]
-                    },
-                    "page": {
-                        "type": "number",
-                        "format": "double"
-                    },
-                    "limit": {
-                        "type": "number",
-                        "format": "double"
-                    },
-                    "totalPages": {
-                        "type": "number",
-                        "format": "double"
-                    }
-                },
-                "required": ["success", "code", "page", "limit", "totalPages", "data"],
-                "type": "object",
-                "additionalProperties": false
-            },
-            "GetPiazzaPostResponse": {
-                "properties": {
-                    "success": {
-                        "type": "boolean"
-                    },
-                    "code": {
-                        "$ref": "#/components/schemas/HttpStatusCodeLiteral"
-                    },
-                    "message": {
-                        "type": "string"
-                    },
-                    "data": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/PostObject"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "errors": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {}
-                        ]
-                    }
-                },
-                "required": ["success", "code", "data"],
-                "type": "object",
-                "additionalProperties": false
-            },
-            "RegisterResponse": {
-                "properties": {
-                    "success": {
-                        "type": "boolean"
-                    },
-                    "code": {
-                        "$ref": "#/components/schemas/HttpStatusCodeLiteral"
-                    },
-                    "message": {
-                        "type": "string"
-                    },
-                    "data": {},
-                    "errors": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {}
-                        ]
-                    }
-                },
-                "required": ["success", "code"],
-                "type": "object",
-                "additionalProperties": false
-            },
-            "RegisterBody": {
-                "description": "POST /register Schemas =================================================",
-                "properties": {
-                    "username": {
-                        "type": "string"
-                    },
-                    "email": {
-                        "type": "string"
-                    },
-                    "password": {
-                        "type": "string"
-                    },
-                    "confirmPassword": {
-                        "type": "string"
-                    }
-                },
-                "required": ["username", "email", "password", "confirmPassword"],
-                "type": "object",
-                "additionalProperties": false
-            },
-            "LoginResponse": {
-                "properties": {
-                    "success": {
-                        "type": "boolean"
-                    },
-                    "code": {
-                        "$ref": "#/components/schemas/HttpStatusCodeLiteral"
-                    },
-                    "message": {
-                        "type": "string"
-                    },
-                    "data": {},
-                    "errors": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {}
-                        ]
-                    }
-                },
-                "required": ["success", "code"],
-                "type": "object",
-                "additionalProperties": false
-            },
-            "LoginBody": {
-                "description": "POST /login Schemas =================================================",
-                "properties": {
-                    "email": {
-                        "type": "string"
-                    },
-                    "password": {
-                        "type": "string"
-                    }
-                },
-                "required": ["email", "password"],
-                "type": "object",
-                "additionalProperties": false
-            },
-            "VerifyEmailResponse": {
-                "description": "GET /verify-email Schemas",
-                "properties": {
-                    "success": {
-                        "type": "boolean"
-                    },
-                    "code": {
-                        "$ref": "#/components/schemas/HttpStatusCodeLiteral"
-                    },
-                    "message": {
-                        "type": "string"
-                    },
-                    "data": {},
-                    "errors": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {}
-                        ]
-                    }
-                },
-                "required": ["success", "code"],
-                "type": "object",
-                "additionalProperties": false
-            },
-            "LogoutResponse": {
-                "description": "DELETE /logout schemas",
-                "properties": {
-                    "success": {
-                        "type": "boolean"
-                    },
-                    "code": {
-                        "$ref": "#/components/schemas/HttpStatusCodeLiteral"
-                    },
-                    "message": {
-                        "type": "string"
-                    },
-                    "data": {},
-                    "errors": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {}
-                        ]
-                    }
-                },
-                "required": ["success", "code"],
-                "type": "object",
-                "additionalProperties": false
-            },
-            "ChangePasswordResponse": {
-                "properties": {
-                    "success": {
-                        "type": "boolean"
-                    },
-                    "code": {
-                        "$ref": "#/components/schemas/HttpStatusCodeLiteral"
-                    },
-                    "message": {
-                        "type": "string"
-                    },
-                    "data": {},
-                    "errors": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {}
-                        ]
-                    }
-                },
-                "required": ["success", "code"],
-                "type": "object",
-                "additionalProperties": false
-            },
-            "ChangePasswordBody": {
-                "description": "PATCH /change-password",
-                "properties": {
-                    "currentPassword": {
-                        "type": "string"
-                    },
-                    "newPassword": {
-                        "type": "string"
-                    },
-                    "confirmPassword": {
-                        "type": "string"
-                    }
-                },
-                "required": ["currentPassword", "newPassword", "confirmPassword"],
-                "type": "object",
-                "additionalProperties": false
-            },
-            "ChangeUsernameResponse": {
-                "properties": {
-                    "success": {
-                        "type": "boolean"
-                    },
-                    "code": {
-                        "$ref": "#/components/schemas/HttpStatusCodeLiteral"
-                    },
-                    "message": {
-                        "type": "string"
-                    },
-                    "data": {},
-                    "errors": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {}
-                        ]
-                    }
-                },
-                "required": ["success", "code"],
-                "type": "object",
-                "additionalProperties": false
-            },
-            "ChangeUsernameBody": {
-                "description": "PATCH  /change-username",
-                "properties": {
-                    "newUsername": {
-                        "type": "string"
-                    }
-                },
-                "required": ["newUsername"],
-                "type": "object",
-                "additionalProperties": false
-            },
-            "ChangeBioResponse": {
-                "properties": {
-                    "success": {
-                        "type": "boolean"
-                    },
-                    "code": {
-                        "$ref": "#/components/schemas/HttpStatusCodeLiteral"
-                    },
-                    "message": {
-                        "type": "string"
-                    },
-                    "data": {},
-                    "errors": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {}
-                        ]
-                    }
-                },
-                "required": ["success", "code"],
-                "type": "object",
-                "additionalProperties": false
-            },
-            "ChangeBioBody": {
-                "description": "PATCH /change-bio",
-                "properties": {
-                    "bio": {
-                        "type": "string"
-                    }
-                },
-                "required": ["bio"],
-                "type": "object",
-                "additionalProperties": false
-            },
-            "DeleteUserResponse": {
-                "description": "DELETE /delete",
-                "properties": {
-                    "success": {
-                        "type": "boolean"
-                    },
-                    "code": {
-                        "$ref": "#/components/schemas/HttpStatusCodeLiteral"
-                    },
-                    "message": {
-                        "type": "string"
-                    },
-                    "data": {},
-                    "errors": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {}
-                        ]
-                    }
-                },
-                "required": ["success", "code"],
-                "type": "object",
-                "additionalProperties": false
-            }
-        },
-        "securitySchemes": {}
-    },
-    "info": {
-        "title": "ExamJam Web API",
-        "version": "1.0.0",
-        "license": {
-            "name": "ISC"
-        },
-        "contact": {}
-    },
-    "openapi": "3.0.0",
-    "paths": {
-        "/misc/ping": {
-            "get": {
-                "operationId": "Ping",
-                "responses": {
-                    "200": {
-                        "description": "Ok",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/PingResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["Miscellaneous"],
-                "security": [],
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
-            }
-        },
-        "/misc/random-person": {
-            "post": {
-                "operationId": "CreateRandomPerson",
-                "responses": {
-                    "204": {
-                        "description": "No content"
-                    }
-                },
-                "tags": ["Miscellaneous"],
-                "security": [],
-                "parameters": [],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/CreateRandomPersonParams"
-                            }
-                        }
-                    }
-                }
-            },
-            "get": {
-                "operationId": "GetRandomPeople",
-                "responses": {
-                    "200": {
-                        "description": "Ok",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/RandomPeopleArray"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["Miscellaneous"],
-                "security": [],
-                "parameters": []
-            }
-        },
-        "/courses/{courseCode}": {
-            "get": {
-                "operationId": "GetCourse",
-                "responses": {
-                    "200": {
-                        "description": "Ok",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/CourseResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["Courses"],
-                "security": [],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "courseCode",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
-            }
-        },
-        "/courses/{courseCode}/exams": {
-            "get": {
-                "operationId": "GetExams",
-                "responses": {
-                    "200": {
-                        "description": "Ok",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/GetExamsResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["Courses"],
-                "security": [],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "courseCode",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
-            }
-        },
-        "/courses": {
-            "get": {
-                "operationId": "GetCourses",
-                "responses": {
-                    "200": {
-                        "description": "Ok",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/GetCoursesResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["Courses"],
-                "security": [],
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "limit",
-                        "required": true,
-                        "schema": {
-                            "format": "double",
-                            "type": "number"
-                        }
-                    },
-                    {
-                        "in": "query",
-                        "name": "page",
-                        "required": true,
-                        "schema": {
-                            "format": "double",
-                            "type": "number"
-                        }
-                    },
-                    {
-                        "in": "query",
-                        "name": "keyword",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
-            }
-        },
-        "/piazza/courses/{courseCode}": {
-            "get": {
-                "operationId": "GetPiazzaPostsForCourse",
-                "responses": {
-                    "200": {
-                        "description": "Ok",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/GetPiazzaPostsResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "description": "Retrieves posts related to the given course code with pagination parameters",
-                "tags": ["Piazza"],
-                "security": [],
-                "parameters": [
-                    {
-                        "description": "Must be a valid code for a course at UofT",
-                        "in": "path",
-                        "name": "courseCode",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "page number",
-                        "in": "query",
-                        "name": "page",
-                        "required": true,
-                        "schema": {
-                            "format": "double",
-                            "type": "number"
-                        }
-                    },
-                    {
-                        "description": "the max amount of records to retrieve",
-                        "in": "query",
-                        "name": "limit",
-                        "required": true,
-                        "schema": {
-                            "format": "double",
-                            "type": "number"
-                        }
-                    }
-                ]
-            }
-        },
-        "/piazza/forums/{forumId}/posts/{postNumber}": {
-            "get": {
-                "operationId": "GetPiazzaPost",
-                "responses": {
-                    "200": {
-                        "description": "Ok",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/GetPiazzaPostResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "description": "Retrieves data (including comments) for a piazza post with the given id",
-                "tags": ["Piazza"],
-                "security": [],
-                "parameters": [
-                    {
-                        "description": "the id of the original piazza forum that the post was scraped from",
-                        "in": "path",
-                        "name": "forumId",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "the number of the original post on the original piazza forum",
-                        "in": "path",
-                        "name": "postNumber",
-                        "required": true,
-                        "schema": {
-                            "format": "double",
-                            "type": "number"
-                        }
-                    }
-                ]
-            }
-        },
-        "/users/register": {
-            "post": {
-                "operationId": "Register",
-                "responses": {
-                    "200": {
-                        "description": "Ok",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/RegisterResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["Users"],
-                "security": [],
-                "parameters": [],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/RegisterBody"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/users/login": {
-            "post": {
-                "operationId": "Login",
-                "responses": {
-                    "200": {
-                        "description": "Ok",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/LoginResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["Users"],
-                "security": [],
-                "parameters": [],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/LoginBody"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/users/verify-email": {
-            "get": {
-                "operationId": "VerifyEmail",
-                "responses": {
-                    "200": {
-                        "description": "Ok",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/VerifyEmailResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["Users"],
-                "security": [],
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "token",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ]
-            }
-        },
-        "/users/logout": {
-            "delete": {
-                "operationId": "Logout",
-                "responses": {
-                    "200": {
-                        "description": "Ok",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/LogoutResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["Users"],
-                "security": [
-                    {
-                        "local": []
-                    }
-                ],
-                "parameters": []
-            }
-        },
-        "/users/me": {
-            "get": {
-                "operationId": "Me",
-                "responses": {
-                    "200": {
-                        "description": "Ok",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    }
-                },
-                "tags": ["Users"],
-                "security": [
-                    {
-                        "local": []
-                    }
-                ],
-                "parameters": []
-            }
-        },
-        "/users/change-password": {
-            "patch": {
-                "operationId": "ChangePassword",
-                "responses": {
-                    "200": {
-                        "description": "Ok",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ChangePasswordResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["Users"],
-                "security": [
-                    {
-                        "local": []
-                    }
-                ],
-                "parameters": [],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ChangePasswordBody"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/users/change-username": {
-            "patch": {
-                "operationId": "ChangeUsername",
-                "responses": {
-                    "200": {
-                        "description": "Ok",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ChangeUsernameResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["Users"],
-                "security": [
-                    {
-                        "local": []
-                    }
-                ],
-                "parameters": [],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ChangeUsernameBody"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/users/change-bio": {
-            "patch": {
-                "operationId": "ChangeBio",
-                "responses": {
-                    "200": {
-                        "description": "Ok",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ChangeBioResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["Users"],
-                "security": [
-                    {
-                        "local": []
-                    }
-                ],
-                "parameters": [],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ChangeBioBody"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/users": {
-            "delete": {
-                "operationId": "DeleteUser",
-                "responses": {
-                    "200": {
-                        "description": "Ok",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/DeleteUserResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["Users"],
-                "security": [
-                    {
-                        "local": []
-                    }
-                ],
-                "parameters": []
-            }
-        }
-    },
-    "servers": [
-        {
-            "url": "/api"
-        }
-    ]
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"PingResponse": {
+				"properties": {
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreateRandomPersonParams": {
+				"properties": {
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"FlattenMaps_T_": {
+				"properties": {},
+				"type": "object"
+			},
+			"IRandomPersonModel": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
+			},
+			"RandomPeopleArray": {
+				"properties": {
+					"people": {
+						"items": {
+							"$ref": "#/components/schemas/IRandomPersonModel"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"people"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ICourseModel": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
+			},
+			"HttpStatusCodeLiteral": {
+				"type": "number",
+				"enum": [
+					100,
+					101,
+					102,
+					200,
+					201,
+					202,
+					203,
+					204,
+					205,
+					206,
+					207,
+					208,
+					226,
+					300,
+					301,
+					302,
+					303,
+					304,
+					305,
+					307,
+					308,
+					400,
+					401,
+					402,
+					403,
+					404,
+					405,
+					406,
+					407,
+					408,
+					409,
+					410,
+					411,
+					412,
+					413,
+					414,
+					415,
+					416,
+					417,
+					418,
+					422,
+					423,
+					424,
+					426,
+					428,
+					429,
+					431,
+					451,
+					500,
+					501,
+					502,
+					503,
+					504,
+					505,
+					506,
+					507,
+					508,
+					510,
+					511
+				]
+			},
+			"CourseResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/ICourseModel"
+							}
+						],
+						"nullable": true
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IExamModel": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
+			},
+			"GetExamsResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IExamModel"
+						},
+						"type": "array"
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GetCoursesResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/ICourseModel"
+						},
+						"type": "array",
+						"description": "Array of courses from the database"
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					},
+					"page": {
+						"type": "number",
+						"format": "double",
+						"description": "Page number of courses returned"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double",
+						"description": "Limit from request"
+					},
+					"totalPages": {
+						"type": "number",
+						"format": "double",
+						"description": "Total number of pages as per matching results and limit\nCalculated as: ceil(total number of matching results / limit)"
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"data",
+					"page",
+					"limit",
+					"totalPages"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ChildCommentObject": {
+				"properties": {
+					"_id": {
+						"type": "string"
+					},
+					"postId": {
+						"type": "string"
+					},
+					"parentId": {
+						"type": "string",
+						"nullable": true
+					},
+					"type": {
+						"type": "string"
+					},
+					"content": {
+						"type": "string"
+					},
+					"children": {
+						"items": {},
+						"type": "array"
+					}
+				},
+				"required": [
+					"_id",
+					"postId",
+					"parentId",
+					"type",
+					"content",
+					"children"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CommentObject": {
+				"properties": {
+					"_id": {
+						"type": "string"
+					},
+					"postId": {
+						"type": "string"
+					},
+					"parentId": {
+						"type": "string",
+						"nullable": true
+					},
+					"type": {
+						"type": "string"
+					},
+					"content": {
+						"type": "string"
+					},
+					"children": {
+						"items": {
+							"$ref": "#/components/schemas/ChildCommentObject"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"_id",
+					"postId",
+					"parentId",
+					"type",
+					"content",
+					"children"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"PostObject": {
+				"properties": {
+					"courseCode": {
+						"type": "string"
+					},
+					"forumId": {
+						"type": "string"
+					},
+					"postNumber": {
+						"type": "number",
+						"format": "double"
+					},
+					"title": {
+						"type": "string"
+					},
+					"content": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"_id": {
+						"type": "string"
+					},
+					"comments": {
+						"items": {
+							"$ref": "#/components/schemas/CommentObject"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"courseCode",
+					"forumId",
+					"postNumber",
+					"title",
+					"content",
+					"createdAt",
+					"_id",
+					"comments"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GetPiazzaPostsResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/PostObject"
+						},
+						"type": "array"
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					},
+					"page": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"totalPages": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"page",
+					"limit",
+					"totalPages",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GetPiazzaPostResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/PostObject"
+							}
+						],
+						"nullable": true
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"RegisterResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"RegisterBody": {
+				"description": "POST /register Schemas =================================================",
+				"properties": {
+					"username": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"confirmPassword": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"username",
+					"email",
+					"password",
+					"confirmPassword"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"LoginResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"LoginBody": {
+				"description": "POST /login Schemas =================================================",
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"VerifyEmailResponse": {
+				"description": "GET /verify-email Schemas",
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"LogoutResponse": {
+				"description": "DELETE /logout schemas",
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ChangePasswordResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ChangePasswordBody": {
+				"description": "PATCH /change-password",
+				"properties": {
+					"currentPassword": {
+						"type": "string"
+					},
+					"newPassword": {
+						"type": "string"
+					},
+					"confirmPassword": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"currentPassword",
+					"newPassword",
+					"confirmPassword"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ChangeUsernameResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ChangeUsernameBody": {
+				"description": "PATCH  /change-username",
+				"properties": {
+					"newUsername": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"newUsername"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ChangeBioResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ChangeBioBody": {
+				"description": "PATCH /change-bio",
+				"properties": {
+					"bio": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"bio"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DeleteUserResponse": {
+				"description": "DELETE /delete",
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "ExamJam Web API",
+		"version": "1.0.0",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/misc/ping": {
+			"get": {
+				"operationId": "Ping",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PingResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Miscellaneous"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "name",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/misc/random-person": {
+			"post": {
+				"operationId": "CreateRandomPerson",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Miscellaneous"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateRandomPersonParams"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "GetRandomPeople",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/RandomPeopleArray"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Miscellaneous"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/courses/{courseCode}": {
+			"get": {
+				"operationId": "GetCourse",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CourseResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Courses"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "courseCode",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/courses/{courseCode}/exams": {
+			"get": {
+				"operationId": "GetExams",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GetExamsResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Courses"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "courseCode",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/courses": {
+			"get": {
+				"operationId": "GetCourses",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GetCoursesResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Courses"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "limit",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "keyword",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/piazza/courses/{courseCode}": {
+			"get": {
+				"operationId": "GetPiazzaPostsForCourse",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GetPiazzaPostsResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Retrieves posts related to the given course code with pagination parameters",
+				"tags": [
+					"Piazza"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "Must be a valid code for a course at UofT",
+						"in": "path",
+						"name": "courseCode",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"description": "page number",
+						"in": "query",
+						"name": "page",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"description": "the max amount of records to retrieve",
+						"in": "query",
+						"name": "limit",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/piazza/forums/{forumId}/posts/{postNumber}": {
+			"get": {
+				"operationId": "GetPiazzaPost",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GetPiazzaPostResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Retrieves data (including comments) for a piazza post with the given id",
+				"tags": [
+					"Piazza"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "the id of the original piazza forum that the post was scraped from",
+						"in": "path",
+						"name": "forumId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"description": "the number of the original post on the original piazza forum",
+						"in": "path",
+						"name": "postNumber",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/users/register": {
+			"post": {
+				"operationId": "Register",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/RegisterResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Users"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/RegisterBody"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/users/login": {
+			"post": {
+				"operationId": "Login",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/LoginResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Users"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/LoginBody"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/users/verify-email": {
+			"get": {
+				"operationId": "VerifyEmail",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VerifyEmailResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Users"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "token",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/users/logout": {
+			"delete": {
+				"operationId": "Logout",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/LogoutResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Users"
+				],
+				"security": [
+					{
+						"local": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/users/me": {
+			"get": {
+				"operationId": "Me",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Users"
+				],
+				"security": [
+					{
+						"local": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/users/change-password": {
+			"patch": {
+				"operationId": "ChangePassword",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ChangePasswordResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Users"
+				],
+				"security": [
+					{
+						"local": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ChangePasswordBody"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/users/change-username": {
+			"patch": {
+				"operationId": "ChangeUsername",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ChangeUsernameResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Users"
+				],
+				"security": [
+					{
+						"local": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ChangeUsernameBody"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/users/change-bio": {
+			"patch": {
+				"operationId": "ChangeBio",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ChangeBioResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Users"
+				],
+				"security": [
+					{
+						"local": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ChangeBioBody"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/users": {
+			"delete": {
+				"operationId": "DeleteUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DeleteUserResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Users"
+				],
+				"security": [
+					{
+						"local": []
+					}
+				],
+				"parameters": []
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/api"
+		}
+	]
 }

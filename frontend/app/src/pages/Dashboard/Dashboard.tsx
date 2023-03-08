@@ -4,15 +4,14 @@ import PageLayout from '../../components/Layout/PageLayout';
 import { CourseList, endpointTypes } from '../../components/CourseList/CourseList';
 import { bookmarkTypes } from '../../utils/bookmarkConstants';
 import { Typography } from '@mui/material';
-import Container from '@mui/material/Container';
 
 const Dashboard: React.FunctionComponent = () => {
     return (
         <ProtectedRoute>
             <PageLayout title="Dashboard">
-                <Container>
-                    <Typography variant="h2">Bookmarked Courses</Typography>
-                </Container>
+                <Typography variant="h4" align="center">
+                    Bookmarked Courses
+                </Typography>
                 <CourseList
                     rowSpacing={2}
                     colSpacing={2}

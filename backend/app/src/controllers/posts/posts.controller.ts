@@ -5,19 +5,18 @@ import { CreatePostBody, CreatePostResponse } from './posts.schemas';
 import { BaseController } from '../base.controller';
 import { UsersService } from '../../models/user/users.service';
 import { PostsService } from '../../models/posts/posts.service';
-import { CoursesService } from '../../models/courses/courses.service';
 import { ExamService } from '../../models/exams/exam.service';
 
 @Tags('Post')
 @Route('posts')
 export class PostsController extends BaseController {
     /**
-     * Retrieves posts related to the given course code with pagination parameters
+     Creates Post with given Body parameters
      * @param req
      * @param body
      */
     @Security(PassportStrategies.local)
-    @Post('post')
+    @Post('')
     public async post(
         @Request() req: ExpressRequest,
         @Body() body: CreatePostBody
@@ -48,13 +47,7 @@ export class PostsController extends BaseController {
             };
         }
 
-        const post = await PostsService.createPost(
-            user,
-            exam.courseCode,
-            body.title,
-            body.content,
-            body.examId
-        );
+        const post = await PostsService.createPost(user, body.title, body.content, body.examId);
 
         let res: CreatePostResponse;
 

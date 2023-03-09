@@ -1207,7 +1207,7 @@
 				]
 			}
 		},
-		"/posts/post": {
+		"/posts": {
 			"post": {
 				"operationId": "Post",
 				"responses": {
@@ -1222,7 +1222,7 @@
 						}
 					}
 				},
-				"description": "Retrieves posts related to the given course code with pagination parameters",
+				"description": "Creates Post with given Body parameters",
 				"tags": [
 					"Post"
 				],

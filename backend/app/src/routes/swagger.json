@@ -540,6 +540,34 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"DeletePostResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"RegisterResponse": {
 				"properties": {
 					"success": {
@@ -1242,6 +1270,41 @@
 						}
 					}
 				}
+			}
+		},
+		"/posts/{postId}": {
+			"delete": {
+				"operationId": "DeletePost",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DeletePostResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Post"
+				],
+				"security": [
+					{
+						"local": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "postId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/users/register": {

@@ -10,3 +10,5 @@ export interface CreatePostBody {
     content: string;
     examId: string;
 }
+
+export interface DeletePostResponse extends BaseResponse {}

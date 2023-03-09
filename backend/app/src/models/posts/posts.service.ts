@@ -2,6 +2,7 @@ import UserModel, { IUserModel } from '../user/user.model';
 import bcrypt from 'bcrypt';
 import logger from '../../utils/logger.util';
 import PostModel, { IPostModel } from './post.model';
+import ExamModel, { IExamModel } from '../exams/exam.model';
 
 export class PostsService {
     static async createPost(
@@ -29,10 +30,22 @@ export class PostsService {
      */
     public static async deletePost(postId: string): Promise<boolean> {
         try {
-            await PostModel.deleteOne({ postId });
+            await PostModel.findByIdAndDelete(postId);
             return true;
         } catch (e) {
             return false;
+        }
+    }
+
+    /**
+     * Fetches the Post with the given postId.
+     * @param postId
+     */
+    public static async getPost(postId: string): Promise<IPostModel | null> {
+        try {
+            return await PostModel.findById(postId);
+        } catch (e) {
+            return null;
         }
     }
 }

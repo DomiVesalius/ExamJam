@@ -1,11 +1,13 @@
-import { Body, Post, Request, Route, Security, Tags } from 'tsoa';
+import { Body, Delete, Path, Post, Request, Route, Security, Tags } from 'tsoa';
 import PassportStrategies from '../../middlewares/passport.middleware';
 import { Request as ExpressRequest } from 'express';
-import { CreatePostBody, CreatePostResponse } from './posts.schemas';
+import { CreatePostBody, CreatePostResponse, DeletePostResponse } from './posts.schemas';
 import { BaseController } from '../base.controller';
 import { UsersService } from '../../models/user/users.service';
 import { PostsService } from '../../models/posts/posts.service';
 import { ExamService } from '../../models/exams/exam.service';
+import { DeleteUserResponse } from '../users/users.schemas';
+import logger from '../../utils/logger.util';
 
 @Tags('Post')
 @Route('posts')
@@ -59,5 +61,43 @@ export class PostsController extends BaseController {
 
         this.setStatus(res.code);
         return res;
+    }
+
+    @Security(PassportStrategies.local)
+    @Delete('{postId}')
+    public async deletePost(
+        @Request() req: ExpressRequest,
+        @Path() postId: string
+    ): Promise<DeletePostResponse> {
+        const post = await PostsService.getPost(postId);
+        let userEmail = req.user as string;
+
+        if (!post) {
+            this.setStatus(404);
+            return {
+                success: false,
+                code: 404,
+                errors: [`Post with id '${postId}' not found`]
+            };
+        }
+
+        if (post.author !== userEmail) {
+            this.setStatus(403);
+            return {
+                success: false,
+                code: 403,
+                errors: [`User not author of Post with id '${postId}'`]
+            };
+        }
+
+        const result = await PostsService.deletePost(postId);
+
+        const resBody: DeletePostResponse = {
+            code: result ? 200 : 500,
+            success: result
+        };
+
+        this.setStatus(resBody.code);
+        return resBody;
     }
 }

@@ -231,7 +231,7 @@
 					"totalPages": {
 						"type": "number",
 						"format": "double",
-						"description": "Total number of pages as per matching results and limit\nCalculated as: ceil(total number of matching results / limit)"
+						"description": "Total number of pages as per matching results and limit\r\nCalculated as: ceil(total number of matching results / limit)"
 					}
 				},
 				"required": [
@@ -477,6 +477,65 @@
 					"success",
 					"code",
 					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IPostModel": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
+			},
+			"CreatePostResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/IPostModel"
+							}
+						],
+						"nullable": true
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreatePostBody": {
+				"properties": {
+					"title": {
+						"type": "string"
+					},
+					"content": {
+						"type": "string"
+					},
+					"examId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"title",
+					"content",
+					"examId"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -1146,6 +1205,43 @@
 						}
 					}
 				]
+			}
+		},
+		"/posts": {
+			"post": {
+				"operationId": "Post",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CreatePostResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Creates Post with given Body parameters",
+				"tags": [
+					"Post"
+				],
+				"security": [
+					{
+						"local": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreatePostBody"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/users/register": {

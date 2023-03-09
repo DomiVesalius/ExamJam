@@ -21,4 +21,18 @@ export class PostsService {
             return null;
         }
     }
+
+    /**
+     * Deletes the post with the given postId
+     * @param postId
+     * @return true if the post was successfully deleted. false otherwise
+     */
+    public static async deletePost(postId: string): Promise<boolean> {
+        try {
+            await PostModel.deleteOne({ postId });
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
 }

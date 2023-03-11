@@ -5,6 +5,10 @@ export interface CreatePostResponse extends BaseResponse {
     data: IPostModel | null;
 }
 
+export interface GetPostByIdResponse extends BaseResponse {
+    data: IPostModel | null;
+}
+
 export interface CreatePostBody {
     title: string;
     content: string;

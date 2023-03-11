@@ -2,7 +2,7 @@ import { IUserModel } from '../user/user.model';
 import PostModel, { IPostModel } from './post.model';
 
 export class PostsService {
-    static async createPost(
+    public static async createPost(
         user: IUserModel,
         title: string,
         content: string,
@@ -20,7 +20,25 @@ export class PostsService {
         }
     }
 
-    public static async getPostById(postId: string): Promise<IPostModel | null> {
+    /**
+     * Deletes the post with the given postId
+     * @param postId
+     * @return true if the post was successfully deleted. false otherwise
+     */
+    public static async deletePost(postId: string): Promise<boolean> {
+        try {
+            await PostModel.findByIdAndDelete(postId);
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    /**
+     * Fetches the Post with the given postId.
+     * @param postId
+     */
+    public static async getPost(postId: string): Promise<IPostModel | null> {
         try {
             return await PostModel.findById(postId);
         } catch (e) {

@@ -1,7 +1,12 @@
-import { Body, Get, Path, Post, Request, Route, Security, Tags } from 'tsoa';
+import { Body, Delete, Get, Path, Post, Request, Route, Security, Tags } from 'tsoa';
 import PassportStrategies from '../../middlewares/passport.middleware';
 import { Request as ExpressRequest } from 'express';
-import { CreatePostBody, CreatePostResponse, GetPostByIdResponse } from './posts.schemas';
+import {
+    CreatePostBody,
+    CreatePostResponse,
+    DeletePostResponse,
+    GetPostByIdResponse
+} from './posts.schemas';
 import { BaseController } from '../base.controller';
 import { UsersService } from '../../models/user/users.service';
 import { PostsService } from '../../models/posts/posts.service';
@@ -61,6 +66,44 @@ export class PostsController extends BaseController {
         return res;
     }
 
+    @Security(PassportStrategies.local)
+    @Delete('{postId}')
+    public async deletePost(
+        @Request() req: ExpressRequest,
+        @Path() postId: string
+    ): Promise<DeletePostResponse> {
+        const post = await PostsService.getPost(postId);
+        let userEmail = req.user as string;
+
+        if (!post) {
+            this.setStatus(404);
+            return {
+                success: false,
+                code: 404,
+                errors: [`Post with id '${postId}' not found`]
+            };
+        }
+
+        if (post.author !== userEmail) {
+            this.setStatus(403);
+            return {
+                success: false,
+                code: 403,
+                errors: [`User not author of Post with id '${postId}'`]
+            };
+        }
+
+        const result = await PostsService.deletePost(postId);
+
+        const resBody: DeletePostResponse = {
+            code: result ? 200 : 500,
+            success: result
+        };
+
+        this.setStatus(resBody.code);
+        return resBody;
+    }
+
     /**
      Gets Post with given postId
      * @param postId
@@ -68,7 +111,7 @@ export class PostsController extends BaseController {
     @Get('{postId}')
     @Security(PassportStrategies.local)
     public async getPostById(@Path() postId: string): Promise<GetPostByIdResponse> {
-        const post = await PostsService.getPostById(postId);
+        const post = await PostsService.getPost(postId);
 
         const code = post ? 200 : 404;
         const success = !!post;

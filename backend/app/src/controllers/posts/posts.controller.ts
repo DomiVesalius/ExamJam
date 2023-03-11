@@ -1,4 +1,4 @@
-import { Body, Post, Request, Route, Security, Tags } from 'tsoa';
+import { Body, Get, Path, Post, Query, Request, Route, Security, Tags } from 'tsoa';
 import PassportStrategies from '../../middlewares/passport.middleware';
 import { Request as ExpressRequest } from 'express';
 import { CreatePostBody, CreatePostResponse } from './posts.schemas';
@@ -6,10 +6,16 @@ import { BaseController } from '../base.controller';
 import { UsersService } from '../../models/user/users.service';
 import { PostsService } from '../../models/posts/posts.service';
 import { ExamService } from '../../models/exams/exam.service';
+import { GetPiazzaPostsResponse } from './piazza/piazza.schemas';
+import { CleanPiazzaService } from '../../models/piazzaPosts/cleaned/cleanPiazza.service';
 
 @Tags('Post')
 @Route('posts')
 export class PostsController extends BaseController {
+    static MIN_PAGE = 1;
+    static MIN_LIMIT = 1;
+    static MAX_LIMIT = 50;
+
     /**
      Creates Post with given Body parameters
      * @param req

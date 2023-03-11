@@ -10,3 +10,10 @@ export interface CreatePostBody {
     content: string;
     examId: string;
 }
+
+export interface GetPostsResponse extends BaseResponse {
+    page: number;
+    limit: number;
+    totalPages: number;
+    data: IPostModel[];
+}

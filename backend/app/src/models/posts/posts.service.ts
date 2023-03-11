@@ -1,7 +1,12 @@
 import UserModel, { IUserModel } from '../user/user.model';
-import bcrypt from 'bcrypt';
-import logger from '../../utils/logger.util';
 import PostModel, { IPostModel } from './post.model';
+import { IPiazzaPost } from '../piazzaPosts/cleaned/piazzaPost.model';
+import { CommentObject } from '../piazzaPosts/cleaned/cleanPiazza.service';
+
+export interface PostObject extends IPiazzaPost {
+    _id: string;
+    comments: CommentObject[];
+}
 
 export class PostsService {
     static async createPost(

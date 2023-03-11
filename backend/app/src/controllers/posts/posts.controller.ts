@@ -61,6 +61,10 @@ export class PostsController extends BaseController {
         return res;
     }
 
+    /**
+     Gets Post with given postId
+     * @param postId
+     */
     @Get('{postId}')
     public async getExamById(@Path() postId: string): Promise<GetPostByIdResponse> {
         const post = await PostsService.getPostById(postId);

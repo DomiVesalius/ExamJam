@@ -1,8 +1,7 @@
-import UserModel, { IUserModel } from '../user/user.model';
+import { IUserModel } from '../user/user.model';
 import PostModel, { IPostModel } from './post.model';
 import { IPiazzaPost } from '../piazzaPosts/cleaned/piazzaPost.model';
 import { CommentObject } from '../piazzaPosts/cleaned/cleanPiazza.service';
-import CourseModel from '../courses/course.model';
 
 export interface PostObject extends IPiazzaPost {
     _id: string;
@@ -51,6 +50,14 @@ export class PostsService {
                 .limit(limit);
         } catch (e) {
             return [];
+        }
+    }
+
+    public static async getPostById(postId: string): Promise<IPostModel | null> {
+        try {
+            return await PostModel.findById(postId);
+        } catch (e) {
+            return null;
         }
     }
 }

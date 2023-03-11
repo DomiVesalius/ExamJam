@@ -4,7 +4,7 @@ import { Request as ExpressRequest } from 'express';
 import {
     CreatePostBody,
     CreatePostResponse,
-    GetAllPostsResponse,
+    GetPostByIdResponse,
     GetPostsByCourseCode,
     GetPostsByExamId
 } from './posts.schemas';
@@ -12,9 +12,6 @@ import { BaseController } from '../base.controller';
 import { UsersService } from '../../models/user/users.service';
 import { PostsService } from '../../models/posts/posts.service';
 import { ExamService } from '../../models/exams/exam.service';
-import { GetPiazzaPostsResponse } from './piazza/piazza.schemas';
-import { CleanPiazzaService } from '../../models/piazzaPosts/cleaned/cleanPiazza.service';
-import { IExamModel } from '../../models/exams/exam.model';
 import { IPostModel } from '../../models/posts/post.model';
 
 @Tags('Post')
@@ -189,5 +186,24 @@ export class PostsController extends BaseController {
         this.setStatus(resBody.code);
 
         return resBody;
+    }
+    /**
+     Gets Post with given postId
+     * @param postId
+     */
+    @Get('{postId}')
+    @Security(PassportStrategies.local)
+    public async getPostById(@Path() postId: string): Promise<GetPostByIdResponse> {
+        const post = await PostsService.getPostById(postId);
+        const code = post ? 200 : 404;
+        const success = !!post;
+
+        this.setStatus(code);
+
+        return {
+            code,
+            success,
+            data: post
+        };
     }
 }

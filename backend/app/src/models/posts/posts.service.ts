@@ -1,6 +1,4 @@
-import UserModel, { IUserModel } from '../user/user.model';
-import bcrypt from 'bcrypt';
-import logger from '../../utils/logger.util';
+import { IUserModel } from '../user/user.model';
 import PostModel, { IPostModel } from './post.model';
 
 export class PostsService {
@@ -17,6 +15,14 @@ export class PostsService {
                 content,
                 examId
             });
+        } catch (e) {
+            return null;
+        }
+    }
+
+    public static async getPostById(postId: string): Promise<IPostModel | null> {
+        try {
+            return await PostModel.findById(postId);
         } catch (e) {
             return null;
         }

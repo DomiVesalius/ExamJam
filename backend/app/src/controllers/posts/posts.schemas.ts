@@ -11,7 +11,21 @@ export interface CreatePostBody {
     examId: string;
 }
 
-export interface GetPostsResponse extends BaseResponse {
+export interface GetAllPostsResponse extends BaseResponse {
+    page: number;
+    limit: number;
+    totalPages: number;
+    data: IPostModel[];
+}
+
+export interface GetPostsByExamId extends BaseResponse {
+    page: number;
+    limit: number;
+    totalPages: number;
+    data: IPostModel[];
+}
+
+export interface GetPostsByCourseCode extends BaseResponse {
     page: number;
     limit: number;
     totalPages: number;

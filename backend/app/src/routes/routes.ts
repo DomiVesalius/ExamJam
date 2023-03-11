@@ -17,8 +17,7 @@ import { UsersController } from './../controllers/users/users.controller';
 import { expressAuthentication } from './../middlewares/auth.middleware';
 // @ts-ignore - no great way to install types from subpackage
 const promiseAny = require('promise.any');
-import type { RequestHandler } from 'express';
-import * as express from 'express';
+import type { RequestHandler, Router } from 'express';
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
@@ -218,6 +217,36 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "GetPostsByCourseCode": {
+        "dataType": "refObject",
+        "properties": {
+            "success": {"dataType":"boolean","required":true},
+            "code": {"ref":"HttpStatusCodeLiteral","required":true},
+            "message": {"dataType":"string"},
+            "data": {"dataType":"array","array":{"dataType":"refAlias","ref":"IPostModel"},"required":true},
+            "errors": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"any"}]},
+            "page": {"dataType":"double","required":true},
+            "limit": {"dataType":"double","required":true},
+            "totalPages": {"dataType":"double","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "GetPostsByExamId": {
+        "dataType": "refObject",
+        "properties": {
+            "success": {"dataType":"boolean","required":true},
+            "code": {"ref":"HttpStatusCodeLiteral","required":true},
+            "message": {"dataType":"string"},
+            "data": {"dataType":"array","array":{"dataType":"refAlias","ref":"IPostModel"},"required":true},
+            "errors": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"any"}]},
+            "page": {"dataType":"double","required":true},
+            "limit": {"dataType":"double","required":true},
+            "totalPages": {"dataType":"double","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "RegisterResponse": {
         "dataType": "refObject",
         "properties": {
@@ -365,7 +394,7 @@ const validationService = new ValidationService(models);
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
-export function RegisterRoutes(app: express.Router) {
+export function RegisterRoutes(app: Router) {
     // ###########################################################################################################
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
@@ -646,6 +675,60 @@ export function RegisterRoutes(app: express.Router) {
 
 
               const promise = controller.post.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/posts/courses/:courseCode',
+            ...(fetchMiddlewares<RequestHandler>(PostsController)),
+            ...(fetchMiddlewares<RequestHandler>(PostsController.prototype.getPostsByCourseCode)),
+
+            function PostsController_getPostsByCourseCode(request: any, response: any, next: any) {
+            const args = {
+                    courseCode: {"in":"path","name":"courseCode","required":true,"dataType":"string"},
+                    page: {"in":"query","name":"page","required":true,"dataType":"double"},
+                    limit: {"in":"query","name":"limit","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new PostsController();
+
+
+              const promise = controller.getPostsByCourseCode.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/posts/exams/:examId',
+            ...(fetchMiddlewares<RequestHandler>(PostsController)),
+            ...(fetchMiddlewares<RequestHandler>(PostsController.prototype.getPostsByExamId)),
+
+            function PostsController_getPostsByExamId(request: any, response: any, next: any) {
+            const args = {
+                    examId: {"in":"path","name":"examId","required":true,"dataType":"string"},
+                    page: {"in":"query","name":"page","required":true,"dataType":"double"},
+                    limit: {"in":"query","name":"limit","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new PostsController();
+
+
+              const promise = controller.getPostsByExamId.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);

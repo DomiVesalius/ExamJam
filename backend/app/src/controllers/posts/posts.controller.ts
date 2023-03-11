@@ -1,7 +1,7 @@
-import { Body, Post, Request, Route, Security, Tags } from 'tsoa';
+import { Body, Get, Path, Post, Request, Route, Security, Tags } from 'tsoa';
 import PassportStrategies from '../../middlewares/passport.middleware';
 import { Request as ExpressRequest } from 'express';
-import { CreatePostBody, CreatePostResponse } from './posts.schemas';
+import { CreatePostBody, CreatePostResponse, GetPostByIdResponse } from './posts.schemas';
 import { BaseController } from '../base.controller';
 import { UsersService } from '../../models/user/users.service';
 import { PostsService } from '../../models/posts/posts.service';
@@ -59,5 +59,21 @@ export class PostsController extends BaseController {
 
         this.setStatus(res.code);
         return res;
+    }
+
+    @Get('{postId}')
+    public async getExamById(@Path() postId: string): Promise<GetPostByIdResponse> {
+        const post = await PostsService.getPostById(postId);
+
+        const code = post ? 200 : 404;
+        const success = !!post;
+
+        this.setStatus(code);
+
+        return {
+            code,
+            success,
+            data: post
+        };
     }
 }

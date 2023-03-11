@@ -2,6 +2,7 @@ import UserModel, { IUserModel } from '../user/user.model';
 import bcrypt from 'bcrypt';
 import logger from '../../utils/logger.util';
 import PostModel, { IPostModel } from './post.model';
+import ExamModel, { IExamModel } from '../exams/exam.model';
 
 export class PostsService {
     static async createPost(
@@ -17,6 +18,14 @@ export class PostsService {
                 content,
                 examId
             });
+        } catch (e) {
+            return null;
+        }
+    }
+
+    public static async getPostById(postId: string): Promise<IPostModel | null> {
+        try {
+            return await PostModel.findById(postId);
         } catch (e) {
             return null;
         }

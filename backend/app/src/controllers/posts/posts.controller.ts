@@ -6,8 +6,6 @@ import { BaseController } from '../base.controller';
 import { UsersService } from '../../models/user/users.service';
 import { PostsService } from '../../models/posts/posts.service';
 import { ExamService } from '../../models/exams/exam.service';
-import { DeleteUserResponse } from '../users/users.schemas';
-import logger from '../../utils/logger.util';
 
 @Tags('Post')
 @Route('posts')

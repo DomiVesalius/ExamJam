@@ -1,6 +1,5 @@
 import { BaseResponse } from '../base.controller';
 import { IPostModel } from '../../models/posts/post.model';
-import { IExamModel } from '../../models/exams/exam.model';
 
 export interface CreatePostResponse extends BaseResponse {
     data: IPostModel | null;

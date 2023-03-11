@@ -66,7 +66,8 @@ export class PostsController extends BaseController {
      * @param postId
      */
     @Get('{postId}')
-    public async getExamById(@Path() postId: string): Promise<GetPostByIdResponse> {
+    @Security(PassportStrategies.local)
+    public async getPostById(@Path() postId: string): Promise<GetPostByIdResponse> {
         const post = await PostsService.getPostById(postId);
 
         const code = post ? 200 : 404;

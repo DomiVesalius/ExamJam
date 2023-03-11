@@ -1,8 +1,5 @@
-import UserModel, { IUserModel } from '../user/user.model';
-import bcrypt from 'bcrypt';
-import logger from '../../utils/logger.util';
+import { IUserModel } from '../user/user.model';
 import PostModel, { IPostModel } from './post.model';
-import ExamModel, { IExamModel } from '../exams/exam.model';
 
 export class PostsService {
     static async createPost(

@@ -1,22 +1,28 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-
 import PostCreationForm from './PostCreationForm';
-import { withRouter } from 'storybook-addon-react-router-v6';
+import MainContextProvider from '../../../contexts/Main/MainContextProvider';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 export default {
-    title: `Components/Auth/${PostCreationForm.name}`,
-    component: PostCreationForm,
-    decorators: [withRouter],
-    parameters: {
-        reactRouter: {
-            routePath: '/dashboard/courses/:courseCode/create-post'
-        }
-    }
+    title: `Components/${PostCreationForm.name}`,
+    component: PostCreationForm
 } as ComponentMeta<typeof PostCreationForm>;
 
 const Template: ComponentStory<typeof PostCreationForm> = () => {
-    return <PostCreationForm onSuccess={() => console.log('Successful Registration')} />;
+    return (
+        <MemoryRouter initialEntries={[`/dashboard/courses/CSC209/create-post`]}>
+            <Routes>
+                <Route
+                    path={'dashboard/courses/:courseCode/create-post'}
+                    element={
+                        <MainContextProvider>
+                            <PostCreationForm onSuccess={() => console.log('post created')} />
+                        </MainContextProvider>
+                    }
+                />
+            </Routes>
+        </MemoryRouter>
+    );
 };
 
 export const General = Template.bind({});
-General.args = {};

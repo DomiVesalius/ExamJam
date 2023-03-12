@@ -44,8 +44,7 @@ const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSu
             const postCreationValues = {
                 content: richTextValue,
                 title: values.title,
-                examId: examValue,
-                courseCode: courseCode
+                examId: examValue
             };
             try {
                 const postId = (await HTTP.post('/posts', postCreationValues)).data.data._id;

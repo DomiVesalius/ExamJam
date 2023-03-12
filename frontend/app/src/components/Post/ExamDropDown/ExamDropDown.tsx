@@ -5,10 +5,15 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import http from "../../../utils/http";
 import useSWR from "swr";
-import {useEffect, useState} from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 interface CourseTableProps {
     courseCode: string;
+
+    value: string;
+
+    onChange: Dispatch<SetStateAction<string>>;
+
 }
 
   function createExamRows(data: any): any[] {
@@ -18,7 +23,7 @@ interface CourseTableProps {
     }
     return exams;
   }
-export const ExamDropDown: React.FunctionComponent<CourseTableProps> = ({ courseCode }) => {
+export const ExamDropDown: React.FunctionComponent<CourseTableProps> = ({ courseCode , value, onChange}) => {
     const fetcher = (url: string) => http.get(url).then((res) => res.data);
     const url: string = `/courses/${courseCode}/exams`;
     const { data, error } = useSWR(url, fetcher);
@@ -33,27 +38,24 @@ export const ExamDropDown: React.FunctionComponent<CourseTableProps> = ({ course
     }, [data, error]);
 
 
-  const [exam, setExam] = React.useState('');
+
 
   const handleChange = (event: SelectChangeEvent) => {
-    setExam(event.target.value);
+    onChange(event.target.value)
   };
 
   return (
     <div>
-      <FormControl fullWidth>
+      <FormControl sx={{ minWidth: 200 }}>
         <InputLabel id="demo-simple-select-autowidth-label">Exam Name</InputLabel>
         <Select
           labelId="demo-simple-select-autowidth-label"
           id="demo-simple-select-autowidth"
-          value={exam}
+          value={value}
           onChange={handleChange}
           autoWidth
           label="Exam Name"
         >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
           {examList.map(exam => {
               return <MenuItem value={exam.id}>{exam.name}</MenuItem>;
             })}

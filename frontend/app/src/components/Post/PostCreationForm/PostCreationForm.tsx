@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import * as yup from 'yup';
 import {Link, useParams} from 'react-router-dom';
-
 import { Form, FormikProvider, useFormik } from 'formik';
+
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 import {
     Button,
@@ -23,27 +25,31 @@ export interface PostCreationFormProps {
 
 export interface PostCreationFormValues {
     title: string;
-    examName: string;
+    examId: string;
 }
+
+
 
 const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSuccess }) => {
     const routeParams = useParams();
     const courseCode = routeParams['courseCode'];
+    const [richTextValue, setRichTextValue] = useState('');
+    const [examValue, setExamValue] = useState('');
 
     const initialValues: PostCreationFormValues = {
         title: '',
-        examName: ''
+        examId: '',
+
     };
     const formik = useFormik({
         initialValues,
         onSubmit: async (values, { setSubmitting }) => {
             setSubmitting(true);
+            const postCreationValues = {'content':richTextValue, 'title': values.title, examId: examValue}
             try {
-                // MAKE A POST REQUEST TO THE CREATE POST ENDPOINT NANDO MADE
-                await HTTP.post('API HERE', values);
-                onSuccess();
+                const postId = (await HTTP.post('/posts', postCreationValues)).data.data._id;
+                onSuccess(postId);
             } catch (e: any) {
-                const { response } = e;
             }
             setSubmitting(false);
         }
@@ -54,7 +60,7 @@ const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSu
 
 
     return (
-        <Container maxWidth="xs">
+        <Container maxWidth="xl">
             <Card variant="outlined">
                 <Stack spacing={2}>
                     <CardHeader title="Create a Post" />
@@ -63,6 +69,8 @@ const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSu
                             <Form onSubmit={formik.handleSubmit}>
                                 <Stack spacing={2}>
                                     <Stack spacing={2}>
+                                        <ExamDropDown value={examValue} onChange={setExamValue} courseCode={courseCode} />
+
                                         <TextField
                                             id="title"
                                             label="Title"
@@ -77,7 +85,7 @@ const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSu
                                                 formik.touched.title && formik.errors.title
                                             }
                                         />
-                                        <ExamDropDown courseCode={courseCode} />
+                                        <ReactQuill theme="snow" value={richTextValue} onChange={setRichTextValue} />
                                     </Stack>
                                     <Button
                                         disabled={formik.isSubmitting}

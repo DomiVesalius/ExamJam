@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import PageLayout from '../../components/Layout/PageLayout';
 import PostCreationForm from "../../components/Post/PostCreationForm/PostCreationForm";
 import {useNavigate, useParams} from 'react-router-dom';
@@ -8,12 +8,14 @@ import useSWR from "swr";
 
 const PostCreationPage: React.FunctionComponent = () => {
     const navigate = useNavigate();
+    const routeParams = useParams();
+    const courseCode = routeParams['courseCode'];
 
     return (
         // <ProtectedRoute>
         // Change the success URL to Post View
             <PageLayout title="CreatePost">
-                <PostCreationForm onSuccess={() => navigate('/')}/>
+                <PostCreationForm onSuccess={(postId: string) => navigate(`/dashboard/courses/${courseCode}/${postId}`)}/>
             </PageLayout>
         // </ProtectedRoute>
     );

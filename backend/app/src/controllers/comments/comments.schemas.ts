@@ -1,6 +1,7 @@
 import { BaseResponse } from '../base.controller';
 import { ICommentModel } from '../../models/comments/comments.model';
 import * as yup from 'yup';
+import { Schema } from 'mongoose';
 
 /**
  * POST /api/comments/
@@ -20,9 +21,25 @@ export interface CreateCommentResponse extends BaseResponse {
     data: ICommentModel | null;
 }
 
+export interface CommentObject {
+    _id: string;
+    postId: Schema.Types.ObjectId;
+    parentId: Schema.Types.ObjectId | null;
+    content: string;
+    children: ChildCommentObject[];
+}
+
+export interface ChildCommentObject {
+    _id: string;
+    postId: Schema.Types.ObjectId;
+    parentId: Schema.Types.ObjectId;
+    content: string;
+    children: any[];
+}
+
 export interface GetCommentsResponse extends BaseResponse {
     /** Array of comments */
-    data: ICommentModel[] | null;
+    data: CommentObject[] | null;
     /** Page number to retrieve comments from */
     page: number;
     /** Amount of comments per page */

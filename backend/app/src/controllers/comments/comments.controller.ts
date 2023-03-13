@@ -1,6 +1,8 @@
 import { BaseController } from '../base.controller';
 import { Body, Middlewares, Post, Route, Security, Tags, Request, Query, Get } from 'tsoa';
 import {
+    ChildCommentObject,
+    CommentObject,
     CreateCommentBody,
     CreateCommentResponse,
     GetCommentsResponse,
@@ -122,10 +124,51 @@ export class CommentsController extends BaseController {
 
         const commentsArray = await CommentsService.getCommentsByPost(page, limit, postId);
         if (!commentsArray) return invalidPostIdResponse;
+
+        // Return the comments array like PiazzaComments structure
+        let resultArray: CommentObject[] = [];
+        for (let comment of commentsArray) {
+            // if comment doesn't have parent comment
+            // then comment is a parent comment
+            if (!comment.parentId) {
+                resultArray.push({
+                    _id: comment._id,
+                    postId: comment.postId,
+                    parentId: comment.parentId,
+                    content: comment.content,
+                    children: []
+                });
+            } else {
+                // comment is a reply
+                // find parent comment
+                const parentComment = resultArray.find((c) => {
+                    if (c._id && comment.parentId) return c._id == comment.parentId.toString();
+                });
+                if (parentComment) {
+                    const commentObj: CommentObject = {
+                        _id: parentComment._id,
+                        postId: parentComment.postId,
+                        parentId: parentComment.parentId,
+                        content: parentComment.content,
+                        children: []
+                    };
+                    // add reply to parent comment
+                    const reply: ChildCommentObject = {
+                        _id: comment._id,
+                        postId: comment.postId,
+                        parentId: comment.parentId,
+                        content: comment.content,
+                        children: []
+                    };
+                    commentObj.children.push(reply);
+                }
+            }
+        }
+
         return {
             success: true,
             code: 200,
-            data: commentsArray,
+            data: resultArray,
             page: page,
             limit: limit,
             totalPages: totalPages

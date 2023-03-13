@@ -17,7 +17,11 @@ interface PostPreviewListProps {
     postType: PostType;
 }
 
-function createPostPreviews(data: any, type: PostType): [React.ReactElement[], number] {
+function createPostPreviews(
+    data: any,
+    type: PostType,
+    courseCode: string
+): [React.ReactElement[], number] {
     const MAX_CONTENT_LENGTH = 200;
     const previews: React.ReactElement[] = [];
 
@@ -41,6 +45,7 @@ function createPostPreviews(data: any, type: PostType): [React.ReactElement[], n
         } else {
             postElement = (
                 <PostPreview
+                    courseCode={courseCode}
                     author={post.author}
                     content={post.content}
                     createdAt={new Date(post.createdAt)}
@@ -82,7 +87,11 @@ const PostPreviewList: React.FunctionComponent<PostPreviewListProps> = (
 
     useEffect(() => {
         if (data) {
-            const [previews, totalPages] = createPostPreviews(data, props.postType);
+            const [previews, totalPages] = createPostPreviews(
+                data,
+                props.postType,
+                props.courseCode
+            );
             setPostList(previews);
             setTotalPages(totalPages);
         }

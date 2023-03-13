@@ -8,6 +8,7 @@ import { useMainContext } from '../../../contexts/Main/MainContext';
 
 export interface PostPreviewProps {
     postId: string;
+    courseCode: string;
     title: string;
     examId: string;
     createdAt: Date;
@@ -27,7 +28,7 @@ const PostPreview: React.FunctionComponent<PostPreviewProps> = (props: PostPrevi
         Math.min(textContent.length, props.previewTextMaxLength)
     ); // 200 could me modified to be any arbitrary number
 
-    const handleNavigateToPost = () => redirect(`posts/${props.postId}`);
+    const handleNavigateToPost = () => redirect(`${props.courseCode}/posts/${props.postId}/`);
     return (
         <Card sx={{ width: '50vw' }}>
             <CardActionArea onClick={handleNavigateToPost}>

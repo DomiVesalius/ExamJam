@@ -85,8 +85,12 @@ const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSu
                                         />
                                         <ReactQuill
                                             theme="snow"
+                                            placeholder="What is your question?"
                                             value={richTextValue}
-                                            style={{ maxWidth: '100%', height: 'auto' }}
+                                            style={{
+                                                maxWidth: '100%',
+                                                height: 'auto'
+                                            }}
                                             onChange={setRichTextValue}
                                         />
                                     </Stack>

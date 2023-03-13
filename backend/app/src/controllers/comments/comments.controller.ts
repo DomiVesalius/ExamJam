@@ -52,7 +52,7 @@ export class CommentsController extends BaseController {
 
             // It is possible that the user is malicious and provided a parentId that is not a
             // comment for the post with the given postId
-            if (parentComment.postId !== post._id) {
+            if (parentComment.postId !== post.id) {
                 this.setStatus(400);
                 return {
                     success: false,

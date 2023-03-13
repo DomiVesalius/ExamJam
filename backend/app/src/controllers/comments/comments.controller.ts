@@ -1,8 +1,9 @@
 import { BaseController } from '../base.controller';
-import { Body, Middlewares, Post, Route, Security, Tags, Request } from 'tsoa';
+import { Body, Middlewares, Post, Route, Security, Tags, Request, Delete, Path } from 'tsoa';
 import {
     CreateCommentBody,
     CreateCommentResponse,
+    DeleteCommentResponse,
     validCreateCommentSchema
 } from './comments.schemas';
 import validationMiddleware from '../../middlewares/validation.middleware';
@@ -25,25 +26,43 @@ export class CommentsController extends BaseController {
 
         const post = await PostsService.getPost(body.postId);
 
-        if (!post)
+        if (!post) {
+            this.setStatus(404);
             return {
                 success: false,
                 code: 404,
                 data: null,
                 errors: [`No such post with id ${body.postId}`]
             };
+        }
 
         let parentComment = null;
         if (body.parentId) {
             parentComment = await CommentsService.getComment(body.parentId);
 
-            if (!parentComment)
+            if (!parentComment) {
+                this.setStatus(404);
                 return {
                     success: false,
                     code: 404,
                     data: null,
                     errors: [`No such parent comment with id ${body.parentId}`]
                 };
+            }
+
+            // It is possible that the user is malicious and provided a parentId that is not a
+            // comment for the post with the given postId
+            if (parentComment.postId !== post._id) {
+                this.setStatus(400);
+                return {
+                    success: false,
+                    code: 400,
+                    data: null,
+                    errors: [
+                        'The given parent comment id does not belong to the post with the given post id.'
+                    ]
+                };
+            }
         }
 
         const creationFields = {
@@ -64,4 +83,3 @@ export class CommentsController extends BaseController {
 
         return { success, code, data: newComment };
     }
-}

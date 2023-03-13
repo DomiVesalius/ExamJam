@@ -72,7 +72,7 @@ const PostDetail: React.FunctionComponent = () => {
     }
 
     return (
-        <Container maxWidth="sm">
+        <Container>
             <Card variant="outlined">
                 <Stack spacing={2}>
                     <CardHeader title="" />

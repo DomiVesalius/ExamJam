@@ -10,7 +10,7 @@ export default {
 
 const Template: ComponentStory<typeof PostPage> = () => {
     return (
-        <MemoryRouter initialEntries={[`/dashboard/courses/CSC209/63e3df3a1b55a9a70eda41ae`]}>
+        <MemoryRouter initialEntries={[`/dashboard/courses/CSC209/posts/63e3df3a1b55a9a70eda41ae`]}>
             <Routes>
                 <Route
                     path={'dashboard/courses/:courseCode'}

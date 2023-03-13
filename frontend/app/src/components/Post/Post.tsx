@@ -13,6 +13,10 @@ import {
 } from '@mui/material';
 import useSWR from 'swr';
 import http from '../../utils/http';
+import IconButton from '@mui/material/IconButton';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import { KebabMenu } from './KebabMenu/KebabMenu';
 
 const fetcher = (url: string) => http.get(url).then((res) => res.data);
 
@@ -53,26 +57,42 @@ const Post: React.FunctionComponent = () => {
     const updateDate = new Date(post.updatedAt);
     const formattedUpdateDate = updateDate.toLocaleString('en-US');
     const creationDate = new Date(post.createdAt);
-    const formattedCreationDate = updateDate.toLocaleString('en-US');
+    const formattedCreationDate = creationDate.toLocaleString('en-US');
 
     return (
-        <Container maxWidth="md">
+        <Container>
             <Card variant="outlined">
                 <Stack spacing={2}>
-                    <CardHeader title="" />
                     <CardContent>
                         <Stack spacing={2}>
                             <Stack spacing={2}>
-                                <Typography variant="caption" display="block" gutterBottom>
-                                    Posted by <b>{post.author}</b> on {formattedCreationDate}
-                                </Typography>
-                                <Typography variant="h5" component="h5">
+                                <Box
+                                    display="flex"
+                                    flexWrap="wrap"
+                                    alignItems="center"
+                                    justifyContent="space-between"
+                                >
+                                    <Typography variant="caption" display="block" gutterBottom>
+                                        Posted by <b>{post.author}</b> on {formattedCreationDate}
+                                    </Typography>
+
+                                    <Box display="flex" flexWrap="wrap" alignItems="center">
+                                        <IconButton aria-label="upvote">
+                                            <ThumbUpIcon />
+                                        </IconButton>
+                                        <IconButton aria-label="downvote">
+                                            <ThumbDownIcon />
+                                        </IconButton>
+                                        <KebabMenu postId={post.postId} />
+                                    </Box>
+                                </Box>
+                                <Typography variant="h4" component="h1" gutterBottom>
                                     {post.title}
                                 </Typography>
-                                <div
-                                    style={{ width: '100%' }}
-                                    dangerouslySetInnerHTML={{ __html: post.content }}
-                                />
+
+                                <Typography variant="body1" component="div" gutterBottom>
+                                    <div dangerouslySetInnerHTML={{ __html: post.content }} />
+                                </Typography>
                                 <Typography variant="caption" display="block" gutterBottom>
                                     Last updated at {formattedUpdateDate}
                                 </Typography>

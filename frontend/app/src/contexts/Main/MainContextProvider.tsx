@@ -15,13 +15,17 @@ const MainContextProvider: React.FunctionComponent<MainContextProviderProps> = (
         JSON.parse(localStorage.getItem('auth') || 'false')
     );
 
+    const [currUser, setCurrUser] = useState<string>('');
+
     const setAuth = (value: boolean) => {
         setIsAuthenticated(value);
         localStorage.setItem('auth', JSON.stringify(value));
     };
 
     return (
-        <MainContext.Provider value={{ isAuthenticated, setIsAuthenticated: setAuth }}>
+        <MainContext.Provider
+            value={{ isAuthenticated, setIsAuthenticated: setAuth, setCurrUser, currUser }}
+        >
             {props.children}
         </MainContext.Provider>
     );

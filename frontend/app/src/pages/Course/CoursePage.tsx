@@ -56,7 +56,7 @@ const CoursePage = () => {
                                 description={course.description}
                                 title={course.title}
                             />
-                            <ExamTable courseCode={course.courseCode} />
+                            <ExamTable courseCode={courseCode} />
                         </Box>
                     </main>
                     <PostPanel

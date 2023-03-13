@@ -40,16 +40,16 @@ const ExamPage: React.FunctionComponent = () => {
     }
 
     return (
-        // <ProtectedRoute>
-        <PageLayout title="ExamPage">
-            <Stack direction="column" spacing={2}>
-                <Typography variant="h4" gutterBottom>
-                    {examTitle}
-                </Typography>
-                <Exam courseCode={courseId} examId={examId} />
-            </Stack>
-        </PageLayout>
-        // </ProtectedRoute>
+        <ProtectedRoute>
+            <PageLayout title="ExamPage">
+                <Stack direction="column" spacing={2}>
+                    <Typography variant="h4" gutterBottom>
+                        {examTitle}
+                    </Typography>
+                    <Exam courseCode={courseId} examId={examId} />
+                </Stack>
+            </PageLayout>
+        </ProtectedRoute>
     );
 };
 

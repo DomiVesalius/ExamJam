@@ -26,7 +26,7 @@ interface FormValues {
 }
 
 const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
-    const { setIsAuthenticated } = useMainContext();
+    const { setIsAuthenticated, setCurrUser } = useMainContext();
 
     const initialValues: FormValues = {
         email: '',
@@ -45,6 +45,7 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = () => {
             setSubmitting(true);
             try {
                 const res = await HTTP.post('/users/login', values);
+                setCurrUser(res.data.data.email);
                 setIsAuthenticated(true);
             } catch (e: any) {
                 if (e.request.status === 401) {

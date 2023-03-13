@@ -83,7 +83,11 @@ const Post: React.FunctionComponent = () => {
                                         <IconButton aria-label="downvote">
                                             <ThumbDownIcon />
                                         </IconButton>
-                                        <KebabMenu postId={post.postId} />
+                                        <KebabMenu
+                                            postId={post.postId}
+                                            courseCode={courseCode}
+                                            author={post.author}
+                                        />
                                     </Box>
                                 </Box>
                                 <Typography variant="h4" component="h1" gutterBottom>

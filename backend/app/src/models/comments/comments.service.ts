@@ -15,6 +15,28 @@ export class CommentsService {
         }
     }
 
+    public static async getCommentsByPost(
+        pageNumber: number,
+        limit: number,
+        postId: string
+    ): Promise<ICommentModel[] | null> {
+        try {
+            return await CommentModel.find({ postId: postId })
+                .skip((pageNumber - 1) * limit)
+                .limit(limit);
+        } catch (e) {
+            return null;
+        }
+    }
+
+    public static async getTotalNumComments(postId: string): Promise<number | null> {
+        try {
+            return await CommentModel.find({ postId: postId }).countDocuments();
+        } catch (e) {
+            return null;
+        }
+    }
+
     public static async createComment(
         commentFields: CreateCommentParams
     ): Promise<ICommentModel | null> {

@@ -57,7 +57,11 @@ export const ExamDropDown: React.FunctionComponent<CourseTableProps> = ({
                     label="Exam Name"
                 >
                     {examList.map((exam) => {
-                        return <MenuItem value={exam.id}>{exam.name}</MenuItem>;
+                        return (
+                            <MenuItem key={exam.id} value={exam.id}>
+                                {exam.name}
+                            </MenuItem>
+                        );
                     })}
                 </Select>
             </FormControl>

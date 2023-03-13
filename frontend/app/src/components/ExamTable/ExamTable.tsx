@@ -95,7 +95,7 @@ export const ExamTable: React.FunctionComponent<CourseTableProps> = ({ courseCod
                                 </StyledTableCell>
                                 <StyledTableCell align="right">
                                     <Link
-                                        href={`/dashboard/courses/${courseCode}/create-post`}
+                                        href={`/dashboard/courses/${courseCode}/create-post?examId=${row.id}`}
                                         style={{ textDecoration: 'none' }}
                                     >
                                         <Button variant="contained">Create Post</Button>

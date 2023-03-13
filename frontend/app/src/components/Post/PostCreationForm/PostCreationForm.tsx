@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -29,8 +29,12 @@ export interface PostCreationFormValues {
 const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSuccess }) => {
     const routeParams = useParams();
     const courseCode = routeParams['courseCode'];
+
+    const [searchParams] = useSearchParams();
+    const initialExam = searchParams.get('examId') || '';
+
     const [richTextValue, setRichTextValue] = useState('');
-    const [examValue, setExamValue] = useState('');
+    const [examValue, setExamValue] = useState(initialExam);
 
     const initialValues: PostCreationFormValues = {
         title: '',

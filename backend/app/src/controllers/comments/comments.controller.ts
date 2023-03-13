@@ -83,3 +83,35 @@ export class CommentsController extends BaseController {
 
         return { success, code, data: newComment };
     }
+
+    @Delete('{commentId}')
+    @Security(PassportStrategies.local)
+    public async deleteComment(
+        @Request() req: ExpressRequest,
+        @Path() commentId: string
+    ): Promise<DeleteCommentResponse> {
+        const userEmail = req.user as string;
+
+        const comment = await CommentsService.getComment(commentId);
+
+        if (!comment) {
+            this.setStatus(404);
+            return { success: false, code: 404, errors: [`No such comment with id ${commentId}`] };
+        }
+
+        if (userEmail !== comment.author) {
+            this.setStatus(403);
+            return {
+                success: false,
+                code: 403,
+                errors: [`You are not authorized to delete that comment`]
+            };
+        }
+
+        const success = await CommentsService.deleteComment(comment);
+        const code = success ? 200 : 500;
+        this.setStatus(code);
+
+        return { success, code, message: 'Successfully deleted' };
+    }
+}

@@ -102,6 +102,7 @@ export class PostsController extends BaseController {
         }
 
         const posts = await PostsService.getPostsByExamIdList(examIds, page, limit);
+        const totalPages = await PostsService.getTotalNumPosts(examIds, limit);
 
         let resBody: GetPostsByExamId;
         if (posts.length > 0) {
@@ -110,7 +111,7 @@ export class PostsController extends BaseController {
                 code: 200,
                 page,
                 limit,
-                totalPages: -100,
+                totalPages,
                 data: posts
             };
         } else {

@@ -13,7 +13,7 @@ const Template: ComponentStory<typeof PostPage> = () => {
         <MemoryRouter initialEntries={[`/dashboard/courses/CSC209/posts/63e3df3a1b55a9a70eda41ae`]}>
             <Routes>
                 <Route
-                    path={'dashboard/courses/:courseCode'}
+                    path={'dashboard/courses/:courseCode/posts/:postId'}
                     element={
                         <MainContextProvider>
                             <PostPage />

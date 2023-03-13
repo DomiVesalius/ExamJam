@@ -19,3 +19,8 @@ export interface CreateCommentBody {
 export interface CreateCommentResponse extends BaseResponse {
     data: ICommentModel | null;
 }
+
+/**
+ * DELETE /comments/:commentId
+ */
+export interface DeleteCommentResponse extends BaseResponse {}

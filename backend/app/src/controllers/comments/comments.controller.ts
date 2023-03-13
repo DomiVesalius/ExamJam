@@ -1,8 +1,9 @@
 import { BaseController } from '../base.controller';
-import { Body, Middlewares, Post, Route, Security, Tags, Request } from 'tsoa';
+import { Body, Middlewares, Post, Route, Security, Tags, Request, Delete, Path } from 'tsoa';
 import {
     CreateCommentBody,
     CreateCommentResponse,
+    DeleteCommentResponse,
     validCreateCommentSchema
 } from './comments.schemas';
 import validationMiddleware from '../../middlewares/validation.middleware';
@@ -25,25 +26,43 @@ export class CommentsController extends BaseController {
 
         const post = await PostsService.getPost(body.postId);
 
-        if (!post)
+        if (!post) {
+            this.setStatus(404);
             return {
                 success: false,
                 code: 404,
                 data: null,
                 errors: [`No such post with id ${body.postId}`]
             };
+        }
 
         let parentComment = null;
         if (body.parentId) {
             parentComment = await CommentsService.getComment(body.parentId);
 
-            if (!parentComment)
+            if (!parentComment) {
+                this.setStatus(404);
                 return {
                     success: false,
                     code: 404,
                     data: null,
                     errors: [`No such parent comment with id ${body.parentId}`]
                 };
+            }
+
+            // It is possible that the user is malicious and provided a parentId that is not a
+            // comment for the post with the given postId
+            if (parentComment.postId !== post.id) {
+                this.setStatus(400);
+                return {
+                    success: false,
+                    code: 400,
+                    data: null,
+                    errors: [
+                        'The given parent comment id does not belong to the post with the given post id.'
+                    ]
+                };
+            }
         }
 
         const creationFields = {
@@ -63,5 +82,36 @@ export class CommentsController extends BaseController {
         this.setStatus(code);
 
         return { success, code, data: newComment };
+    }
+
+    @Delete('{commentId}')
+    @Security(PassportStrategies.local)
+    public async deleteComment(
+        @Request() req: ExpressRequest,
+        @Path() commentId: string
+    ): Promise<DeleteCommentResponse> {
+        const userEmail = req.user as string;
+
+        const comment = await CommentsService.getComment(commentId);
+
+        if (!comment) {
+            this.setStatus(404);
+            return { success: false, code: 404, errors: [`No such comment with id ${commentId}`] };
+        }
+
+        if (userEmail !== comment.author) {
+            this.setStatus(403);
+            return {
+                success: false,
+                code: 403,
+                errors: [`You are not authorized to delete that comment`]
+            };
+        }
+
+        const success = await CommentsService.deleteComment(comment);
+        const code = success ? 200 : 500;
+        this.setStatus(code);
+
+        return { success, code, message: 'Successfully deleted' };
     }
 }

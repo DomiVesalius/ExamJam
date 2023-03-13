@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Card, CardActionArea, CardContent, CardHeader, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import ShareIcon from '@mui/icons-material/Share';
+import { redirect } from '../../../utils/helpers';
 
 export interface PiazzaPostPreviewProps {
     postId: string;
@@ -21,10 +22,6 @@ export interface PiazzaPostPreviewProps {
 const PiazzaPostPreview: React.FunctionComponent<PiazzaPostPreviewProps> = (
     props: PiazzaPostPreviewProps
 ) => {
-    const redirect = (url: string) => {
-        window.location.href = url;
-    };
-
     const parsedHTML = new DOMParser().parseFromString(props.content, 'text/html');
     const textContent = parsedHTML.body.textContent || '';
     const previewText = textContent.substring(

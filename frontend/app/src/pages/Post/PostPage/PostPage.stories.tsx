@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import PostPage from './PostPage';
-import MainContextProvider from '../../contexts/Main/MainContextProvider';
+import MainContextProvider from '../../../contexts/Main/MainContextProvider';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 export default {

@@ -1,7 +1,7 @@
 import React from 'react';
-import PageLayout from '../../components/Layout/PageLayout';
-import Post from '../../components/Post/Post';
-import ProtectedRoute from '../../components/Routes/ProtectedRoute';
+import PageLayout from '../../../components/Layout/PageLayout';
+import Post from '../../../components/Post/Post';
+import ProtectedRoute from '../../../components/Routes/ProtectedRoute';
 import { makeStyles } from '@material-ui/core/styles';
 import { Container } from '@mui/material';
 import { Paper } from '@mui/material';

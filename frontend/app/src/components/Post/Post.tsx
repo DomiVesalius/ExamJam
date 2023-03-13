@@ -1,16 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import {
-    Box,
-    Button,
-    Card,
-    CardContent,
-    CardHeader,
-    Container,
-    CssBaseline,
-    Stack,
-    Typography
-} from '@mui/material';
+import { useParams } from 'react-router-dom';
+import { Box, Card, CardContent, Container, Stack, Typography } from '@mui/material';
 import useSWR from 'swr';
 import http from '../../utils/http';
 import IconButton from '@mui/material/IconButton';

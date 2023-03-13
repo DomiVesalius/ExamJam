@@ -6,11 +6,12 @@ import { Typography } from '@mui/material';
 import RegistrationPage from './pages/Auth/RegistrationPage';
 import LoginPage from './pages/Auth/LoginPage';
 import ExamPage from './pages/Exam/ExamPage';
+import PostPage from './pages/Post/PostPage/PostPage';
 import Dashboard from './pages/Dashboard/Dashboard';
 import CoursePage from './pages/Course/CoursePage';
 import PathConstants from './utils/pathConstants';
 import CourseSearch from './pages/Dashboard/CourseSearch/CourseSearch';
-import PostCreationPage from './pages/Post/PostCreationPage';
+import PostCreationPage from './pages/Post/PostCreationPage/PostCreationPage';
 
 /**
  * For now this is just to show that the frontend and backend are connected.
@@ -38,6 +39,7 @@ function App() {
                 <Route path={PathConstants.loginPage} element={<LoginPage />} />
                 <Route path={PathConstants.examPage} element={<ExamPage />} />
                 <Route path={PathConstants.coursePage} element={<CoursePage />} />
+                <Route path={PathConstants.postPage} element={<PostPage />} />
                 <Route path={PathConstants.postCreationPage} element={<PostCreationPage />} />
             </Routes>
         </BrowserRouter>

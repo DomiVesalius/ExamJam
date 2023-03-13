@@ -15,13 +15,6 @@ export interface CreatePostBody {
     examId: string;
 }
 
-export interface GetAllPostsResponse extends BaseResponse {
-    page: number;
-    limit: number;
-    totalPages: number;
-    data: IPostModel[];
-}
-
 export interface GetPostsByExamId extends BaseResponse {
     page: number;
     limit: number;
@@ -35,3 +28,5 @@ export interface GetPostsByCourseCode extends BaseResponse {
     totalPages: number;
     data: IPostModel[];
 }
+
+export interface DeletePostResponse extends BaseResponse {}

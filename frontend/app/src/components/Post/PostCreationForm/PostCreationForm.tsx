@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
-
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
@@ -48,7 +47,7 @@ const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSu
             };
             try {
                 const postId = (await HTTP.post('/posts', postCreationValues)).data.data._id;
-                onSuccess(postId);
+                onSuccess(`posts/${postId}`);
             } catch (e: any) {}
             setSubmitting(false);
         }
@@ -87,6 +86,7 @@ const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSu
                                         <ReactQuill
                                             theme="snow"
                                             value={richTextValue}
+                                            style={{ maxWidth: '100%', height: 'auto' }}
                                             onChange={setRichTextValue}
                                         />
                                     </Stack>

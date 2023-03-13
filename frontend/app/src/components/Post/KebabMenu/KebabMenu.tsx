@@ -13,6 +13,7 @@ interface CourseTableProps {
     courseCode: string;
     author: string;
 }
+
 const handleDelete = async (postId: string, courseCode: string) => {
     try {
         const response = await http.delete(`/posts/${postId}`);
@@ -21,6 +22,7 @@ const handleDelete = async (postId: string, courseCode: string) => {
         console.log(error);
     }
 };
+
 export const KebabMenu: React.FunctionComponent<CourseTableProps> = ({
     postId,
     courseCode,
@@ -41,6 +43,7 @@ export const KebabMenu: React.FunctionComponent<CourseTableProps> = ({
 
     const url: string = `/users/me`;
     const { data, error } = useSWR(url, fetcher);
+
     useEffect(() => {
         console.log(data);
         if (data) {
@@ -52,6 +55,7 @@ export const KebabMenu: React.FunctionComponent<CourseTableProps> = ({
 
     if (error) return <div>failed to load</div>;
     if (!usr.email) return <div>loading...</div>;
+
     return (
         <div>
             <Button
@@ -75,13 +79,14 @@ export const KebabMenu: React.FunctionComponent<CourseTableProps> = ({
             >
                 {usr.email === author && (
                     <IconButton
+                        size="small"
                         aria-label="delete"
                         onClick={() => handleDelete(postId, courseCode)}
                     >
                         <DeleteIcon /> Delete
                     </IconButton>
                 )}
-                <IconButton aria-label="share">
+                <IconButton size="small" aria-label="share">
                     <ShareIcon /> Share
                 </IconButton>
             </Menu>

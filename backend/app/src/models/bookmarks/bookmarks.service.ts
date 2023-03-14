@@ -1,6 +1,7 @@
 import BookmarkModel, {IBookmarkModel, BookmarkType} from "./bookmark.model";
 import { CoursesService } from "../courses/courses.service";
 import { ExamService } from "../exams/exam.service";
+import { PostsService } from "../posts/posts.service";
 // import { PostService } from "tsoa";
 interface ParamsInterface {
     userEmail: string;
@@ -39,8 +40,11 @@ export class BookmarkService{
                 }
                 break;
             case BookmarkType.post:
-                // TODO: Need to check if postId exists in the post collection before
-                // we add or remove a post bookmark.
+
+                exists = await PostsService.getPost(itemId)
+                if(!exists){
+                    return null
+                }
                 parameters = {
                     userEmail: email,
                     type: type,

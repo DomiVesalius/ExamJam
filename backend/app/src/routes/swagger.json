@@ -52,7 +52,7 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ICourseModel": {
+			"IBookmarkModel": {
 				"$ref": "#/components/schemas/FlattenMaps_T_"
 			},
 			"HttpStatusCodeLiteral": {
@@ -118,6 +118,118 @@
 					510,
 					511
 				]
+			},
+			"GetBookmarksResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IBookmarkModel"
+						},
+						"type": "array"
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					},
+					"page": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"totalPages": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"page",
+					"limit",
+					"totalPages",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"BookmarkType": {
+				"enum": [
+					"course",
+					"exam",
+					"post"
+				],
+				"type": "string"
+			},
+			"CreateBookmarkResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/IBookmarkModel"
+							}
+						],
+						"nullable": true
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"BookmarkCreationBody": {
+				"properties": {
+					"type": {
+						"$ref": "#/components/schemas/BookmarkType"
+					},
+					"itemId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"type",
+					"itemId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ICourseModel": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
 			},
 			"CourseResponse": {
 				"properties": {
@@ -1105,6 +1217,93 @@
 				],
 				"security": [],
 				"parameters": []
+			}
+		},
+		"/bookmarks": {
+			"get": {
+				"operationId": "GetBookmarks",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GetBookmarksResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Bookmarks"
+				],
+				"security": [
+					{
+						"local": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "type",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/BookmarkType"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "CreateBookmark",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CreateBookmarkResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Bookmarks"
+				],
+				"security": [
+					{
+						"local": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/BookmarkCreationBody"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/courses/{courseCode}": {

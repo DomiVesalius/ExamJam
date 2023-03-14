@@ -26,7 +26,7 @@ const BookmarkSchema: Schema = new Schema(
         examId: { type: Schema.Types.ObjectId, ref: 'Exam._id' },
         postId: { type: Schema.Types.ObjectId, ref: 'Post._id' }
     },
-    { timestamps: true }
+    { timestamps: true, versionKey: false }
 );
 
 const BookmarkModel = mongoose.model<IBookmarkModel>('Bookmark', BookmarkSchema);

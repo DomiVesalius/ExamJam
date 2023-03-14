@@ -20,6 +20,10 @@ export interface CreateCommentResponse extends BaseResponse {
     data: ICommentModel | null;
 }
 
+/**
+ * GET /api/comments/posts/:postId
+ */
+
 export interface CommentObject {
     _id: string;
     postId: string;
@@ -46,3 +50,8 @@ export interface GetCommentsResponse extends BaseResponse {
     /** Total number of pages as per query of postId */
     totalPages: number;
 }
+
+/**
+ * DELETE /comments/:commentId
+ */
+export interface DeleteCommentResponse extends BaseResponse {}

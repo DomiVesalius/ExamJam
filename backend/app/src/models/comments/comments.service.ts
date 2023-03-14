@@ -11,6 +11,34 @@ interface CreateCommentParams extends CreateCommentBody {
 }
 
 export class CommentsService {
+    /**
+     * 'Delete' the given comment.
+     *
+     * If the comment has no parent comment or any children/replies, it is removed from the database.
+     * Otherwise, the author and content will be set to '[removed]'.
+     * @param comment
+     */
+    public static async deleteComment(comment: ICommentModel): Promise<boolean> {
+        if (!comment.parentId && !comment.children) {
+            try {
+                await CommentModel.findByIdAndDelete(comment._id);
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        comment.author = '[removed]';
+        comment.content = '[removed]';
+
+        try {
+            await comment.save();
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+
     public static async getComment(commentId: string): Promise<ICommentModel | null> {
         try {
             return await CommentModel.findById(commentId);

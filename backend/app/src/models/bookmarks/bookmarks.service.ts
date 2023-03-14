@@ -94,7 +94,6 @@ export class BookmarksService {
                 };
                 break;
         }
-        console.log(parameters);
         return parameters;
     }
 
@@ -109,7 +108,6 @@ export class BookmarksService {
         try {
             return await BookmarkModel.create(params);
         } catch (e) {
-            console.log('ERROR: ', e);
             return null;
         }
     }

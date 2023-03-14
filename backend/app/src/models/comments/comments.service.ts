@@ -37,8 +37,8 @@ export class CommentsService {
             for (const comment of topLevelComments) {
                 const commentObj: CommentObject = {
                     _id: (await comment)._id,
-                    postId: comment.postId,
-                    parentId: comment.parentId,
+                    postId: comment.postId.toString(),
+                    parentId: comment.parentId ? comment.parentId.toString() : '',
                     content: comment.content,
                     children: []
                 };
@@ -49,8 +49,8 @@ export class CommentsService {
 
                     const childCommentObj: ChildCommentObject = {
                         _id: childComment._id,
-                        postId: childComment.postId,
-                        parentId: childComment.parentId,
+                        postId: childComment.postId.toString(),
+                        parentId: childComment.parentId ? childComment.parentId.toString() : '',
                         content: childComment.content,
                         children: []
                     };

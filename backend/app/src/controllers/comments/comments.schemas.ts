@@ -1,7 +1,6 @@
 import { BaseResponse } from '../base.controller';
 import { ICommentModel } from '../../models/comments/comments.model';
 import * as yup from 'yup';
-import { Schema } from 'mongoose';
 
 /**
  * POST /api/comments/
@@ -23,16 +22,16 @@ export interface CreateCommentResponse extends BaseResponse {
 
 export interface CommentObject {
     _id: string;
-    postId: Schema.Types.ObjectId;
-    parentId: Schema.Types.ObjectId | null;
+    postId: string;
+    parentId: string | null;
     content: string;
     children: ChildCommentObject[];
 }
 
 export interface ChildCommentObject {
     _id: string;
-    postId: Schema.Types.ObjectId;
-    parentId: Schema.Types.ObjectId | null;
+    postId: string;
+    parentId: string | null;
     content: string;
     children: any[];
 }

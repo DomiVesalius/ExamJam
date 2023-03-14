@@ -1,9 +1,11 @@
 import { BaseController } from '../base.controller';
-import { Body, Middlewares, Post, Route, Security, Tags, Request, Delete, Path } from 'tsoa';
+import { Body, Middlewares, Post, Route, Security, Tags, Request, Delete, Path, Patch } from 'tsoa';
 import {
     CreateCommentBody,
     CreateCommentResponse,
     DeleteCommentResponse,
+    UpdateCommentBody,
+    UpdateCommentResponse,
     validCreateCommentSchema
 } from './comments.schemas';
 import validationMiddleware from '../../middlewares/validation.middleware';
@@ -11,6 +13,7 @@ import { RequestHandler, Request as ExpressRequest } from 'express';
 import PassportStrategies from '../../middlewares/passport.middleware';
 import { PostsService } from '../../models/posts/posts.service';
 import { CommentsService } from '../../models/comments/comments.service';
+import { getUserFromRequest } from '../../utils/helpers.util';
 
 @Tags('Comments')
 @Route('comments')
@@ -22,7 +25,7 @@ export class CommentsController extends BaseController {
         @Request() req: ExpressRequest,
         @Body() body: CreateCommentBody
     ): Promise<CreateCommentResponse> {
-        const userEmail = req.user as string;
+        const userEmail = getUserFromRequest(req);
 
         const post = await PostsService.getPost(body.postId);
 
@@ -90,7 +93,7 @@ export class CommentsController extends BaseController {
         @Request() req: ExpressRequest,
         @Path() commentId: string
     ): Promise<DeleteCommentResponse> {
-        const userEmail = req.user as string;
+        const userEmail = getUserFromRequest(req);
 
         const comment = await CommentsService.getComment(commentId);
 
@@ -113,5 +116,50 @@ export class CommentsController extends BaseController {
         this.setStatus(code);
 
         return { success, code, message: 'Successfully deleted' };
+    }
+
+    @Patch('{commentId}')
+    @Security(PassportStrategies.local)
+    public async updateComment(
+        @Request() req: ExpressRequest,
+        @Path() commentId: string,
+        @Body() body: UpdateCommentBody
+    ): Promise<UpdateCommentResponse> {
+        const userEmail = getUserFromRequest(req);
+
+        const comment = await CommentsService.getComment(commentId);
+
+        if (!comment) {
+            this.setStatus(404);
+            return {
+                success: false,
+                code: 404,
+                data: null,
+                errors: [`No such comment with id ${commentId}`]
+            };
+        }
+
+        if (comment.author !== userEmail) {
+            this.setStatus(403);
+            return {
+                success: false,
+                code: 403,
+                data: null,
+                errors: [`User not authorized to modify comment with id ${commentId}`]
+            };
+        }
+
+        const updatedComment = await CommentsService.updateCommentContent(comment, body.content);
+
+        const success = !!updatedComment;
+        const code = success ? 200 : 500;
+
+        this.setStatus(code);
+
+        return {
+            success,
+            code,
+            data: updatedComment
+        };
     }
 }

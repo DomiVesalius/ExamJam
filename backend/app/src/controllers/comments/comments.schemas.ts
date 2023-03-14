@@ -24,3 +24,14 @@ export interface CreateCommentResponse extends BaseResponse {
  * DELETE /comments/:commentId
  */
 export interface DeleteCommentResponse extends BaseResponse {}
+
+/**
+ * PATCH /comments/:commentId
+ */
+export interface UpdateCommentBody {
+    content: string;
+}
+
+export interface UpdateCommentResponse extends BaseResponse {
+    data: ICommentModel | null;
+}

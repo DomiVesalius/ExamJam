@@ -65,6 +65,7 @@ export class BookmarksService {
                 if (!exists) {
                     return null;
                 }
+
                 parameters = {
                     userEmail: email,
                     type: type,
@@ -76,17 +77,20 @@ export class BookmarksService {
                 if (!exists) {
                     return null;
                 }
+
                 parameters = {
                     userEmail: email,
                     type: type,
                     examId: itemId
                 };
+
                 break;
             case BookmarkType.post:
                 exists = await PostsService.getPost(itemId);
                 if (!exists) {
                     return null;
                 }
+
                 parameters = {
                     userEmail: email,
                     type: type,

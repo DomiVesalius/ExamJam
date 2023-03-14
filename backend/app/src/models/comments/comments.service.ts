@@ -19,15 +19,20 @@ export class CommentsService {
         }
     }
 
+    /**
+     * Given postId, returns an array of comments that are top level comments
+     * (i.e. not replies to other comments). The top level comments will have parentId set to null.
+     * Each comment object will have a children array that contains the replies to that comment.
+     * @param pageNumber page number to retrieve comments from
+     * @param limit amount of comments per page
+     * @param postId ID of Post
+     */
     public static async getCommentsByPost(
         pageNumber: number,
         limit: number,
         postId: string
     ): Promise<CommentObject[] | null> {
         try {
-            // return await CommentModel.find({ postId: postId })
-            //     .skip((pageNumber - 1) * limit)
-            //     .limit(limit);
             const topLevelComments = await CommentModel.find({ postId: postId, parentId: null })
                 .skip((pageNumber - 1) * limit)
                 .limit(limit);
@@ -57,6 +62,7 @@ export class CommentsService {
 
                     commentObj.children.push(childCommentObj);
                 }
+                comments.push(commentObj);
             }
             return comments;
         } catch (e) {

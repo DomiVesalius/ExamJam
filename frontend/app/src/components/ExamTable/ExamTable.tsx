@@ -10,7 +10,8 @@ import {
     tableCellClasses,
     TableContainer,
     TableHead,
-    TableRow
+    TableRow,
+    Typography
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import http from '../../utils/http';
@@ -87,13 +88,18 @@ export const ExamTable: React.FunctionComponent<CourseTableProps> = ({ courseCod
                                     scope="row"
                                     sx={{ fontWeight: 'bold' }}
                                 >
-                                    <Link href={`exams/${row.id}`}>{row.name}</Link>
+                                    <Link href={`${courseCode}/exams/${row.id}`}>{row.name}</Link>
                                 </StyledTableCell>
                                 <StyledTableCell align="left">
                                     <Link href={row.link}>Link to original exam</Link>
                                 </StyledTableCell>
                                 <StyledTableCell align="right">
-                                    <Button variant="contained">Create Post</Button>
+                                    <Link
+                                        href={`/dashboard/courses/${courseCode}/create-post?examId=${row.id}`}
+                                        style={{ textDecoration: 'none' }}
+                                    >
+                                        <Button variant="contained">Create Post</Button>
+                                    </Link>
                                 </StyledTableCell>
                             </StyledTableRow>
                         ))}

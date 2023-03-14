@@ -4,11 +4,12 @@ import { useMainContext } from '../../../contexts/Main/MainContext';
 import HTTP from '../../../utils/http';
 
 const LogoutButton: React.FunctionComponent = () => {
-    const { setIsAuthenticated } = useMainContext();
+    const { setIsAuthenticated, setCurrUser } = useMainContext();
 
     const handleLogout = () => {
         HTTP.delete('/users/logout')
             .then((res) => {
+                setCurrUser('');
                 setIsAuthenticated(false);
             })
             .catch((err) => console.log('Failed to logout'));

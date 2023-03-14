@@ -32,7 +32,7 @@ export interface CommentObject {
 export interface ChildCommentObject {
     _id: string;
     postId: Schema.Types.ObjectId;
-    parentId: Schema.Types.ObjectId;
+    parentId: Schema.Types.ObjectId | null;
     content: string;
     children: any[];
 }

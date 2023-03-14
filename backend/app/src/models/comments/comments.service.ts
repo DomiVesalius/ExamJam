@@ -1,5 +1,9 @@
 import CommentModel, { ICommentModel } from './comments.model';
-import { CreateCommentBody } from '../../controllers/comments/comments.schemas';
+import {
+    ChildCommentObject,
+    CommentObject,
+    CreateCommentBody
+} from '../../controllers/comments/comments.schemas';
 
 interface CreateCommentParams extends CreateCommentBody {
     author: string;
@@ -19,11 +23,42 @@ export class CommentsService {
         pageNumber: number,
         limit: number,
         postId: string
-    ): Promise<ICommentModel[] | null> {
+    ): Promise<CommentObject[] | null> {
         try {
-            return await CommentModel.find({ postId: postId })
+            // return await CommentModel.find({ postId: postId })
+            //     .skip((pageNumber - 1) * limit)
+            //     .limit(limit);
+            const topLevelComments = await CommentModel.find({ postId: postId, parentId: null })
                 .skip((pageNumber - 1) * limit)
                 .limit(limit);
+
+            const comments: CommentObject[] = [];
+
+            for (const comment of topLevelComments) {
+                const commentObj: CommentObject = {
+                    _id: (await comment)._id,
+                    postId: comment.postId,
+                    parentId: comment.parentId,
+                    content: comment.content,
+                    children: []
+                };
+                for (const childId of comment.children) {
+                    const childComment = await CommentModel.findById(childId);
+
+                    if (!childComment) continue;
+
+                    const childCommentObj: ChildCommentObject = {
+                        _id: childComment._id,
+                        postId: childComment.postId,
+                        parentId: childComment.parentId,
+                        content: childComment.content,
+                        children: []
+                    };
+
+                    commentObj.children.push(childCommentObj);
+                }
+            }
+            return comments;
         } catch (e) {
             return null;
         }

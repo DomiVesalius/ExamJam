@@ -5,7 +5,10 @@ enum PathConstants {
     loginPage = '/login',
     rootPage = '/',
     courseSearch = '/dashboard/course-search',
-    coursePage = 'dashboard/courses/:courseCode'
+    examPage = '/dashboard/courses/:courseCode/exams/:examId',
+    coursePage = 'dashboard/courses/:courseCode',
+    postPage = '/dashboard/courses/:courseCode/posts/:postId',
+    postCreationPage = '/dashboard/courses/:courseCode/create-post'
 }
 
 export default PathConstants;

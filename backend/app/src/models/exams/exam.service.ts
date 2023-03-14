@@ -9,4 +9,13 @@ export class ExamService {
             return [];
         }
     }
+    public static async getExamById(examId: string): Promise<IExamModel | null>{
+        try{
+            return await ExamModel.findById(examId)
+        }
+        catch(e){
+            return null;
+        }
+    }
 }
+

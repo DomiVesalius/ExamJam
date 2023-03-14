@@ -52,7 +52,7 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ICourseModel": {
+			"IBookmarkModel": {
 				"$ref": "#/components/schemas/FlattenMaps_T_"
 			},
 			"HttpStatusCodeLiteral": {
@@ -118,6 +118,69 @@
 					510,
 					511
 				]
+			},
+			"CreateBookmarkResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/IBookmarkModel"
+							}
+						],
+						"nullable": true
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"BookmarkType": {
+				"enum": [
+					"course",
+					"exam",
+					"post"
+				],
+				"type": "string"
+			},
+			"BookmarkCreationBody": {
+				"properties": {
+					"type": {
+						"$ref": "#/components/schemas/BookmarkType"
+					},
+					"itemId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"type",
+					"itemId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ICourseModel": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
 			},
 			"CourseResponse": {
 				"properties": {
@@ -848,6 +911,42 @@
 				],
 				"security": [],
 				"parameters": []
+			}
+		},
+		"/bookmarks": {
+			"post": {
+				"operationId": "CreateBookmark",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CreateBookmarkResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Bookmarks"
+				],
+				"security": [
+					{
+						"local": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/BookmarkCreationBody"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/courses/{courseCode}": {

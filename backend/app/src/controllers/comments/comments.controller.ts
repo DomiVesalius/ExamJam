@@ -1,9 +1,22 @@
 import { BaseController } from '../base.controller';
-import { Body, Middlewares, Post, Route, Security, Tags, Request, Delete, Path, Get } from 'tsoa';
+import {
+    Body,
+    Middlewares,
+    Post,
+    Route,
+    Security,
+    Tags,
+    Request,
+    Delete,
+    Path,
+    Get,
+    Query
+} from 'tsoa';
 import {
     CreateCommentBody,
     CreateCommentResponse,
     DeleteCommentResponse,
+    GetCommentsResponse,
     validCreateCommentSchema
 } from './comments.schemas';
 import validationMiddleware from '../../middlewares/validation.middleware';
@@ -83,7 +96,7 @@ export class CommentsController extends BaseController {
 
         return { success, code, data: newComment };
     }
-    
+
     /**
      * GET /api/comments/posts/
      * Get an array of comments based on limit (items per page), page, and post ID.
@@ -158,6 +171,7 @@ export class CommentsController extends BaseController {
             limit: limit,
             totalPages: totalPages
         };
+    }
 
     @Delete('{commentId}')
     @Security(PassportStrategies.local)

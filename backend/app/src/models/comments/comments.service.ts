@@ -6,6 +6,22 @@ interface CreateCommentParams extends CreateCommentBody {
     parentId: string | null;
 }
 
+export interface CommentObject {
+    _id: string;
+    postId: string;
+    parentId: string | null;
+    content: string;
+    children: ChildCommentObject[];
+}
+
+export interface ChildCommentObject {
+    _id: string;
+    postId: string;
+    parentId: string | null;
+    content: string;
+    children: any[];
+}
+
 export class CommentsService {
     /**
      * 'Delete' the given comment.
@@ -38,6 +54,65 @@ export class CommentsService {
     public static async getComment(commentId: string): Promise<ICommentModel | null> {
         try {
             return await CommentModel.findById(commentId);
+        } catch (e) {
+            return null;
+        }
+    }
+
+    /**
+     * Given postId, returns an array of comments that are top level comments
+     * (i.e. not replies to other comments). The top level comments will have parentId set to null.
+     * Each comment object will have a children array that contains the replies to that comment.
+     * @param pageNumber page number to retrieve comments from
+     * @param limit amount of comments per page
+     * @param postId ID of Post
+     */
+    public static async getCommentsByPost(
+        pageNumber: number,
+        limit: number,
+        postId: string
+    ): Promise<CommentObject[] | null> {
+        try {
+            const topLevelComments = await CommentModel.find({ postId: postId, parentId: null })
+                .skip((pageNumber - 1) * limit)
+                .limit(limit);
+
+            const comments: CommentObject[] = [];
+
+            for (const comment of topLevelComments) {
+                const commentObj: CommentObject = {
+                    _id: (await comment)._id,
+                    postId: comment.postId.toString(),
+                    parentId: comment.parentId ? comment.parentId.toString() : '',
+                    content: comment.content,
+                    children: []
+                };
+                for (const childId of comment.children) {
+                    const childComment = await CommentModel.findById(childId);
+
+                    if (!childComment) continue;
+
+                    const childCommentObj: ChildCommentObject = {
+                        _id: childComment._id,
+                        postId: childComment.postId.toString(),
+                        parentId: childComment.parentId ? childComment.parentId.toString() : '',
+                        content: childComment.content,
+                        children: []
+                    };
+
+                    commentObj.children.push(childCommentObj);
+                }
+                comments.push(commentObj);
+            }
+            return comments;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    public static async getTotalNumComments(postId: string): Promise<number | null> {
+        try {
+            return await CommentModel.find({ postId: postId }).countDocuments();
         } catch (e) {
             return null;
         }

@@ -18,9 +18,14 @@ export class CoursesController extends BaseController {
         return { data: course, success: success, code: code };
     }
 
+    @Security(PassportStrategies.local)
     @Get('{courseCode}/exams')
-    public async getExams(@Path() courseCode: string): Promise<GetExamsResponse> {
-        const exams = await ExamService.getByCourseId(courseCode);
+    public async getExams(
+        @Request() req: ExpressRequest,
+        @Path() courseCode: string
+    ): Promise<GetExamsResponse> {
+        const userEmail = req.user as string;
+        const exams = await ExamService.getByCourseId(courseCode, userEmail);
         const code = exams.length ? 200 : 404;
         this.setStatus(code);
         const success = !!exams.length;

@@ -2,7 +2,7 @@ import HTTP from '../../utils/http';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import { BookmarkType } from '../../utils/helpers';
-import { Button } from '@mui/material';
+import { IconButton } from '@mui/material';
 import { useState } from 'react';
 interface BookmarkProps {
 
@@ -19,7 +19,7 @@ const BookmarkButton:React.FunctionComponent<BookmarkProps> = ({ type, itemId, i
     const handleBookmark = async () => {
         try{
            const result = await HTTP.post('/bookmarks', {type, itemId})
-           if(result.status < 400) setBookmarkState(!bookmarkState)
+            if(result.status < 400) setBookmarkState(!bookmarkState)
         }
         catch(e){
             console.log(e)
@@ -27,16 +27,15 @@ const BookmarkButton:React.FunctionComponent<BookmarkProps> = ({ type, itemId, i
     }
     let icon;
     if(bookmarkState){
-        icon = <BookmarkIcon fontSize='large'/>
-        // return <Button onClick={handleBookmark} startIcon={<BookmarkIcon/>}/>
+        icon = <BookmarkIcon/>
     }
     else{
-        icon = <BookmarkBorderIcon fontSize='large'/>
+        icon = <BookmarkBorderIcon/>
     }
     return (
-        <div>
-            <Button onClick={handleBookmark} startIcon={icon}/>
-        </div>
+        <IconButton onClick={handleBookmark}>
+           {icon}
+        </IconButton>
     )
 
 }

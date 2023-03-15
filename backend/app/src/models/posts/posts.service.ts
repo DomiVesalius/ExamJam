@@ -47,6 +47,14 @@ export class PostsService {
         }
     }
 
+    public static async getPostsByPostIdList(postIds: string[]): Promise<IPostModel[]> {
+        try {
+            return await PostModel.find({ _id: postIds });
+        } catch (e) {
+            return [];
+        }
+    }
+
     /**
      * Deletes the post with the given postId
      * @param postId

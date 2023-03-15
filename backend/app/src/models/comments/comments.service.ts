@@ -1,13 +1,25 @@
 import CommentModel, { ICommentModel } from './comments.model';
-import {
-    ChildCommentObject,
-    CommentObject,
-    CreateCommentBody
-} from '../../controllers/comments/comments.schemas';
+import { CreateCommentBody } from '../../controllers/comments/comments.schemas';
 
 interface CreateCommentParams extends CreateCommentBody {
     author: string;
     parentId: string | null;
+}
+
+export interface CommentObject {
+    _id: string;
+    postId: string;
+    parentId: string | null;
+    content: string;
+    children: ChildCommentObject[];
+}
+
+export interface ChildCommentObject {
+    _id: string;
+    postId: string;
+    parentId: string | null;
+    content: string;
+    children: any[];
 }
 
 export class CommentsService {

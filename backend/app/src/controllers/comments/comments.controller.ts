@@ -104,11 +104,11 @@ export class CommentsController extends BaseController {
      * @param page page of comments to retrieve
      * @param postId ID of Post
      */
-    @Get('posts')
+    @Get('posts/{postId}')
     public async getComments(
         @Query() limit: number,
         @Query() page: number,
-        @Query() postId: string
+        @Path() postId: string
     ): Promise<GetCommentsResponse> {
         if (page <= 0 || limit <= 0 || limit > 10) {
             return {

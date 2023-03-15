@@ -1,5 +1,7 @@
-import { Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material';
-
+import { Card, CardActionArea, CardContent, CardMedia, Typography, Button } from '@mui/material';
+import { is } from 'immer/dist/internal';
+import BookmarkButton from '../BookmarkButton/BookmarkButton';
+import { BookmarkType } from '../../utils/helpers';
 interface CourseCardProps {
     /** Title of Card */
     mainText: string;
@@ -21,6 +23,9 @@ interface CourseCardProps {
 
     /** URL to redirect to once card is clicked */
     redirectURL: string;
+
+    courseCode: string;
+
 }
 
 export const CourseCard = ({
@@ -30,7 +35,8 @@ export const CourseCard = ({
     imgAlt,
     width,
     height,
-    redirectURL
+    redirectURL,
+    courseCode,
 }: CourseCardProps) => {
     const redirect = () => {
         window.location.href = redirectURL;
@@ -59,6 +65,15 @@ export const CourseCard = ({
                     </Typography>
                 </CardContent>
             </CardActionArea>
+            <CardActionArea>
+                <BookmarkButton type={BookmarkType.course} itemId={courseCode}/>
+            </CardActionArea>
         </Card>
     );
 };
+
+
+// first add the icon/button to the course card
+// register an action for that icon/button that makes post request to bookmarks endpoint
+
+// repeat for posts and exams. 

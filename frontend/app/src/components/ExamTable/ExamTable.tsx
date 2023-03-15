@@ -16,6 +16,8 @@ import {
 import React, { useEffect, useState } from 'react';
 import http from '../../utils/http';
 import useSWR from 'swr';
+import BookmarkButton from '../BookmarkButton/BookmarkButton';
+import { BookmarkType } from '../../utils/helpers';
 
 interface CourseTableProps {
     courseCode: string;
@@ -78,6 +80,7 @@ export const ExamTable: React.FunctionComponent<CourseTableProps> = ({ courseCod
                             <StyledTableCell>Exam</StyledTableCell>
                             <StyledTableCell align="left">Original URL</StyledTableCell>
                             <StyledTableCell align="right"></StyledTableCell>
+                            <StyledTableCell align="right"></StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -100,6 +103,9 @@ export const ExamTable: React.FunctionComponent<CourseTableProps> = ({ courseCod
                                     >
                                         <Button variant="contained">Create Post</Button>
                                     </Link>
+                                </StyledTableCell>
+                                <StyledTableCell align='right'>
+                                    <BookmarkButton type={BookmarkType.exam} itemId={row.id}/>
                                 </StyledTableCell>
                             </StyledTableRow>
                         ))}

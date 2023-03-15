@@ -25,6 +25,7 @@ function createCourseCards(data: any): [React.ReactElement[], number] {
                 width={345}
                 height={140}
                 redirectURL={`/dashboard/courses/${course.courseCode}`}
+                courseCode={course.courseCode}
             />
         );
     }

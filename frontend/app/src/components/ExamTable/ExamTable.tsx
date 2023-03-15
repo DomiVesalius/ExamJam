@@ -26,7 +26,7 @@ interface CourseTableProps {
 function createExamRows(data: any): any[] {
     const exams = [];
     for (let exam of data.data) {
-        exams.push({ name: exam.title, data: exam.courseCode, link: exam.link, id: exam._id });
+        exams.push({ name: exam.title, data: exam.courseCode, link: exam.link, id: exam._id, isBookmarked: exam.isBookmarked });
     }
     return exams;
 }
@@ -105,7 +105,7 @@ export const ExamTable: React.FunctionComponent<CourseTableProps> = ({ courseCod
                                     </Link>
                                 </StyledTableCell>
                                 <StyledTableCell align='right'>
-                                    <BookmarkButton type={BookmarkType.exam} itemId={row.id}/>
+                                    <BookmarkButton type={BookmarkType.exam} itemId={row.id} isBookmarked={row.isBookmarked}/>
                                 </StyledTableCell>
                             </StyledTableRow>
                         ))}

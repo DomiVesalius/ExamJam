@@ -14,6 +14,7 @@ interface CourseTableProps {
     postId: string;
     courseCode: string;
     author: string;
+    isBookmarked: boolean;
 }
 
 const handleDelete = async (postId: string, courseCode: string) => {
@@ -28,7 +29,8 @@ const handleDelete = async (postId: string, courseCode: string) => {
 export const KebabMenu: React.FunctionComponent<CourseTableProps> = ({
     postId,
     courseCode,
-    author
+    author, 
+    isBookmarked,
 }) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -89,7 +91,7 @@ export const KebabMenu: React.FunctionComponent<CourseTableProps> = ({
                     </IconButton>
 
                 )}
-                <BookmarkButton type={BookmarkType.post} itemId={postId}/>
+                <BookmarkButton type={BookmarkType.post} itemId={postId} isBookmarked={isBookmarked}/>
 
                 <IconButton size="small" aria-label="share">
                     <ShareIcon />

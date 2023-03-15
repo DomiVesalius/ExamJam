@@ -32,6 +32,7 @@ function createCourseCards(data: any): [React.ReactElement[], number] {
                 height={140}
                 redirectURL={`/dashboard/courses/${course.courseCode}`}
                 courseCode={course.courseCode}
+                isBookmarked={course.isBookmarked}
             />
         );
     }

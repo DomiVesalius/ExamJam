@@ -26,6 +26,8 @@ interface CourseCardProps {
 
     courseCode: string;
 
+    isBookmarked: boolean;
+
 }
 
 export const CourseCard = ({
@@ -37,6 +39,7 @@ export const CourseCard = ({
     height,
     redirectURL,
     courseCode,
+    isBookmarked,
 }: CourseCardProps) => {
     const redirect = () => {
         window.location.href = redirectURL;
@@ -66,7 +69,7 @@ export const CourseCard = ({
                 </CardContent>
             </CardActionArea>
             <CardActionArea>
-                <BookmarkButton type={BookmarkType.course} itemId={courseCode}/>
+                <BookmarkButton type={BookmarkType.course} itemId={courseCode} isBookmarked={isBookmarked}/>
             </CardActionArea>
         </Card>
     );

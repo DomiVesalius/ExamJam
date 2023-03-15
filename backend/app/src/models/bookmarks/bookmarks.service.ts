@@ -2,6 +2,9 @@ import BookmarkModel, { BookmarkType, IBookmarkModel } from './bookmark.model';
 import { CoursesService } from '../courses/courses.service';
 import { ExamService } from '../exams/exam.service';
 import { PostsService } from '../posts/posts.service';
+import { ICourseModel } from '../courses/course.model';
+import { IPostModel } from '../posts/post.model';
+import { IExamModel } from '../exams/exam.model';
 
 interface ParamsInterface {
     userEmail: string;
@@ -24,12 +27,46 @@ export class BookmarksService {
         userEmail: string,
         pageNumber: number,
         limit: number
-    ): Promise<IBookmarkModel[]> {
+    ): Promise<ICourseModel[] | IPostModel[] | IExamModel[]> {
         try {
-            return BookmarkModel.find({ type, userEmail })
-                .sort({ createdAt: 'desc' })
-                .skip((pageNumber - 1) * limit)
-                .limit(limit);
+            let getBookmarkQuery = BookmarkModel.find({
+                type,
+                userEmail
+            });
+
+            let selectField; // The field in BookmarkModel that will be projected in the final query
+            let getBookmarkEntityFunction; // The function that will be called to fetch the actual bookmarked items
+
+            // Sorted by courseCode if of type course, otherwise sorted by time created
+            if (type === BookmarkType.post) {
+                selectField = 'postId';
+                getBookmarkEntityFunction = PostsService.getPostsByPostIdList;
+                getBookmarkQuery = getBookmarkQuery.sort({ createdAt: 'desc' });
+            } else if (type === BookmarkType.exam) {
+                selectField = 'examId';
+                getBookmarkEntityFunction = ExamService.getExamsByExamIdList;
+                getBookmarkQuery = getBookmarkQuery.sort({ createdAt: 'desc' });
+            } else {
+                selectField = 'courseCode';
+                getBookmarkEntityFunction = CoursesService.getCoursesByCourseCodeList;
+                getBookmarkQuery = getBookmarkQuery.sort({ courseCode: 'asc' });
+            }
+
+            // Paginating
+            getBookmarkQuery = getBookmarkQuery.skip((pageNumber - 1) * limit).limit(limit);
+
+            // Selecting the only useful field
+            const bookmarkResults = await getBookmarkQuery.select(selectField);
+
+            // Iterating through the results and gathering all the selected fields into a list
+            // which will be used by the entity function as a filter
+            const identifiers = [];
+            for (const bookmark of bookmarkResults) {
+                let identifier = (await bookmark).get(selectField);
+                identifiers.push(identifier);
+            }
+
+            return await getBookmarkEntityFunction(identifiers);
         } catch (e) {
             return [];
         }
@@ -38,6 +75,7 @@ export class BookmarksService {
     /**
      * Gets  the number of bookmarks of the given type that the user with the given email possesses.
      * @param type BookmarkType
+     * @param limit page size
      * @param userEmail the email of the user the bookmarks belong to
      */
     public static async getTotalNumBookmarksOfType(
@@ -46,7 +84,8 @@ export class BookmarksService {
         userEmail: string
     ): Promise<number> {
         try {
-            return (await BookmarkModel.find({ type, userEmail }).countDocuments()) / limit;
+            const numBookmarks = await BookmarkModel.find({ type, userEmail }).countDocuments();
+            return Math.ceil(numBookmarks / limit);
         } catch (e) {
             return -1;
         }

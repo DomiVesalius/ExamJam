@@ -5,7 +5,7 @@ export interface IBookmark {
     type: string;
     courseCode: string;
     examId: string;
-    postId: string
+    postId: string;
 }
 
 export enum BookmarkType {
@@ -20,14 +20,15 @@ export interface IBookmarkModel extends IBookmark, Document {}
 // not all 3 should be populated when creating a new bookmark.
 const BookmarkSchema: Schema = new Schema(
     {
-        userEmail: {type: Schema.Types.String, required: true, ref: 'User.email'},
-        type: {type: Schema.Types.String, enum: BookmarkType, required: true},
-        courseCode: {type: Schema.Types.String, ref: 'Course.courseCode'},
-        examId: {type: Schema.Types.ObjectId, ref: 'Exam._id'},
-        postId: {type: Schema.Types.ObjectId, ref: 'Post._id'},
+        userEmail: { type: Schema.Types.String, required: true, ref: 'User.email' },
+        type: { type: Schema.Types.String, enum: BookmarkType, required: true },
+        courseCode: { type: Schema.Types.String, ref: 'Course.courseCode' },
+        examId: { type: Schema.Types.ObjectId, ref: 'Exam._id' },
+        postId: { type: Schema.Types.ObjectId, ref: 'Post._id' }
     },
-    { timestamps: false, versionKey: false }
+    { timestamps: true, versionKey: false }
 );
+
 const BookmarkModel = mongoose.model<IBookmarkModel>('Bookmark', BookmarkSchema);
 
 export default BookmarkModel;

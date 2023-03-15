@@ -21,13 +21,19 @@ export class ExamService {
             return [];
         }
     }
-    public static async getExamById(examId: string): Promise<IExamModel | null>{
-        try{
-            return await ExamModel.findById(examId)
-        }
-        catch(e){
+    public static async getExamById(examId: string): Promise<IExamModel | null> {
+        try {
+            return await ExamModel.findById(examId);
+        } catch (e) {
             return null;
         }
     }
-}
 
+    public static async getExamsByExamIdList(examIds: string[]): Promise<IExamModel[]> {
+        try {
+            return await ExamModel.find({ _id: examIds });
+        } catch (e) {
+            return [];
+        }
+    }
+}

@@ -1,9 +1,22 @@
 import { BaseController } from '../base.controller';
-import { Body, Middlewares, Post, Route, Security, Tags, Request, Delete, Path } from 'tsoa';
+import {
+    Body,
+    Middlewares,
+    Post,
+    Route,
+    Security,
+    Tags,
+    Request,
+    Delete,
+    Path,
+    Get,
+    Query
+} from 'tsoa';
 import {
     CreateCommentBody,
     CreateCommentResponse,
     DeleteCommentResponse,
+    GetCommentsResponse,
     validCreateCommentSchema
 } from './comments.schemas';
 import validationMiddleware from '../../middlewares/validation.middleware';
@@ -82,6 +95,82 @@ export class CommentsController extends BaseController {
         this.setStatus(code);
 
         return { success, code, data: newComment };
+    }
+
+    /**
+     * GET /api/comments/posts/
+     * Get an array of comments based on limit (items per page), page, and post ID.
+     * @param limit amount of comments per page
+     * @param page page of comments to retrieve
+     * @param postId ID of Post
+     */
+    @Get('posts/{postId}')
+    public async getComments(
+        @Query() limit: number,
+        @Query() page: number,
+        @Path() postId: string
+    ): Promise<GetCommentsResponse> {
+        if (page <= 0 || limit <= 0 || limit > 10) {
+            return {
+                success: false,
+                code: 400,
+                data: [],
+                page: page,
+                limit: limit,
+                totalPages: -1,
+                errors: ['Invalid page number or limit']
+            };
+        }
+
+        const invalidPostIdResponse: GetCommentsResponse = {
+            success: false,
+            code: 404,
+            data: [],
+            page: page,
+            limit: limit,
+            totalPages: -1,
+            errors: `No posts found with id ${postId}`
+        };
+
+        const totalNumComments = await CommentsService.getTotalNumComments(postId);
+
+        if (!totalNumComments) {
+            this.setStatus(404);
+            invalidPostIdResponse.errors += ': from getTotalNumComments';
+            return invalidPostIdResponse;
+        }
+
+        const totalPages = Math.ceil(totalNumComments / limit);
+
+        if (totalPages < page) {
+            this.setStatus(400);
+            return {
+                success: false,
+                code: 400,
+                data: [],
+                page: page,
+                limit: limit,
+                totalPages: totalPages,
+                errors: ['Page number exceeds total number of pages']
+            };
+        }
+
+        const commentsArray = await CommentsService.getCommentsByPost(page, limit, postId);
+        if (!commentsArray) {
+            this.setStatus(404);
+            invalidPostIdResponse.errors += ': from getCommentsByPost';
+            return invalidPostIdResponse;
+        }
+
+        this.setStatus(200);
+        return {
+            success: true,
+            code: 200,
+            data: commentsArray,
+            page: page,
+            limit: limit,
+            totalPages: totalPages
+        };
     }
 
     @Delete('{commentId}')

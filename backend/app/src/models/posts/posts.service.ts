@@ -2,6 +2,7 @@ import { IUserModel } from '../user/user.model';
 import PostModel, { IPostModel } from './post.model';
 import { IPiazzaPost } from '../piazzaPosts/cleaned/piazzaPost.model';
 import { CommentObject } from '../piazzaPosts/cleaned/cleanPiazza.service';
+import { setIsBookmarkedField } from '../models.helpers';
 
 export interface PostObject extends IPiazzaPost {
     _id: string;
@@ -35,13 +36,18 @@ export class PostsService {
     public static async getPostsByExamIdList(
         examIds: string[],
         pageNumber: number,
-        limit: number
+        limit: number,
+        email?: string
     ): Promise<IPostModel[]> {
         try {
-            return await PostModel.find({ examId: examIds })
+            const posts = await PostModel.find({ examId: examIds })
                 .sort({ createdAt: 'asc' })
                 .skip((pageNumber - 1) * limit)
                 .limit(limit);
+
+            await setIsBookmarkedField(email || '', posts);
+
+            return posts;
         } catch (e) {
             return [];
         }

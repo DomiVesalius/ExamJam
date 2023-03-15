@@ -1,4 +1,6 @@
-import mongoose, { Document, Model, Schema } from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
+import { BookmarksService } from '../bookmarks/bookmarks.service';
+import { BookmarkType } from '../bookmarks/bookmark.model';
 
 export interface ICourse {
     courseCode: string;
@@ -21,8 +23,20 @@ const CourseSchema: Schema = new Schema(
         programArea: { required: true, type: Array<Schema.Types.String> },
         campuses: { required: true, type: Array<Schema.Types.String> }
     },
-    { collection: 'Course' }
+    { collection: 'Course', toJSON: { virtuals: true } }
 );
+
+CourseSchema.virtual('isBookmarked');
+
+CourseSchema.methods.setIsBookmarked = async function (email: string) {
+    const isBookmarked = await BookmarksService.getBookmark(
+        this.courseCode,
+        BookmarkType.course,
+        email
+    );
+
+    this.isBookmarked = !!isBookmarked;
+};
 
 const CourseModel = mongoose.model<ICourseModel>('Course', CourseSchema);
 

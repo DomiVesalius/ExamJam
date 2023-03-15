@@ -73,12 +73,16 @@ export class PostsController extends BaseController {
         return res;
     }
 
+    @Security(PassportStrategies.local)
     @Get('courses/{courseCode}')
     public async getPostsByCourseCode(
         @Path() courseCode: string,
         @Query() page: number,
-        @Query() limit: number
+        @Query() limit: number,
+        @Request() req: ExpressRequest
     ): Promise<GetPostsByCourseCode> {
+        const userEmail = req.user as string;
+
         if (page < PostsController.MIN_PAGE || limit < PostsController.MIN_LIMIT) {
             this.setStatus(400);
             return {
@@ -102,7 +106,7 @@ export class PostsController extends BaseController {
             examIds.push(exam._id);
         }
 
-        const posts = await PostsService.getPostsByExamIdList(examIds, page, limit);
+        const posts = await PostsService.getPostsByExamIdList(examIds, page, limit, userEmail);
         const totalPages = await PostsService.getTotalNumPosts(examIds, limit);
 
         let resBody: GetPostsByExamId;
@@ -135,12 +139,16 @@ export class PostsController extends BaseController {
         return resBody;
     }
 
+    @Security(PassportStrategies.local)
     @Get('exams/{examId}')
     public async getPostsByExamId(
         @Path() examId: string,
         @Query() page: number,
-        @Query() limit: number
+        @Query() limit: number,
+        @Request() req: ExpressRequest
     ): Promise<GetPostsByExamId> {
+        const userEmail = req.user as string;
+
         if (page < PostsController.MIN_PAGE || limit < PostsController.MIN_LIMIT) {
             this.setStatus(400);
             return {
@@ -156,7 +164,12 @@ export class PostsController extends BaseController {
 
         if (limit > PostsController.MAX_LIMIT) limit = PostsController.MAX_LIMIT;
 
-        let posts: IPostModel[] = await PostsService.getPostsByExamIdList([examId], page, limit);
+        let posts: IPostModel[] = await PostsService.getPostsByExamIdList(
+            [examId],
+            page,
+            limit,
+            userEmail
+        );
 
         const totalPages = await PostsService.getTotalNumPosts([examId], limit);
 

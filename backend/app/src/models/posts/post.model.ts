@@ -1,4 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { BookmarksService } from '../bookmarks/bookmarks.service';
+import { BookmarkType } from '../bookmarks/bookmark.model';
 
 export const PostModelName = 'Post';
 
@@ -18,8 +20,15 @@ const PostSchema = new Schema<IPostModel>(
         content: { type: Schema.Types.String, required: false, default: '' },
         examId: { type: Schema.Types.String, required: true, ref: 'Exam._id' }
     },
-    { timestamps: true, versionKey: false }
+    { timestamps: true, versionKey: false, toJSON: { virtuals: true } }
 );
+
+PostSchema.virtual('isBookmarked');
+
+PostSchema.methods.setIsBookmarked = async function (email: string) {
+    const isBookmarked = await BookmarksService.getBookmark(this._id, BookmarkType.post, email);
+    this.isBookmarked = !!isBookmarked;
+};
 
 const PostModel = mongoose.model<IPostModel>(PostModelName, PostSchema);
 

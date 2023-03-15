@@ -20,6 +20,14 @@ export class CoursesService {
             .limit(limit);
     }
 
+    public static async getCoursesByCourseCodeList(courseCodes: string[]): Promise<ICourseModel[]> {
+        try {
+            return await CourseModel.find({ courseCode: courseCodes });
+        } catch (e) {
+            return [];
+        }
+    }
+
     /**
      * Gets the total number of courses that match the given keyword.
      * @param keyword keyword to be matched against courseCode and title

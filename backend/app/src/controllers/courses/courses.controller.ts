@@ -2,8 +2,9 @@ import { BaseController } from '../base.controller';
 import { CoursesService } from '../../models/courses/courses.service';
 import { GetCoursesResponse, CourseResponse, GetExamsResponse } from './courses.schemas';
 import { ExamService } from '../../models/exams/exam.service';
-import { Get, Query, Route, Tags, Security, Path } from 'tsoa';
-// import PassportStrategies from '../../middlewares/passport.middleware';
+import { Get, Query, Route, Tags, Security, Path, Request } from 'tsoa';
+import PassportStrategies from '../../middlewares/passport.middleware';
+import { Request as ExpressRequest } from 'express';
 
 @Tags('Courses')
 @Route('courses')
@@ -26,13 +27,16 @@ export class CoursesController extends BaseController {
         return { data: exams, success: success, code: code };
     }
 
-    // @Security(PassportStrategies.local)
+    @Security(PassportStrategies.local)
     @Get('')
     public async getCourses(
         @Query() limit: number,
         @Query() page: number,
-        @Query() keyword: string
+        @Query() keyword: string,
+        @Request() req: ExpressRequest
     ): Promise<GetCoursesResponse> {
+        const userEmail = req.user as string;
+
         if (page <= 0 || limit <= 0 || limit > 10) {
             return {
                 success: false,
@@ -60,7 +64,7 @@ export class CoursesController extends BaseController {
             };
         }
 
-        const courseModels = await CoursesService.getCourses(page, limit, keyword);
+        const courseModels = await CoursesService.getCourses(page, limit, keyword, userEmail);
 
         return {
             success: true,

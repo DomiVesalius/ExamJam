@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { fetcher } from '../../utils/helpers';
 import useSWR from 'swr';
-import { Box } from '@mui/material';
+import { Box, Pagination, Stack, Typography } from '@mui/material';
 
 export enum BookmarkedItemType {
     post = 'post',
@@ -25,11 +25,15 @@ function createBookmarkedElements(
 ): [React.ReactElement[], number] {
     const bookmarkedElements: React.ReactElement[] = [];
     for (let bookmarkedItem of data.data) {
+        let reactElement: React.ReactElement;
         if (type == BookmarkedItemType.exam) {
             // TODO: fetch data.data of type IExamModel[]
-        } else if (type == BookmarkedItemType.post) {
+            reactElement = <Typography>Fill with data here</Typography>;
+        } else {
             // TODO: fetch data.data of type IPostModel[]
+            reactElement = <Typography>Fill with data here</Typography>;
         }
+        bookmarkedElements.push(reactElement);
     }
     return [bookmarkedElements, data.totalPages];
 }
@@ -48,7 +52,7 @@ const BookmarkedItem: React.FunctionComponent<BookmarkedItemProps> = (
     }
 
     if (endpoint == '') {
-        return <div></div>;
+        return <Typography variant="subtitle1">Specify type</Typography>;
     }
 
     const { data, error } = useSWR(endpoint, fetcher);
@@ -61,16 +65,32 @@ const BookmarkedItem: React.FunctionComponent<BookmarkedItemProps> = (
             setBookmarkedItems(bookmarkedElements[0]);
             setTotalPages(bookmarkedElements[1]);
         }
-        if (error) {
-            console.log(error);
-        }
     }, [data, error]);
+
+    if (error) {
+        console.log(error);
+        return (
+            <Typography variant="subtitle1">
+                Error Occurred from useSWR: Errors:
+                {error}
+            </Typography>
+        );
+    }
 
     const handleChangePage = (event: React.ChangeEvent<unknown>, newPage: number) => {
         setPage(newPage);
     };
 
-    return <Box></Box>;
+    return (
+        <Stack spacing={2} direction="column">
+            <Box>
+                <Pagination count={totalPages} onChange={handleChangePage} />
+            </Box>
+            <Stack spacing={2} direction="column">
+                {bookmarkedItems.map((item) => item)}
+            </Stack>
+        </Stack>
+    );
 };
 
 export default BookmarkedItem;

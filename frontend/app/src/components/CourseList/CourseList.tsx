@@ -1,4 +1,4 @@
-import { Box, Pagination, Stack } from '@mui/material';
+import { Box, Pagination, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import React, { useEffect, useState } from 'react';
 
@@ -73,6 +73,14 @@ export const CourseList: React.FunctionComponent<CourseListProps> = ({
     const handleChangePage = (event: React.ChangeEvent<unknown>, newPage: number) => {
         setPage(newPage);
     };
+
+    if (courseList.length == 0) {
+        return (
+            <Box sx={{ mt: 6 }}>
+                <Typography align="center">Bookmarked courses will be displayed here</Typography>
+            </Box>
+        );
+    }
 
     return (
         <Box>

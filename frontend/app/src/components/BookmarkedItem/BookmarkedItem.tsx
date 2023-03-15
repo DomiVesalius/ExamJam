@@ -14,6 +14,11 @@ export interface BookmarkedItemProps {
     queryLimit: number;
 }
 
+/**
+ * Return a list of [list of react elements, total pages] from data given by parameter data.
+ * @param data the returned data object from uswSWR
+ * @param type whether the data is of type IExamModel[] or IPostModel[]
+ */
 function createBookmarkedElements(
     data: any,
     type: BookmarkedItemType

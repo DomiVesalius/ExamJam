@@ -114,7 +114,7 @@ export class CommentsController extends BaseController {
             return {
                 success: false,
                 code: 400,
-                data: null,
+                data: [],
                 page: page,
                 limit: limit,
                 totalPages: -1,
@@ -125,7 +125,7 @@ export class CommentsController extends BaseController {
         const invalidPostIdResponse: GetCommentsResponse = {
             success: false,
             code: 404,
-            data: null,
+            data: [],
             page: page,
             limit: limit,
             totalPages: -1,
@@ -147,7 +147,7 @@ export class CommentsController extends BaseController {
             return {
                 success: false,
                 code: 400,
-                data: null,
+                data: [],
                 page: page,
                 limit: limit,
                 totalPages: totalPages,

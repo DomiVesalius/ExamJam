@@ -27,7 +27,7 @@ export interface CreateCommentResponse extends BaseResponse {
 
 export interface GetCommentsResponse extends BaseResponse {
     /** Array of comments */
-    data: CommentObject[] | null;
+    data: CommentObject[];
     /** Page number to retrieve comments from */
     page: number;
     /** Amount of comments per page */

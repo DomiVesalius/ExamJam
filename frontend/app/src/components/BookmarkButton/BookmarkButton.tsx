@@ -19,7 +19,6 @@ const BookmarkButton:React.FunctionComponent<BookmarkProps> = ({ type, itemId, i
     const handleBookmark = async () => {
         try{
            const result = await HTTP.post('/bookmarks', {type, itemId})
-           console.log(result)
            if(result.status < 400) setBookmarkState(!bookmarkState)
         }
         catch(e){
@@ -28,11 +27,11 @@ const BookmarkButton:React.FunctionComponent<BookmarkProps> = ({ type, itemId, i
     }
     let icon;
     if(bookmarkState){
-        icon = <BookmarkIcon/>
+        icon = <BookmarkIcon fontSize='large'/>
         // return <Button onClick={handleBookmark} startIcon={<BookmarkIcon/>}/>
     }
     else{
-        icon = <BookmarkBorderIcon/>
+        icon = <BookmarkBorderIcon fontSize='large'/>
     }
     return (
         <div>

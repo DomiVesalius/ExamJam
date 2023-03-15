@@ -23,6 +23,9 @@ interface CourseListProps {
 function createCourseCards(data: any): [React.ReactElement[], number] {
     const courseCards: React.ReactElement[] = [];
     for (let course of data.data) {
+        if(typeof course.isBookmarked === "undefined"){
+            course.isBookmarked = true
+        }
         courseCards.push(
             <CourseCard
                 mainText={course.courseCode + ': ' + course.title}

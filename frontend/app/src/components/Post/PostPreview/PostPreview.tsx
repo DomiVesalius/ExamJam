@@ -56,7 +56,7 @@ const PostPreview: React.FunctionComponent<PostPreviewProps> = (props: PostPrevi
                 </CardContent>
             </CardActionArea>
             <CardActionArea sx={{ display: 'flex', justifyContent: 'right' }}>
-                <BookmarkButton type={BookmarkType.post} itemId={props.postId} isBookmarked={props.isBookmarked}/>
+                {/* <BookmarkButton type={BookmarkType.post} itemId={props.postId} isBookmarked={props.isBookmarked}/> */}
                 <IconButton aria-label="share">
                     <ShareIcon />
                 </IconButton>

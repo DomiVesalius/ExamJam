@@ -1,6 +1,6 @@
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import BookmarkedItem, { BookmarkedItemProps } from './BookmarkedItem';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
+import BookmarkedItem, { BookmarkedItemProps, BookmarkedItemType } from './BookmarkedItem';
 
 export default {
     title: `Components/${BookmarkedItem.name}`,
@@ -15,4 +15,8 @@ const Template: ComponentStory<typeof BookmarkedItem> = (args: BookmarkedItemPro
 );
 
 export const Default = Template.bind({});
-Default.args = {};
+Default.args = {
+    type: BookmarkedItemType.post,
+    queryLimit: 1,
+    queryPage: 1
+};

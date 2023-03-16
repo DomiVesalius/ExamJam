@@ -86,9 +86,11 @@ let commentList = {
     totalPages: 8
 };
 
+interface CommentSectionProps {}
+
 let comments = commentList.data;
 
-export const CommentCard = () => {
+export const CommentSection = () => {
     return (
         <Box>
             <Stack>

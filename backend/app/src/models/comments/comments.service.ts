@@ -8,6 +8,7 @@ interface CreateCommentParams extends CreateCommentBody {
 
 export interface CommentObject {
     _id: string;
+    author: string;
     postId: string;
     parentId: string | null;
     content: string;
@@ -16,6 +17,7 @@ export interface CommentObject {
 
 export interface ChildCommentObject {
     _id: string;
+    author: string;
     postId: string;
     parentId: string | null;
     content: string;
@@ -82,6 +84,7 @@ export class CommentsService {
             for (const comment of topLevelComments) {
                 const commentObj: CommentObject = {
                     _id: (await comment)._id,
+                    author: comment.author,
                     postId: comment.postId.toString(),
                     parentId: comment.parentId ? comment.parentId.toString() : '',
                     content: comment.content,
@@ -94,6 +97,7 @@ export class CommentsService {
 
                     const childCommentObj: ChildCommentObject = {
                         _id: childComment._id,
+                        author: childComment.author,
                         postId: childComment.postId.toString(),
                         parentId: childComment.parentId ? childComment.parentId.toString() : '',
                         content: childComment.content,

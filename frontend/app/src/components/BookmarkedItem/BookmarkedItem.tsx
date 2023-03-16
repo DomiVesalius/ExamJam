@@ -33,11 +33,9 @@ function createBookmarkedElements(
             // TODO: fetch data.data of type IExamModel[]
             reactElement = <Typography>Fill with data here</Typography>;
         } else {
-            // TODO: fetch data.data of type IPostModel[]
             reactElement = (
                 <PostPreview
-                    // TODO: Get courseCode from somewhere...
-                    courseCode={''}
+                    courseCode={bookmarkedItem.courseCode}
                     author={bookmarkedItem.author}
                     content={bookmarkedItem.content}
                     createdAt={new Date(bookmarkedItem.createdAt)}

@@ -7,6 +7,7 @@ export interface IPost {
     title: string;
     content: string;
     examId: string;
+    courseCode: string;
 }
 
 export interface IPostModel extends Document, IPost {}
@@ -16,7 +17,8 @@ const PostSchema = new Schema<IPostModel>(
         author: { type: Schema.Types.String, required: true, ref: 'User._id' },
         title: { type: Schema.Types.String, required: false, default: '' },
         content: { type: Schema.Types.String, required: false, default: '' },
-        examId: { type: Schema.Types.String, required: true, ref: 'Exam._id' }
+        examId: { type: Schema.Types.String, required: true, ref: 'Exam._id' },
+        courseCode: { type: Schema.Types.String, required: true, ref: 'Course.courseCode' }
     },
     { timestamps: true, versionKey: false }
 );

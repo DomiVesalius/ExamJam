@@ -1,7 +1,9 @@
 import { Avatar, Box, Card, Divider, Grid, Pagination, Stack, Typography } from '@mui/material';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { fetcher } from '../../utils/helpers';
+import useSWR from 'swr';
 
 const imgLink =
     'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80';
@@ -86,87 +88,148 @@ let commentList = {
     totalPages: 8
 };
 
-interface CommentSectionProps {}
+interface ChildComment {
+    _id: string;
+    author: string;
+    postId: string;
+    parentId: string;
+    content: string;
+    children: unknown[];
+}
 
-let comments = commentList.data;
+interface Comment {
+    _id: string;
+    author: string;
+    postId: string;
+    parentId: string | null;
+    content: string;
+    children: ChildComment[];
+}
 
-export const CommentSection = () => {
-    return (
-        <Box>
-            <Stack>
-                {comments.map((e) => (
-                    <Card sx={{ p: '40px 20px', my: '20px', width: '40vw' }}>
-                        <Grid container wrap="nowrap" spacing={2}>
-                            <Grid item>
-                                <Avatar alt="Remy Sharp" src={imgLink} />
-                            </Grid>
-                            <Grid item>
-                                <Stack>
-                                    <ThumbUpIcon></ThumbUpIcon>
-                                    <ThumbDownIcon></ThumbDownIcon>
-                                </Stack>
-                            </Grid>
-                            <Grid justifyContent="left" item xs zeroMinWidth>
+interface CommentSectionProps {
+    postId: string;
+    queryLimit: number;
+    queryPage: number;
+}
+
+function createComments(data: any): [React.ReactElement[], number] {
+    const comments: React.ReactElement[] = [];
+    const commentsData: Comment[] = data.data;
+
+    for (let comment of commentsData) {
+        comments.push(
+            <Card sx={{ p: '40px 20px', my: '20px', width: '40vw' }}>
+                <Grid container wrap="nowrap" spacing={2}>
+                    <Grid item>
+                        <Avatar alt="Remy Sharp" src={imgLink} />
+                    </Grid>
+                    <Grid justifyContent="left" item xs zeroMinWidth>
+                        <Grid>
+                            <Typography
+                                variant={'h6'}
+                                sx={{ m: 0, textAlign: 'left', fontWeight: 'bold' }}
+                            >
+                                {comment.author}
+                            </Typography>
+                        </Grid>
+                        <Typography align="left" paragraph={true} variant="h6">
+                            {comment.content}
+                        </Typography>
+                    </Grid>
+                    <Grid item>
+                        <Stack>
+                            <ThumbUpIcon></ThumbUpIcon>
+                            <ThumbDownIcon></ThumbDownIcon>
+                        </Stack>
+                    </Grid>
+                </Grid>
+                {comment.children.map((child: ChildComment) => (
+                    <Grid
+                        container
+                        wrap="nowrap"
+                        spacing={2}
+                        sx={{ m: 3, bgcolor: '#ededed', borderRadius: '8px' }}
+                    >
+                        <Grid item>
+                            <Avatar alt="Remy Sharp" src={imgLink} />
+                        </Grid>
+                        <Grid justifyContent="left" item xs zeroMinWidth>
+                            <div>
                                 <Typography
                                     variant={'h6'}
                                     sx={{ m: 0, textAlign: 'left', fontWeight: 'bold' }}
                                 >
-                                    {e._id}
+                                    {child.author}
                                 </Typography>
-                                <Typography align="left" paragraph={true}>
-                                    {e.content}
+                                <Typography
+                                    sx={{
+                                        m: 0,
+                                        textAlign: 'left',
+                                        color: 'blue',
+                                        fontWeight: 'bold'
+                                    }}
+                                >
+                                    Replying to {comment.author}
                                 </Typography>
-                            </Grid>
-                        </Grid>
-                        {e.children.map((e) => (
-                            <Grid
-                                container
-                                wrap="nowrap"
-                                spacing={2}
-                                sx={{ m: 3, bgcolor: '#ededed', borderRadius: '8px' }}
+                            </div>
+                            <Typography
+                                align="left"
+                                sx={{ mr: '20px' }}
+                                paragraph={true}
+                                variant="h6"
                             >
-                                <Grid item>
-                                    <Avatar alt="Remy Sharp" src={imgLink} />
-                                </Grid>
-                                <Grid item>
-                                    <Stack>
-                                        <ThumbUpIcon></ThumbUpIcon>
-                                        <ThumbDownIcon></ThumbDownIcon>
-                                    </Stack>
-                                </Grid>
-                                <Grid justifyContent="left" item xs zeroMinWidth>
-                                    <div>
-                                        <Typography
-                                            variant={'h6'}
-                                            sx={{ m: 0, textAlign: 'left', fontWeight: 'bold' }}
-                                        >
-                                            {e._id}
-                                        </Typography>
-                                        <Typography
-                                            sx={{
-                                                m: 0,
-                                                textAlign: 'left',
-                                                color: 'blue',
-                                                fontWeight: 'bold'
-                                            }}
-                                        >
-                                            Replying to {e.parentId}
-                                        </Typography>
-                                    </div>
-                                    <Typography align="left" sx={{ mr: '20px' }} paragraph={true}>
-                                        {e.content}
-                                    </Typography>
-                                </Grid>
-                            </Grid>
-                        ))}
-                    </Card>
+                                {child.content}
+                            </Typography>
+                        </Grid>
+                    </Grid>
                 ))}
-            </Stack>
+            </Card>
+        );
+    }
+
+    return [comments, data.totalPages];
+}
+
+// let comments = commentList.data;
+
+const CommentSection: React.FunctionComponent<CommentSectionProps> = (
+    props: CommentSectionProps
+) => {
+    const [commentsList, setCommentsList] = useState<React.ReactElement[]>([]);
+    const [totalPages, setTotalPages] = useState(1);
+    const [page, setPage] = useState(props.queryPage);
+
+    const url = `/comments/posts/${props.postId}?page=${page}&limit=${props.queryLimit}`;
+    const { data, error } = useSWR(url, fetcher);
+
+    useEffect(() => {
+        if (data) {
+            const [comments, totalPages] = createComments(data);
+            setCommentsList(comments);
+            setTotalPages(totalPages);
+        }
+
+        if (error) console.log(error);
+    }, [data, error]);
+
+    if (error) {
+        return <div>ERROR</div>;
+    }
+
+    const handleChangePage = (event: React.ChangeEvent<unknown>, newPage: number) => {
+        setPage(newPage);
+    };
+
+    return (
+        <Box>
+            <Stack>{commentsList.map((comment: React.ReactElement) => comment)}</Stack>
             <Box paddingTop="5%" display="flex" justifyContent="center" alignItems="center">
                 <Stack>
-                    <Pagination count={commentList.totalPages} />
+                    <Pagination count={totalPages} onChange={handleChangePage} />
                 </Stack>
             </Box>
         </Box>
     );
 };
+
+export default CommentSection;

@@ -1,6 +1,7 @@
 import { BaseResponse } from '../base.controller';
 import { ICommentModel } from '../../models/comments/comments.model';
 import * as yup from 'yup';
+import { CommentObject } from '../../models/comments/comments.service';
 
 /**
  * POST /api/comments/
@@ -24,25 +25,9 @@ export interface CreateCommentResponse extends BaseResponse {
  * GET /api/comments/posts/:postId
  */
 
-export interface CommentObject {
-    _id: string;
-    postId: string;
-    parentId: string | null;
-    content: string;
-    children: ChildCommentObject[];
-}
-
-export interface ChildCommentObject {
-    _id: string;
-    postId: string;
-    parentId: string | null;
-    content: string;
-    children: any[];
-}
-
 export interface GetCommentsResponse extends BaseResponse {
     /** Array of comments */
-    data: CommentObject[] | null;
+    data: CommentObject[];
     /** Page number to retrieve comments from */
     page: number;
     /** Amount of comments per page */

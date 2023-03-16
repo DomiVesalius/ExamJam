@@ -1,9 +1,22 @@
 import { BaseController } from '../base.controller';
-import { Body, Middlewares, Post, Route, Security, Tags, Request, Delete, Path, Get } from 'tsoa';
+import {
+    Body,
+    Middlewares,
+    Post,
+    Route,
+    Security,
+    Tags,
+    Request,
+    Delete,
+    Path,
+    Get,
+    Query
+} from 'tsoa';
 import {
     CreateCommentBody,
     CreateCommentResponse,
     DeleteCommentResponse,
+    GetCommentsResponse,
     validCreateCommentSchema
 } from './comments.schemas';
 import validationMiddleware from '../../middlewares/validation.middleware';
@@ -83,7 +96,7 @@ export class CommentsController extends BaseController {
 
         return { success, code, data: newComment };
     }
-    
+
     /**
      * GET /api/comments/posts/
      * Get an array of comments based on limit (items per page), page, and post ID.
@@ -91,17 +104,17 @@ export class CommentsController extends BaseController {
      * @param page page of comments to retrieve
      * @param postId ID of Post
      */
-    @Get('posts')
+    @Get('posts/{postId}')
     public async getComments(
         @Query() limit: number,
         @Query() page: number,
-        @Query() postId: string
+        @Path() postId: string
     ): Promise<GetCommentsResponse> {
         if (page <= 0 || limit <= 0 || limit > 10) {
             return {
                 success: false,
                 code: 400,
-                data: null,
+                data: [],
                 page: page,
                 limit: limit,
                 totalPages: -1,
@@ -112,7 +125,7 @@ export class CommentsController extends BaseController {
         const invalidPostIdResponse: GetCommentsResponse = {
             success: false,
             code: 404,
-            data: null,
+            data: [],
             page: page,
             limit: limit,
             totalPages: -1,
@@ -134,7 +147,7 @@ export class CommentsController extends BaseController {
             return {
                 success: false,
                 code: 400,
-                data: null,
+                data: [],
                 page: page,
                 limit: limit,
                 totalPages: totalPages,
@@ -158,6 +171,7 @@ export class CommentsController extends BaseController {
             limit: limit,
             totalPages: totalPages
         };
+    }
 
     @Delete('{commentId}')
     @Security(PassportStrategies.local)

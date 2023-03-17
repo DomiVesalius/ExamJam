@@ -1,8 +1,24 @@
 import React, { useEffect } from 'react';
 import { fetcher } from '../../utils/helpers';
 import useSWR from 'swr';
-import { Box, Pagination, Stack, Typography } from '@mui/material';
+import {
+    Box,
+    Container,
+    Pagination,
+    Paper,
+    Stack,
+    styled,
+    Table,
+    TableBody,
+    TableCell,
+    tableCellClasses,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Typography
+} from '@mui/material';
 import PostPreview from '../Post/PostPreview/PostPreview';
+import { PaginatedExamRow } from './paginatedExamTable/paginatedExamRow';
 
 export enum BookmarkedItemType {
     post = 'post',
@@ -29,10 +45,7 @@ function createBookmarkedElements(
     for (let bookmarkedItem of data.data) {
         console.log(bookmarkedItem);
         let reactElement: React.ReactElement;
-        if (type == BookmarkedItemType.exam) {
-            // TODO: fetch data.data of type IExamModel[]
-            reactElement = <Typography>Fill with data here</Typography>;
-        } else {
+        if (type == BookmarkedItemType.post) {
             reactElement = (
                 <PostPreview
                     courseCode={bookmarkedItem.courseCode}
@@ -46,11 +59,23 @@ function createBookmarkedElements(
                     updatedAt={new Date(bookmarkedItem.updatedAt)}
                 />
             );
+        } else {
+            reactElement = <PaginatedExamRow exam={bookmarkedItem} />;
         }
         bookmarkedElements.push(reactElement);
     }
     return [bookmarkedElements, data.totalPages];
 }
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+        backgroundColor: theme.palette.common.black,
+        color: theme.palette.common.white
+    },
+    [`&.${tableCellClasses.body}`]: {
+        fontSize: 14
+    }
+}));
 
 const BookmarkedItem: React.FunctionComponent<BookmarkedItemProps> = (
     props: BookmarkedItemProps
@@ -107,6 +132,41 @@ const BookmarkedItem: React.FunctionComponent<BookmarkedItemProps> = (
             <Typography variant="subtitle1" align="center">
                 Bookmarked Exams/Posts will be displayed here.
             </Typography>
+        );
+    }
+
+    if (props.type == BookmarkedItemType.exam) {
+        return (
+            <Stack spacing={2} direction="column">
+                <Box>
+                    <Pagination count={totalPages} onChange={handleChangePage} />
+                </Box>
+                <Stack spacing={2} direction="column">
+                    <Container
+                        sx={{
+                            pt: 2,
+                            pb: 2
+                        }}
+                        maxWidth="md"
+                    >
+                        <TableContainer component={Paper}>
+                            <Table
+                                sx={{ minWidth: 700, fontWeight: 'bold' }}
+                                aria-label="customized table"
+                            >
+                                <TableHead>
+                                    <TableRow>
+                                        <StyledTableCell>Exam</StyledTableCell>
+                                        <StyledTableCell align="left">Original URL</StyledTableCell>
+                                        <StyledTableCell align="right"></StyledTableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>{bookmarkedItems.map((item) => item)}</TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Container>
+                </Stack>
+            </Stack>
         );
     }
 

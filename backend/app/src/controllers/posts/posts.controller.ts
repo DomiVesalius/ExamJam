@@ -59,7 +59,13 @@ export class PostsController extends BaseController {
             };
         }
 
-        const post = await PostsService.createPost(user, body.title, body.content, body.examId);
+        const post = await PostsService.createPost(
+            user,
+            body.title,
+            body.content,
+            body.examId,
+            exam.courseCode
+        );
 
         let res: CreatePostResponse;
 

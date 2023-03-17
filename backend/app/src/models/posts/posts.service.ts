@@ -14,14 +14,16 @@ export class PostsService {
         user: IUserModel,
         title: string,
         content: string,
-        examId: string
+        examId: string,
+        courseCode: string
     ): Promise<IPostModel | null> {
         try {
             return await PostModel.create({
                 author: user.email,
                 title,
                 content,
-                examId
+                examId,
+                courseCode
             });
         } catch (e) {
             return null;

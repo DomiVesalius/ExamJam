@@ -79,10 +79,18 @@ export const CourseList: React.FunctionComponent<CourseListProps> = ({
         setPage(newPage);
     };
 
-    if (courseList.length == 0) {
+    if (courseList.length == 0 && endpoint == endpointTypes.bookmarks) {
         return (
             <Box sx={{ mt: 6 }}>
                 <Typography align="center">Bookmarked courses will be displayed here</Typography>
+            </Box>
+        );
+    } else if (courseList.length == 0 && endpoint == endpointTypes.courses) {
+        return (
+            <Box sx={{ mt: 6 }}>
+                <Typography align="center">
+                    Did you forget to load "Course" data into DB?
+                </Typography>
             </Box>
         );
     }

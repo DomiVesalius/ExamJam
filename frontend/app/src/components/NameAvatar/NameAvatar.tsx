@@ -35,9 +35,9 @@ function nameAvatar(name: string) {
 }
 
 interface NameAvatarProps {
-    name: string;
+    name: string | undefined;
 }
 
 export default function NameAvatar(props: NameAvatarProps) {
-    return <Avatar {...nameAvatar(props.name)} />;
+    return <Avatar {...nameAvatar(props.name || 'A')} />;
 }

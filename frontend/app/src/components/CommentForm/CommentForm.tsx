@@ -41,7 +41,7 @@ const CommentForm: React.FunctionComponent<CommentFormProps> = (props: CommentFo
     });
 
     return (
-        <Card sx={{ padding: '15px' }}>
+        <Card sx={{ padding: '15px', bgcolor: '#ededed' }}>
             <CardContent>
                 <FormikProvider value={formik}>
                     <Form onSubmit={formik.handleSubmit}>
@@ -54,7 +54,7 @@ const CommentForm: React.FunctionComponent<CommentFormProps> = (props: CommentFo
                                 style={{
                                     width: '100%',
                                     height: 'auto',
-                                    paddingBottom: '10px'
+                                    paddingBottom: '20px'
                                 }}
                                 onChange={setRichTextValue}
                             />

@@ -20,15 +20,13 @@ const CourseSearch: React.FunctionComponent = () => {
                     />
                 </Box>
                 <Box>
-                    <Container>
-                        <CourseList
-                            rowSpacing={2}
-                            colSpacing={2}
-                            queryLimit={6}
-                            queryPage={1}
-                            queryKeyword={keyword}
-                        />
-                    </Container>
+                    <CourseList
+                        rowSpacing={2}
+                        colSpacing={2}
+                        queryLimit={6}
+                        queryPage={1}
+                        queryKeyword={keyword}
+                    />
                 </Box>
             </PageLayout>
         </ProtectedRoute>

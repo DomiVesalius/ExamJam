@@ -35,9 +35,9 @@
 -   Kyuhyun Ryu
     -   Best: Creating the search bar that fetches all courses based on keyword live 
     -   Worst: Connecting storybook to backend container (held in Docker)
--   Ananth Chebolu
-    -   Best: 
-    -   Worst: 
+-  Ananth Chebolu
+    -   Best: File streaming using GRID fs was the best part. It helped me learn about Grid FS. I set up my first end point which was a very cool experience.
+    -   Worst: Setting up the file streaming end point while using TSOA was a really big time sink. It took up a lot of time for a very unnecessary reason. 
 -   Mohammad Qadir
     -   Best: Seeing parts of the application come together and act as a whole
     -   Worst: Pulling an all-nighter for debugging and getting everything ready for the sprint 2 demo

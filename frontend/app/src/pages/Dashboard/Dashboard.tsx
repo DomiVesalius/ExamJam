@@ -26,7 +26,7 @@ const Dashboard: React.FunctionComponent = () => {
                         />
                     </Grid>
                     <Grid>
-                        <Typography variant="h4" align="center">
+                        <Typography variant="h4" align="center" sx={{ mb: 4 }}>
                             Bookmarked Posts/Exams
                         </Typography>
                         <BookmarkTabList queryPage={1} queryLimit={6} />

@@ -57,6 +57,7 @@ function createBookmarkedElements(
                     previewTextMaxLength={MAX_CONTENT_LENGTH}
                     title={bookmarkedItem.title}
                     updatedAt={new Date(bookmarkedItem.updatedAt)}
+                    isBookmarked={true}
                 />
             );
         } else {

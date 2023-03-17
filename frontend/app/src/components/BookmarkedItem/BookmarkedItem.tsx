@@ -87,10 +87,10 @@ const BookmarkedItem: React.FunctionComponent<BookmarkedItemProps> = (
     const [bookmarkedItems, setBookmarkedItems] = React.useState<React.ReactElement[]>([]);
     if (props.type == BookmarkedItemType.exam) {
         // bookmarked exam
-        endpoint = `/bookmarks/?type=${BookmarkedItemType.exam}&limit=${props.queryLimit}&page=${props.queryPage}`;
+        endpoint = `/bookmarks/?type=${BookmarkedItemType.exam}&limit=${props.queryLimit}&page=${page}`;
     } else if (props.type == BookmarkedItemType.post) {
         // bookmarked post
-        endpoint = `/bookmarks/?type=${BookmarkedItemType.post}&limit=${props.queryLimit}&page=${props.queryPage}`;
+        endpoint = `/bookmarks/?type=${BookmarkedItemType.post}&limit=${props.queryLimit}&page=${page}`;
     }
 
     const { data, error } = useSWR(endpoint, fetcher);

@@ -7,7 +7,8 @@ import {
     Pagination,
     Stack,
     Typography,
-    CardContent
+    CardContent,
+    CardActionArea
 } from '@mui/material';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
@@ -17,6 +18,10 @@ import useSWR from 'swr';
 import NameAvatar from '../NameAvatar/NameAvatar';
 import CommentForm from '../CommentForm/CommentForm';
 import { useMainContext } from '../../contexts/Main/MainContext';
+import ReplyButton from '../ReplyButton/ReplyButton';
+import IconButton from '@mui/material/IconButton';
+import { KebabMenu } from '../Post/KebabMenu/KebabMenu';
+import DeleteCommentButton from '../DeleteCommentButton/DeleteCommentButton';
 
 interface ChildComment {
     _id: string;
@@ -74,10 +79,17 @@ function createComments(data: any, currUser: string): [React.ReactElement[], num
                             </Typography>
                         </Grid>
                         <Grid item>
-                            <Stack>
-                                <ThumbUpIcon></ThumbUpIcon>
-                                <ThumbDownIcon></ThumbDownIcon>
-                            </Stack>
+                            <Box display="flex" flexWrap="wrap" alignItems="center">
+                                <IconButton aria-label="upvote">
+                                    <ThumbUpIcon />
+                                </IconButton>
+                                <IconButton aria-label="downvote">
+                                    <ThumbDownIcon />
+                                </IconButton>
+                                {currUser === comment.author && (
+                                    <DeleteCommentButton commentId={comment._id} />
+                                )}
+                            </Box>
                         </Grid>
                     </Grid>
                     {comment.children.map((child: ChildComment) => (
@@ -118,10 +130,24 @@ function createComments(data: any, currUser: string): [React.ReactElement[], num
                                     dangerouslySetInnerHTML={{ __html: child.content }}
                                 ></Typography>
                             </Grid>
+                            <Grid item>
+                                <Box display="flex" flexWrap="wrap" alignItems="center">
+                                    <IconButton aria-label="upvote">
+                                        <ThumbUpIcon />
+                                    </IconButton>
+                                    <IconButton aria-label="downvote">
+                                        <ThumbDownIcon />
+                                    </IconButton>
+                                    {currUser === child.author && (
+                                        <DeleteCommentButton commentId={child._id} />
+                                    )}
+                                </Box>
+                            </Grid>
                         </Grid>
                     ))}
                 </CardContent>
-                <CommentForm postId={comment.postId} parentId={comment._id} author={currUser} />
+
+                <ReplyButton postId={comment.postId} parentId={comment._id} />
             </Card>
         );
     }
@@ -140,6 +166,10 @@ const CommentSection: React.FunctionComponent<CommentSectionProps> = (
 
     const url = `/comments/posts/${props.postId}?page=${page}&limit=${props.queryLimit}`;
     const { data, error } = useSWR(url, fetcher);
+
+    useEffect(() => {
+        console.log(currUser);
+    }, [currUser]);
 
     useEffect(() => {
         if (data) {

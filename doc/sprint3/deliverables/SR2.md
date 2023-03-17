@@ -44,5 +44,5 @@
     -   Best: Learned how to work on the backend and to create endpoints
     -   Worst: Understanding how pagination worked for backend and frontend
 -   Abhinav Meda
-    -   Best: 
-    -   Worst: 
+    -   Best: Adding the bookmark feature and finally contributing to the frontend React code   
+    -   Worst: Having to deal bugs related to React state

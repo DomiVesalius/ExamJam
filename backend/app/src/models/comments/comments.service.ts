@@ -33,7 +33,7 @@ export class CommentsService {
      * @param comment
      */
     public static async deleteComment(comment: ICommentModel): Promise<boolean> {
-        if (!comment.parentId && !comment.children) {
+        if (comment.children.length === 0) {
             try {
                 await CommentModel.findByIdAndDelete(comment._id);
                 return true;

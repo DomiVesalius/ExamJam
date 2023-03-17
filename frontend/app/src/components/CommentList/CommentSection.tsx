@@ -5,8 +5,6 @@ import React, { useEffect, useState } from 'react';
 import { fetcher } from '../../utils/helpers';
 import useSWR from 'swr';
 
-const imgLink =
-    'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80';
 const parent = 'Fernando Mancini';
 const child = 'Nando Sousa';
 

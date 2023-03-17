@@ -73,7 +73,7 @@ export class CommentsService {
         pageNumber: number,
         limit: number,
         postId: string
-    ): Promise<CommentObject[] | null> {
+    ): Promise<CommentObject[]> {
         try {
             const topLevelComments = await CommentModel.find({ postId: postId, parentId: null })
                 .skip((pageNumber - 1) * limit)
@@ -110,15 +110,15 @@ export class CommentsService {
             }
             return comments;
         } catch (e) {
-            return null;
+            return [];
         }
     }
 
-    public static async getTotalNumComments(postId: string): Promise<number | null> {
+    public static async getTotalNumComments(postId: string): Promise<number> {
         try {
             return await CommentModel.find({ postId: postId }).countDocuments();
         } catch (e) {
-            return null;
+            return 0;
         }
     }
 

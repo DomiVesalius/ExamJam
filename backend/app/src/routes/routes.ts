@@ -7,6 +7,8 @@ import { MiscController } from './../controllers/misc.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { BookmarksController } from './../controllers/bookmarks/bookmarks.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { CommentsController } from './../controllers/comments/comments.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { CoursesController } from './../controllers/courses/courses.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { ExamController } from './../controllers/exams/exam.controller';
@@ -58,7 +60,17 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IBookmarkModel": {
+    "ICourseModel": {
+        "dataType": "refAlias",
+        "type": {"ref":"FlattenMaps_T_","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IExamModel": {
+        "dataType": "refAlias",
+        "type": {"ref":"FlattenMaps_T_","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IPostModel": {
         "dataType": "refAlias",
         "type": {"ref":"FlattenMaps_T_","validators":{}},
     },
@@ -74,7 +86,7 @@ const models: TsoaRoute.Models = {
             "success": {"dataType":"boolean","required":true},
             "code": {"ref":"HttpStatusCodeLiteral","required":true},
             "message": {"dataType":"string"},
-            "data": {"dataType":"array","array":{"dataType":"refAlias","ref":"IBookmarkModel"},"required":true},
+            "data": {"dataType":"union","subSchemas":[{"dataType":"array","array":{"dataType":"refAlias","ref":"ICourseModel"}},{"dataType":"array","array":{"dataType":"refAlias","ref":"IExamModel"}},{"dataType":"array","array":{"dataType":"refAlias","ref":"IPostModel"}}],"required":true},
             "errors": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"any"}]},
             "page": {"dataType":"double","required":true},
             "limit": {"dataType":"double","required":true},
@@ -86,6 +98,11 @@ const models: TsoaRoute.Models = {
     "BookmarkType": {
         "dataType": "refEnum",
         "enums": ["course","exam","post"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IBookmarkModel": {
+        "dataType": "refAlias",
+        "type": {"ref":"FlattenMaps_T_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "CreateBookmarkResponse": {
@@ -109,9 +126,104 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ICourseModel": {
+    "ICommentModel": {
         "dataType": "refAlias",
         "type": {"ref":"FlattenMaps_T_","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CreateCommentResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "success": {"dataType":"boolean","required":true},
+            "code": {"ref":"HttpStatusCodeLiteral","required":true},
+            "message": {"dataType":"string"},
+            "data": {"dataType":"union","subSchemas":[{"ref":"ICommentModel"},{"dataType":"enum","enums":[null]}],"required":true},
+            "errors": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"any"}]},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CreateCommentBody": {
+        "dataType": "refObject",
+        "properties": {
+            "content": {"dataType":"string","required":true},
+            "postId": {"dataType":"string","required":true},
+            "parentId": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}]},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ChildCommentObject": {
+        "dataType": "refObject",
+        "properties": {
+            "_id": {"dataType":"string","required":true},
+            "author": {"dataType":"string","required":true},
+            "postId": {"dataType":"string","required":true},
+            "parentId": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
+            "content": {"dataType":"string","required":true},
+            "children": {"dataType":"array","array":{"dataType":"any"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CommentObject": {
+        "dataType": "refObject",
+        "properties": {
+            "_id": {"dataType":"string","required":true},
+            "author": {"dataType":"string","required":true},
+            "postId": {"dataType":"string","required":true},
+            "parentId": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
+            "content": {"dataType":"string","required":true},
+            "children": {"dataType":"array","array":{"dataType":"refObject","ref":"ChildCommentObject"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "GetCommentsResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "success": {"dataType":"boolean","required":true},
+            "code": {"ref":"HttpStatusCodeLiteral","required":true},
+            "message": {"dataType":"string"},
+            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"CommentObject"},"required":true},
+            "errors": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"any"}]},
+            "page": {"dataType":"double","required":true},
+            "limit": {"dataType":"double","required":true},
+            "totalPages": {"dataType":"double","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "DeleteCommentResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "success": {"dataType":"boolean","required":true},
+            "code": {"ref":"HttpStatusCodeLiteral","required":true},
+            "message": {"dataType":"string"},
+            "data": {"dataType":"any"},
+            "errors": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"any"}]},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UpdateCommentResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "success": {"dataType":"boolean","required":true},
+            "code": {"ref":"HttpStatusCodeLiteral","required":true},
+            "message": {"dataType":"string"},
+            "data": {"dataType":"union","subSchemas":[{"ref":"ICommentModel"},{"dataType":"enum","enums":[null]}],"required":true},
+            "errors": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"any"}]},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UpdateCommentBody": {
+        "dataType": "refObject",
+        "properties": {
+            "content": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "CourseResponse": {
@@ -124,11 +236,6 @@ const models: TsoaRoute.Models = {
             "errors": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"any"}]},
         },
         "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IExamModel": {
-        "dataType": "refAlias",
-        "type": {"ref":"FlattenMaps_T_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "GetExamsResponse": {
@@ -166,32 +273,6 @@ const models: TsoaRoute.Models = {
             "message": {"dataType":"string"},
             "data": {"dataType":"union","subSchemas":[{"ref":"IExamModel"},{"dataType":"enum","enums":[null]}],"required":true},
             "errors": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"any"}]},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ChildCommentObject": {
-        "dataType": "refObject",
-        "properties": {
-            "_id": {"dataType":"string","required":true},
-            "postId": {"dataType":"string","required":true},
-            "parentId": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
-            "type": {"dataType":"string","required":true},
-            "content": {"dataType":"string","required":true},
-            "children": {"dataType":"array","array":{"dataType":"any"},"required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "CommentObject": {
-        "dataType": "refObject",
-        "properties": {
-            "_id": {"dataType":"string","required":true},
-            "postId": {"dataType":"string","required":true},
-            "parentId": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
-            "type": {"dataType":"string","required":true},
-            "content": {"dataType":"string","required":true},
-            "children": {"dataType":"array","array":{"dataType":"refObject","ref":"ChildCommentObject"},"required":true},
         },
         "additionalProperties": false,
     },
@@ -236,11 +317,6 @@ const models: TsoaRoute.Models = {
             "errors": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"any"}]},
         },
         "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IPostModel": {
-        "dataType": "refAlias",
-        "type": {"ref":"FlattenMaps_T_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "CreatePostResponse": {
@@ -602,6 +678,115 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/comments',
+            authenticateMiddleware([{"local":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(CommentsController)),
+            ...(fetchMiddlewares<RequestHandler>(CommentsController.prototype.createComment)),
+
+            function CommentsController_createComment(request: any, response: any, next: any) {
+            const args = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                    body: {"in":"body","name":"body","required":true,"ref":"CreateCommentBody"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new CommentsController();
+
+
+              const promise = controller.createComment.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/comments/posts/:postId',
+            ...(fetchMiddlewares<RequestHandler>(CommentsController)),
+            ...(fetchMiddlewares<RequestHandler>(CommentsController.prototype.getComments)),
+
+            function CommentsController_getComments(request: any, response: any, next: any) {
+            const args = {
+                    limit: {"in":"query","name":"limit","required":true,"dataType":"double"},
+                    page: {"in":"query","name":"page","required":true,"dataType":"double"},
+                    postId: {"in":"path","name":"postId","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new CommentsController();
+
+
+              const promise = controller.getComments.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/comments/:commentId',
+            authenticateMiddleware([{"local":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(CommentsController)),
+            ...(fetchMiddlewares<RequestHandler>(CommentsController.prototype.deleteComment)),
+
+            function CommentsController_deleteComment(request: any, response: any, next: any) {
+            const args = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                    commentId: {"in":"path","name":"commentId","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new CommentsController();
+
+
+              const promise = controller.deleteComment.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.patch('/api/comments/:commentId',
+            authenticateMiddleware([{"local":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(CommentsController)),
+            ...(fetchMiddlewares<RequestHandler>(CommentsController.prototype.updateComment)),
+
+            function CommentsController_updateComment(request: any, response: any, next: any) {
+            const args = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                    commentId: {"in":"path","name":"commentId","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"UpdateCommentBody"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new CommentsController();
+
+
+              const promise = controller.updateComment.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/courses/:courseCode',
             ...(fetchMiddlewares<RequestHandler>(CoursesController)),
             ...(fetchMiddlewares<RequestHandler>(CoursesController.prototype.getCourse)),
@@ -628,11 +813,13 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/courses/:courseCode/exams',
+            authenticateMiddleware([{"local":[]}]),
             ...(fetchMiddlewares<RequestHandler>(CoursesController)),
             ...(fetchMiddlewares<RequestHandler>(CoursesController.prototype.getExams)),
 
             function CoursesController_getExams(request: any, response: any, next: any) {
             const args = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
                     courseCode: {"in":"path","name":"courseCode","required":true,"dataType":"string"},
             };
 
@@ -653,6 +840,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/courses',
+            authenticateMiddleware([{"local":[]}]),
             ...(fetchMiddlewares<RequestHandler>(CoursesController)),
             ...(fetchMiddlewares<RequestHandler>(CoursesController.prototype.getCourses)),
 
@@ -661,6 +849,7 @@ export function RegisterRoutes(app: Router) {
                     limit: {"in":"query","name":"limit","required":true,"dataType":"double"},
                     page: {"in":"query","name":"page","required":true,"dataType":"double"},
                     keyword: {"in":"query","name":"keyword","required":true,"dataType":"string"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -810,6 +999,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/posts/courses/:courseCode',
+            authenticateMiddleware([{"local":[]}]),
             ...(fetchMiddlewares<RequestHandler>(PostsController)),
             ...(fetchMiddlewares<RequestHandler>(PostsController.prototype.getPostsByCourseCode)),
 
@@ -818,6 +1008,7 @@ export function RegisterRoutes(app: Router) {
                     courseCode: {"in":"path","name":"courseCode","required":true,"dataType":"string"},
                     page: {"in":"query","name":"page","required":true,"dataType":"double"},
                     limit: {"in":"query","name":"limit","required":true,"dataType":"double"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -837,6 +1028,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/posts/exams/:examId',
+            authenticateMiddleware([{"local":[]}]),
             ...(fetchMiddlewares<RequestHandler>(PostsController)),
             ...(fetchMiddlewares<RequestHandler>(PostsController.prototype.getPostsByExamId)),
 
@@ -845,6 +1037,7 @@ export function RegisterRoutes(app: Router) {
                     examId: {"in":"path","name":"examId","required":true,"dataType":"string"},
                     page: {"in":"query","name":"page","required":true,"dataType":"double"},
                     limit: {"in":"query","name":"limit","required":true,"dataType":"double"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

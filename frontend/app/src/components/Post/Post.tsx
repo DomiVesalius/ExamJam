@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import { KebabMenu } from './KebabMenu/KebabMenu';
+import CommentSection from '../CommentList/CommentSection';
 
 const fetcher = (url: string) => http.get(url).then((res) => res.data);
 
@@ -99,6 +100,9 @@ const Post: React.FunctionComponent = () => {
                     </CardContent>
                 </Stack>
             </Card>
+            <Container sx={{ mt: '20px' }}>
+                <CommentSection postId={postId || ''} queryLimit={10} queryPage={1} />
+            </Container>
         </Container>
     );
 };

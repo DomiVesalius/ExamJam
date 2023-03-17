@@ -22,24 +22,25 @@
 
 1. Starting our tasks earlier to avoid having to do the bulk of the work in the last week. This would also avoid any blockers for others
 2. Doing additional testing for completed tasks prior to creating pull requests
+3. Having accountability meetings with members that are working on a user story that has been identified as working on blocking user stories
+4. Setting hard deadlines for blocking user stories to allow for adequate time for other stories
 
 ## Harmful Practices to Stop Using Next Sprint
 
-1. Although some may be busy on certain days/weeks due to other courses, they should try to spend some time with the project each day so that their workload doesn't pile up towards the deadline.
+1. Leaving all work to the last 2 days before the deadline. This doesn't leave any buffer room for complications.
 2. Stop leaving sprint deliverables to the last minute
-3. Underestimating the workload of separate tasks
 
 ## Best/Worst Experience During Sprint 2
 
 -   Kyuhyun Ryu
     -   Best: Creating the search bar that fetches all courses based on keyword live 
     -   Worst: Connecting storybook to backend container (held in Docker)
--   Chebolu
+-   Ananth Chebolu
     -   Best: 
     -   Worst: 
 -   Mohammad Qadir
-    -   Best: 
-    -   Worst: 
+    -   Best: Seeing parts of the application come together and act as a whole
+    -   Worst: Pulling an all-nighter for debugging and getting everything ready for the sprint 2 demo
 -   Fernando Mancini
     -   Best: Learned how to work on the backend and to create endpoints
     -   Worst: Understanding how pagination worked for backend and frontend

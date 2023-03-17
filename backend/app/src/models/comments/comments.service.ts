@@ -145,4 +145,16 @@ export class CommentsService {
         parent.children.push(child._id);
         await parent.save();
     }
+
+    public static async updateCommentContent(
+        comment: ICommentModel,
+        newContent: string
+    ): Promise<ICommentModel | null> {
+        try {
+            comment.content = newContent;
+            return await comment.save();
+        } catch (e) {
+            return null;
+        }
+    }
 }

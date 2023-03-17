@@ -41,8 +41,8 @@
     -   Best: 
     -   Worst: 
 -   Fernando Mancini
-    -   Best: 
-    -   Worst: 
+    -   Best: Learned how to work on the backend and to create endpoints
+    -   Worst: Understanding how pagination worked for backend and frontend
 -   Abhinav Meda
     -   Best: 
     -   Worst: 

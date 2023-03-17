@@ -136,12 +136,26 @@ export class CommentsController extends BaseController {
             errors: `No posts found with id ${postId}`
         };
 
-        const totalNumComments = await CommentsService.getTotalNumComments(postId);
+        const post = await PostsService.getPost(postId);
 
-        if (!totalNumComments) {
+        if (!post) {
             this.setStatus(404);
             invalidPostIdResponse.errors += ': from getTotalNumComments';
             return invalidPostIdResponse;
+        }
+
+        const totalNumComments = await CommentsService.getTotalNumComments(postId);
+
+        if (!totalNumComments) {
+            this.setStatus(200);
+            return {
+                success: true,
+                code: 200,
+                data: [],
+                page: 0,
+                limit: limit,
+                totalPages: 0
+            };
         }
 
         const totalPages = Math.ceil(totalNumComments / limit);
@@ -160,11 +174,6 @@ export class CommentsController extends BaseController {
         }
 
         const commentsArray = await CommentsService.getCommentsByPost(page, limit, postId);
-        if (!commentsArray) {
-            this.setStatus(404);
-            invalidPostIdResponse.errors += ': from getCommentsByPost';
-            return invalidPostIdResponse;
-        }
 
         this.setStatus(200);
         return {

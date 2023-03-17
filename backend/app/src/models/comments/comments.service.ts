@@ -8,6 +8,7 @@ interface CreateCommentParams extends CreateCommentBody {
 
 export interface CommentObject {
     _id: string;
+    author: string;
     postId: string;
     parentId: string | null;
     content: string;
@@ -16,6 +17,7 @@ export interface CommentObject {
 
 export interface ChildCommentObject {
     _id: string;
+    author: string;
     postId: string;
     parentId: string | null;
     content: string;
@@ -31,7 +33,7 @@ export class CommentsService {
      * @param comment
      */
     public static async deleteComment(comment: ICommentModel): Promise<boolean> {
-        if (!comment.parentId && !comment.children) {
+        if (comment.children.length === 0) {
             try {
                 await CommentModel.findByIdAndDelete(comment._id);
                 return true;
@@ -71,7 +73,7 @@ export class CommentsService {
         pageNumber: number,
         limit: number,
         postId: string
-    ): Promise<CommentObject[] | null> {
+    ): Promise<CommentObject[]> {
         try {
             const topLevelComments = await CommentModel.find({ postId: postId, parentId: null })
                 .skip((pageNumber - 1) * limit)
@@ -82,6 +84,7 @@ export class CommentsService {
             for (const comment of topLevelComments) {
                 const commentObj: CommentObject = {
                     _id: (await comment)._id,
+                    author: comment.author,
                     postId: comment.postId.toString(),
                     parentId: comment.parentId ? comment.parentId.toString() : '',
                     content: comment.content,
@@ -94,6 +97,7 @@ export class CommentsService {
 
                     const childCommentObj: ChildCommentObject = {
                         _id: childComment._id,
+                        author: childComment.author,
                         postId: childComment.postId.toString(),
                         parentId: childComment.parentId ? childComment.parentId.toString() : '',
                         content: childComment.content,
@@ -106,15 +110,15 @@ export class CommentsService {
             }
             return comments;
         } catch (e) {
-            return null;
+            return [];
         }
     }
 
-    public static async getTotalNumComments(postId: string): Promise<number | null> {
+    public static async getTotalNumComments(postId: string): Promise<number> {
         try {
             return await CommentModel.find({ postId: postId }).countDocuments();
         } catch (e) {
-            return null;
+            return 0;
         }
     }
 

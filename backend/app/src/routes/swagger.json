@@ -52,7 +52,13 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ICommentModel": {
+			"ICourseModel": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
+			},
+			"IExamModel": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
+			},
+			"IPostModel": {
 				"$ref": "#/components/schemas/FlattenMaps_T_"
 			},
 			"HttpStatusCodeLiteral": {
@@ -119,6 +125,137 @@
 					511
 				]
 			},
+			"GetBookmarksResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"anyOf": [
+							{
+								"items": {
+									"$ref": "#/components/schemas/ICourseModel"
+								},
+								"type": "array"
+							},
+							{
+								"items": {
+									"$ref": "#/components/schemas/IExamModel"
+								},
+								"type": "array"
+							},
+							{
+								"items": {
+									"$ref": "#/components/schemas/IPostModel"
+								},
+								"type": "array"
+							}
+						]
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					},
+					"page": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"totalPages": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"page",
+					"limit",
+					"totalPages",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"BookmarkType": {
+				"enum": [
+					"course",
+					"exam",
+					"post"
+				],
+				"type": "string"
+			},
+			"IBookmarkModel": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
+			},
+			"CreateBookmarkResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/IBookmarkModel"
+							}
+						],
+						"nullable": true
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"BookmarkCreationBody": {
+				"properties": {
+					"type": {
+						"$ref": "#/components/schemas/BookmarkType"
+					},
+					"itemId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"type",
+					"itemId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ICommentModel": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
+			},
 			"CreateCommentResponse": {
 				"properties": {
 					"success": {
@@ -180,6 +317,9 @@
 					"_id": {
 						"type": "string"
 					},
+					"author": {
+						"type": "string"
+					},
 					"postId": {
 						"type": "string"
 					},
@@ -197,6 +337,7 @@
 				},
 				"required": [
 					"_id",
+					"author",
 					"postId",
 					"parentId",
 					"content",
@@ -208,6 +349,9 @@
 			"CommentObject": {
 				"properties": {
 					"_id": {
+						"type": "string"
+					},
+					"author": {
 						"type": "string"
 					},
 					"postId": {
@@ -229,6 +373,7 @@
 				},
 				"required": [
 					"_id",
+					"author",
 					"postId",
 					"parentId",
 					"content",
@@ -369,9 +514,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ICourseModel": {
-				"$ref": "#/components/schemas/FlattenMaps_T_"
-			},
 			"CourseResponse": {
 				"properties": {
 					"success": {
@@ -407,9 +549,6 @@
 				],
 				"type": "object",
 				"additionalProperties": false
-			},
-			"IExamModel": {
-				"$ref": "#/components/schemas/FlattenMaps_T_"
 			},
 			"GetExamsResponse": {
 				"properties": {
@@ -484,7 +623,7 @@
 					"totalPages": {
 						"type": "number",
 						"format": "double",
-						"description": "Total number of pages as per matching results and limit\r\nCalculated as: ceil(total number of matching results / limit)"
+						"description": "Total number of pages as per matching results and limit\nCalculated as: ceil(total number of matching results / limit)"
 					}
 				},
 				"required": [
@@ -663,9 +802,6 @@
 				],
 				"type": "object",
 				"additionalProperties": false
-			},
-			"IPostModel": {
-				"$ref": "#/components/schemas/FlattenMaps_T_"
 			},
 			"CreatePostResponse": {
 				"properties": {
@@ -1290,6 +1426,93 @@
 				"parameters": []
 			}
 		},
+		"/bookmarks": {
+			"get": {
+				"operationId": "GetBookmarks",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GetBookmarksResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Bookmarks"
+				],
+				"security": [
+					{
+						"local": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "type",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/BookmarkType"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "CreateBookmark",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CreateBookmarkResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Bookmarks"
+				],
+				"security": [
+					{
+						"local": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/BookmarkCreationBody"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/comments": {
 			"post": {
 				"operationId": "CreateComment",
@@ -1341,7 +1564,7 @@
 						}
 					}
 				},
-				"description": "GET /api/comments/posts/\r\nGet an array of comments based on limit (items per page), page, and post ID.",
+				"description": "GET /api/comments/posts/\nGet an array of comments based on limit (items per page), page, and post ID.",
 				"tags": [
 					"Comments"
 				],
@@ -1506,7 +1729,11 @@
 				"tags": [
 					"Courses"
 				],
-				"security": [],
+				"security": [
+					{
+						"local": []
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",
@@ -1537,7 +1764,11 @@
 				"tags": [
 					"Courses"
 				],
-				"security": [],
+				"security": [
+					{
+						"local": []
+					}
+				],
 				"parameters": [
 					{
 						"in": "query",
@@ -1774,7 +2005,11 @@
 				"tags": [
 					"Post"
 				],
-				"security": [],
+				"security": [
+					{
+						"local": []
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",
@@ -1823,7 +2058,11 @@
 				"tags": [
 					"Post"
 				],
-				"security": [],
+				"security": [
+					{
+						"local": []
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",

@@ -5,3 +5,9 @@ export const redirect = (url: string) => {
 };
 
 export const fetcher = (url: string) => http.get(url).then((res) => res.data);
+
+export enum BookmarkType {
+    course ="course",
+    exam = "exam",
+    post = "post"
+}

@@ -21,7 +21,8 @@ const Post: React.FunctionComponent = () => {
         content: '',
         examId: '',
         createdAt: '',
-        updatedAt: ''
+        updatedAt: '',
+        isBookmarked: false,
     });
 
     const url: string = `/posts/${postId}`;
@@ -36,7 +37,9 @@ const Post: React.FunctionComponent = () => {
                 content: data.data.content,
                 examId: data.data.examId,
                 createdAt: data.data.createdAt,
-                updatedAt: data.data.updatedAt
+                updatedAt: data.data.updatedAt,
+                isBookmarked: data.data.isBookmarked,
+
             });
         }
     }, [data]);
@@ -78,6 +81,7 @@ const Post: React.FunctionComponent = () => {
                                             postId={post.postId}
                                             courseCode={courseCode}
                                             author={post.author}
+                                            isBookmarked={post.isBookmarked}
                                         />
                                     </Box>
                                 </Box>

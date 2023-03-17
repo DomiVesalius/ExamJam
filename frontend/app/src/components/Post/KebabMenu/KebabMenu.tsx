@@ -7,11 +7,14 @@ import ShareIcon from '@mui/icons-material/Share';
 import http from '../../../utils/http';
 import { redirect, fetcher } from '../../../utils/helpers';
 import useSWR from 'swr';
+import BookmarkButton from '../../BookmarkButton/BookmarkButton';
+import { BookmarkType } from '../../../utils/helpers';
 
 interface CourseTableProps {
     postId: string;
     courseCode: string;
     author: string;
+    isBookmarked: boolean;
 }
 
 const handleDelete = async (postId: string, courseCode: string) => {
@@ -26,7 +29,8 @@ const handleDelete = async (postId: string, courseCode: string) => {
 export const KebabMenu: React.FunctionComponent<CourseTableProps> = ({
     postId,
     courseCode,
-    author
+    author, 
+    isBookmarked,
 }) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -83,11 +87,14 @@ export const KebabMenu: React.FunctionComponent<CourseTableProps> = ({
                         aria-label="delete"
                         onClick={() => handleDelete(postId, courseCode)}
                     >
-                        <DeleteIcon /> Delete
+                        <DeleteIcon />
                     </IconButton>
+
                 )}
+                <BookmarkButton type={BookmarkType.post} itemId={postId} isBookmarked={isBookmarked}/>
+
                 <IconButton size="small" aria-label="share">
-                    <ShareIcon /> Share
+                    <ShareIcon />
                 </IconButton>
             </Menu>
         </div>

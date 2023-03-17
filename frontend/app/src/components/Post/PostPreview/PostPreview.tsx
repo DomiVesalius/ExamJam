@@ -5,7 +5,8 @@ import IconButton from '@mui/material/IconButton';
 import ShareIcon from '@mui/icons-material/Share';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useMainContext } from '../../../contexts/Main/MainContext';
-
+import BookmarkButton from '../../BookmarkButton/BookmarkButton';
+import { BookmarkType } from '../../../utils/helpers';
 export interface PostPreviewProps {
     postId: string;
     courseCode: string;
@@ -16,6 +17,7 @@ export interface PostPreviewProps {
     author: string;
     previewTextMaxLength: number;
     content: string;
+    isBookmarked: boolean;
 }
 
 const PostPreview: React.FunctionComponent<PostPreviewProps> = (props: PostPreviewProps) => {
@@ -54,6 +56,7 @@ const PostPreview: React.FunctionComponent<PostPreviewProps> = (props: PostPrevi
                 </CardContent>
             </CardActionArea>
             <CardActionArea sx={{ display: 'flex', justifyContent: 'right' }}>
+                {/* <BookmarkButton type={BookmarkType.post} itemId={props.postId} isBookmarked={props.isBookmarked}/> */}
                 <IconButton aria-label="share">
                     <ShareIcon />
                 </IconButton>

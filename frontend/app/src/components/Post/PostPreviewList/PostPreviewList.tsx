@@ -54,6 +54,7 @@ function createPostPreviews(
                     previewTextMaxLength={MAX_CONTENT_LENGTH}
                     title={post.title}
                     updatedAt={new Date(post.updatedAt)}
+                    isBookmarked={post.isBookmarked}
                 />
             );
         }

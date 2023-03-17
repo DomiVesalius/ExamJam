@@ -129,9 +129,16 @@ const BookmarkedItem: React.FunctionComponent<BookmarkedItemProps> = (
     };
 
     if (bookmarkedItems.length == 0) {
+        if (props.type == BookmarkedItemType.exam) {
+            return (
+                <Typography variant="subtitle1" align="center">
+                    Bookmarked Exams will be displayed here.
+                </Typography>
+            );
+        }
         return (
             <Typography variant="subtitle1" align="center">
-                Bookmarked Exams/Posts will be displayed here.
+                Bookmarked Posts will be displayed here.
             </Typography>
         );
     }

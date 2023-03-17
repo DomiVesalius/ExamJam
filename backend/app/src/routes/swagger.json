@@ -55,6 +55,12 @@
 			"ICourseModel": {
 				"$ref": "#/components/schemas/FlattenMaps_T_"
 			},
+			"IExamModel": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
+			},
+			"IPostModel": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
+			},
 			"HttpStatusCodeLiteral": {
 				"type": "number",
 				"enum": [
@@ -119,6 +125,395 @@
 					511
 				]
 			},
+			"GetBookmarksResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"anyOf": [
+							{
+								"items": {
+									"$ref": "#/components/schemas/ICourseModel"
+								},
+								"type": "array"
+							},
+							{
+								"items": {
+									"$ref": "#/components/schemas/IExamModel"
+								},
+								"type": "array"
+							},
+							{
+								"items": {
+									"$ref": "#/components/schemas/IPostModel"
+								},
+								"type": "array"
+							}
+						]
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					},
+					"page": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"totalPages": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"page",
+					"limit",
+					"totalPages",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"BookmarkType": {
+				"enum": [
+					"course",
+					"exam",
+					"post"
+				],
+				"type": "string"
+			},
+			"IBookmarkModel": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
+			},
+			"CreateBookmarkResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/IBookmarkModel"
+							}
+						],
+						"nullable": true
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"BookmarkCreationBody": {
+				"properties": {
+					"type": {
+						"$ref": "#/components/schemas/BookmarkType"
+					},
+					"itemId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"type",
+					"itemId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ICommentModel": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
+			},
+			"CreateCommentResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/ICommentModel"
+							}
+						],
+						"nullable": true
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreateCommentBody": {
+				"properties": {
+					"content": {
+						"type": "string"
+					},
+					"postId": {
+						"type": "string"
+					},
+					"parentId": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"required": [
+					"content",
+					"postId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ChildCommentObject": {
+				"properties": {
+					"_id": {
+						"type": "string"
+					},
+					"author": {
+						"type": "string"
+					},
+					"postId": {
+						"type": "string"
+					},
+					"parentId": {
+						"type": "string",
+						"nullable": true
+					},
+					"content": {
+						"type": "string"
+					},
+					"children": {
+						"items": {},
+						"type": "array"
+					}
+				},
+				"required": [
+					"_id",
+					"author",
+					"postId",
+					"parentId",
+					"content",
+					"children"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CommentObject": {
+				"properties": {
+					"_id": {
+						"type": "string"
+					},
+					"author": {
+						"type": "string"
+					},
+					"postId": {
+						"type": "string"
+					},
+					"parentId": {
+						"type": "string",
+						"nullable": true
+					},
+					"content": {
+						"type": "string"
+					},
+					"children": {
+						"items": {
+							"$ref": "#/components/schemas/ChildCommentObject"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"_id",
+					"author",
+					"postId",
+					"parentId",
+					"content",
+					"children"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GetCommentsResponse": {
+				"description": "GET /api/comments/posts/:postId",
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/CommentObject"
+						},
+						"type": "array",
+						"description": "Array of comments"
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					},
+					"page": {
+						"type": "number",
+						"format": "double",
+						"description": "Page number to retrieve comments from"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double",
+						"description": "Amount of comments per page"
+					},
+					"totalPages": {
+						"type": "number",
+						"format": "double",
+						"description": "Total number of pages as per query of postId"
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"data",
+					"page",
+					"limit",
+					"totalPages"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DeleteCommentResponse": {
+				"description": "DELETE /comments/:commentId",
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UpdateCommentResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/ICommentModel"
+							}
+						],
+						"nullable": true
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UpdateCommentBody": {
+				"description": "PATCH /comments/:commentId",
+				"properties": {
+					"content": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"content"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"CourseResponse": {
 				"properties": {
 					"success": {
@@ -154,9 +549,6 @@
 				],
 				"type": "object",
 				"additionalProperties": false
-			},
-			"IExamModel": {
-				"$ref": "#/components/schemas/FlattenMaps_T_"
 			},
 			"GetExamsResponse": {
 				"properties": {
@@ -281,76 +673,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ChildCommentObject": {
-				"properties": {
-					"_id": {
-						"type": "string"
-					},
-					"postId": {
-						"type": "string"
-					},
-					"parentId": {
-						"type": "string",
-						"nullable": true
-					},
-					"type": {
-						"type": "string"
-					},
-					"content": {
-						"type": "string"
-					},
-					"children": {
-						"items": {},
-						"type": "array"
-					}
-				},
-				"required": [
-					"_id",
-					"postId",
-					"parentId",
-					"type",
-					"content",
-					"children"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"CommentObject": {
-				"properties": {
-					"_id": {
-						"type": "string"
-					},
-					"postId": {
-						"type": "string"
-					},
-					"parentId": {
-						"type": "string",
-						"nullable": true
-					},
-					"type": {
-						"type": "string"
-					},
-					"content": {
-						"type": "string"
-					},
-					"children": {
-						"items": {
-							"$ref": "#/components/schemas/ChildCommentObject"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"_id",
-					"postId",
-					"parentId",
-					"type",
-					"content",
-					"children"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"PostObject": {
 				"properties": {
 					"courseCode": {
@@ -460,6 +782,224 @@
 						"allOf": [
 							{
 								"$ref": "#/components/schemas/PostObject"
+							}
+						],
+						"nullable": true
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreatePostResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/IPostModel"
+							}
+						],
+						"nullable": true
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreatePostBody": {
+				"properties": {
+					"title": {
+						"type": "string"
+					},
+					"content": {
+						"type": "string"
+					},
+					"examId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"title",
+					"content",
+					"examId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GetPostsByCourseCode": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IPostModel"
+						},
+						"type": "array"
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					},
+					"page": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"totalPages": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"page",
+					"limit",
+					"totalPages",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GetPostsByExamId": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IPostModel"
+						},
+						"type": "array"
+					},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					},
+					"page": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"totalPages": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"success",
+					"code",
+					"page",
+					"limit",
+					"totalPages",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DeletePostResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {},
+					"errors": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{}
+						]
+					}
+				},
+				"required": [
+					"success",
+					"code"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GetPostByIdResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"code": {
+						"$ref": "#/components/schemas/HttpStatusCodeLiteral"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/IPostModel"
 							}
 						],
 						"nullable": true
@@ -886,6 +1426,260 @@
 				"parameters": []
 			}
 		},
+		"/bookmarks": {
+			"get": {
+				"operationId": "GetBookmarks",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GetBookmarksResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Bookmarks"
+				],
+				"security": [
+					{
+						"local": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "type",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/BookmarkType"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "CreateBookmark",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CreateBookmarkResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Bookmarks"
+				],
+				"security": [
+					{
+						"local": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/BookmarkCreationBody"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/comments": {
+			"post": {
+				"operationId": "CreateComment",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CreateCommentResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Comments"
+				],
+				"security": [
+					{
+						"local": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateCommentBody"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/comments/posts/{postId}": {
+			"get": {
+				"operationId": "GetComments",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GetCommentsResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "GET /api/comments/posts/\nGet an array of comments based on limit (items per page), page, and post ID.",
+				"tags": [
+					"Comments"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "amount of comments per page",
+						"in": "query",
+						"name": "limit",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"description": "page of comments to retrieve",
+						"in": "query",
+						"name": "page",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"description": "ID of Post",
+						"in": "path",
+						"name": "postId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/comments/{commentId}": {
+			"delete": {
+				"operationId": "DeleteComment",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DeleteCommentResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Comments"
+				],
+				"security": [
+					{
+						"local": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "commentId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "UpdateComment",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UpdateCommentResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Comments"
+				],
+				"security": [
+					{
+						"local": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "commentId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateCommentBody"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/courses/{courseCode}": {
 			"get": {
 				"operationId": "GetCourse",
@@ -935,7 +1729,11 @@
 				"tags": [
 					"Courses"
 				],
-				"security": [],
+				"security": [
+					{
+						"local": []
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",
@@ -966,7 +1764,11 @@
 				"tags": [
 					"Courses"
 				],
-				"security": [],
+				"security": [
+					{
+						"local": []
+					}
+				],
 				"parameters": [
 					{
 						"in": "query",
@@ -1143,6 +1945,218 @@
 						"schema": {
 							"format": "double",
 							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/posts": {
+			"post": {
+				"operationId": "Post",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CreatePostResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Creates Post with given Body parameters",
+				"tags": [
+					"Post"
+				],
+				"security": [
+					{
+						"local": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreatePostBody"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/posts/courses/{courseCode}": {
+			"get": {
+				"operationId": "GetPostsByCourseCode",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GetPostsByCourseCode"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Post"
+				],
+				"security": [
+					{
+						"local": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "courseCode",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/posts/exams/{examId}": {
+			"get": {
+				"operationId": "GetPostsByExamId",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GetPostsByExamId"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Post"
+				],
+				"security": [
+					{
+						"local": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "examId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/posts/{postId}": {
+			"delete": {
+				"operationId": "DeletePost",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DeletePostResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Post"
+				],
+				"security": [
+					{
+						"local": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "postId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"get": {
+				"operationId": "GetPostById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GetPostByIdResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Gets Post with given postId",
+				"tags": [
+					"Post"
+				],
+				"security": [
+					{
+						"local": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "postId",
+						"required": true,
+						"schema": {
+							"type": "string"
 						}
 					}
 				]

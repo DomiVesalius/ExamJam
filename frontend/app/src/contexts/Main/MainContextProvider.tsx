@@ -9,11 +9,22 @@ const MainContextProvider: React.FunctionComponent<MainContextProviderProps> = (
     useEffect(() => {
         if (localStorage.getItem('auth') === null)
             localStorage.setItem('auth', JSON.stringify('false'));
+        if (localStorage.getItem('email') === null)
+            localStorage.setItem('email', JSON.stringify('false'));
     }, []);
 
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
         JSON.parse(localStorage.getItem('auth') || 'false')
     );
+
+    const [currUser, setCurrUser] = useState<string>(
+        JSON.parse(localStorage.getItem('email') || 'false')
+    );
+
+    const setUser = (email: string) => {
+        setCurrUser(email);
+        localStorage.setItem('email', JSON.stringify(email));
+    };
 
     const setAuth = (value: boolean) => {
         setIsAuthenticated(value);
@@ -21,7 +32,14 @@ const MainContextProvider: React.FunctionComponent<MainContextProviderProps> = (
     };
 
     return (
-        <MainContext.Provider value={{ isAuthenticated, setIsAuthenticated: setAuth }}>
+        <MainContext.Provider
+            value={{
+                isAuthenticated,
+                setIsAuthenticated: setAuth,
+                setCurrUser: setUser,
+                currUser
+            }}
+        >
             {props.children}
         </MainContext.Provider>
     );

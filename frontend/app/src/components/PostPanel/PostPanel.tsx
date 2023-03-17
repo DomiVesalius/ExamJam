@@ -4,7 +4,7 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import PiazzaPostPreviewList from '../Piazza/PiazzaPostPreviewList/PiazzaPostPreviewList';
+import PostPreviewList, { PostType } from '../Post/PostPreviewList/PostPreviewList';
 
 export interface PostPanelProps {
     courseCode: string;
@@ -33,13 +33,21 @@ const PostPanel: React.FunctionComponent<PostPanelProps> = (props: PostPanelProp
                     </TabList>
                 </Box>
                 <TabPanel value="1">
-                    <PiazzaPostPreviewList
+                    <PostPreviewList
                         courseCode={props.courseCode}
                         queryPage={props.queryPage}
                         queryLimit={props.queryLimit}
+                        postType={PostType.piazza}
                     />
                 </TabPanel>
-                <TabPanel value="2">TODO: Implement this :]</TabPanel>
+                <TabPanel value="2">
+                    <PostPreviewList
+                        courseCode={props.courseCode}
+                        queryPage={props.queryPage}
+                        queryLimit={props.queryLimit}
+                        postType={PostType.regular}
+                    />
+                </TabPanel>
             </TabContext>
         </Box>
     );

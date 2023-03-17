@@ -70,7 +70,7 @@ function createBookmarkedElements(
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-        backgroundColor: theme.palette.common.black,
+        backgroundColor: theme.palette.info.main,
         color: theme.palette.common.white
     },
     [`&.${tableCellClasses.body}`]: {

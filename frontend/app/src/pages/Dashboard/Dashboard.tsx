@@ -11,7 +11,7 @@ const Dashboard: React.FunctionComponent = () => {
     return (
         <ProtectedRoute>
             <PageLayout title="Dashboard">
-                <Grid container spacing={12} xs={12} justifyContent="center" margin={0}>
+                <Grid container spacing={2} xs={12} justifyContent="center" margin={0}>
                     <Grid>
                         <Typography variant="h4" align="center">
                             Bookmarked Courses

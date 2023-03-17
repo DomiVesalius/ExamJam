@@ -58,6 +58,7 @@ function createBookmarkedElements(
                     title={bookmarkedItem.title}
                     updatedAt={new Date(bookmarkedItem.updatedAt)}
                     isBookmarked={true}
+                    cardWidth="37vw"
                 />
             );
         } else {
@@ -155,7 +156,6 @@ const BookmarkedItem: React.FunctionComponent<BookmarkedItemProps> = (
                             pt: 2,
                             pb: 2
                         }}
-                        maxWidth="md"
                     >
                         <TableContainer component={Paper}>
                             <Table
@@ -183,7 +183,7 @@ const BookmarkedItem: React.FunctionComponent<BookmarkedItemProps> = (
             <Box>
                 <Pagination count={totalPages} onChange={handleChangePage} />
             </Box>
-            <Stack spacing={2} direction="column">
+            <Stack spacing={2} direction="column" justifyContent="center" alignItems="center">
                 {bookmarkedItems.map((item) => item)}
             </Stack>
         </Stack>

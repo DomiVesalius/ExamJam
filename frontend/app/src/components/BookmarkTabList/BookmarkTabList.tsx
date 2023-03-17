@@ -21,13 +21,14 @@ const BookmarkTabList: React.FunctionComponent<BookmarkTabListProps> = (
     };
 
     return (
-        <Box sx={{ width: '50vw', typography: 'body1' }}>
+        <Box sx={{ width: '50vw', typography: 'body1', maxWidth: '100%' }}>
             <TabContext value={panelIndex}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <TabList
                         variant="fullWidth"
                         onChange={handleTabChange}
                         aria-label="Tab panel for separating bookmarked posts and exams"
+                        centered
                     >
                         <Tab label="Bookmarked Posts" value="1" />
                         <Tab label="Bookmarked Exams" value="2" />

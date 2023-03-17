@@ -58,6 +58,7 @@ function createBookmarkedElements(
                     title={bookmarkedItem.title}
                     updatedAt={new Date(bookmarkedItem.updatedAt)}
                     isBookmarked={true}
+                    cardWidth="37vw"
                 />
             );
         } else {
@@ -70,7 +71,7 @@ function createBookmarkedElements(
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-        backgroundColor: theme.palette.common.black,
+        backgroundColor: theme.palette.info.main,
         color: theme.palette.common.white
     },
     [`&.${tableCellClasses.body}`]: {
@@ -87,10 +88,10 @@ const BookmarkedItem: React.FunctionComponent<BookmarkedItemProps> = (
     const [bookmarkedItems, setBookmarkedItems] = React.useState<React.ReactElement[]>([]);
     if (props.type == BookmarkedItemType.exam) {
         // bookmarked exam
-        endpoint = `/bookmarks/?type=${BookmarkedItemType.exam}&limit=${props.queryLimit}&page=${props.queryPage}`;
+        endpoint = `/bookmarks/?type=${BookmarkedItemType.exam}&limit=${props.queryLimit}&page=${page}`;
     } else if (props.type == BookmarkedItemType.post) {
         // bookmarked post
-        endpoint = `/bookmarks/?type=${BookmarkedItemType.post}&limit=${props.queryLimit}&page=${props.queryPage}`;
+        endpoint = `/bookmarks/?type=${BookmarkedItemType.post}&limit=${props.queryLimit}&page=${page}`;
     }
 
     const { data, error } = useSWR(endpoint, fetcher);
@@ -129,9 +130,16 @@ const BookmarkedItem: React.FunctionComponent<BookmarkedItemProps> = (
     };
 
     if (bookmarkedItems.length == 0) {
+        if (props.type == BookmarkedItemType.exam) {
+            return (
+                <Typography variant="subtitle1" align="center">
+                    Bookmarked Exams will be displayed here.
+                </Typography>
+            );
+        }
         return (
             <Typography variant="subtitle1" align="center">
-                Bookmarked Exams/Posts will be displayed here.
+                Bookmarked Posts will be displayed here.
             </Typography>
         );
     }
@@ -148,7 +156,6 @@ const BookmarkedItem: React.FunctionComponent<BookmarkedItemProps> = (
                             pt: 2,
                             pb: 2
                         }}
-                        maxWidth="md"
                     >
                         <TableContainer component={Paper}>
                             <Table
@@ -176,7 +183,7 @@ const BookmarkedItem: React.FunctionComponent<BookmarkedItemProps> = (
             <Box>
                 <Pagination count={totalPages} onChange={handleChangePage} />
             </Box>
-            <Stack spacing={2} direction="column">
+            <Stack spacing={2} direction="column" justifyContent="center" alignItems="center">
                 {bookmarkedItems.map((item) => item)}
             </Stack>
         </Stack>

@@ -18,6 +18,7 @@ export interface PostPreviewProps {
     previewTextMaxLength: number;
     content: string;
     isBookmarked: boolean;
+    cardWidth?: string;
 }
 
 const PostPreview: React.FunctionComponent<PostPreviewProps> = (props: PostPreviewProps) => {
@@ -32,7 +33,7 @@ const PostPreview: React.FunctionComponent<PostPreviewProps> = (props: PostPrevi
 
     const handleNavigateToPost = () => redirect(`${props.courseCode}/posts/${props.postId}/`);
     return (
-        <Card sx={{ width: '50vw' }}>
+        <Card sx={{ width: props.cardWidth || '50vw' }}>
             <CardActionArea onClick={handleNavigateToPost}>
                 <CardContent>
                     <Typography color="text.secondary">

@@ -15,4 +15,7 @@ const Template: ComponentStory<typeof BookmarkTabList> = (args: BookmarkTabListP
 );
 
 export const Default = Template.bind({});
-Default.args = {};
+Default.args = {
+    queryLimit: 1,
+    queryPage: 1
+};

@@ -18,7 +18,7 @@ import {
     Typography
 } from '@mui/material';
 import PostPreview from '../Post/PostPreview/PostPreview';
-import { PaginatedExamRow } from './paginatedExamTable/paginatedExamRow';
+import { PaginatedExamRow } from './PaginatedExamTable/PaginatedExamRow';
 
 export enum BookmarkedItemType {
     post = 'post',

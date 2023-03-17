@@ -1,6 +1,6 @@
 import React from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { PaginatedExamRow, PaginatedExamTableProps } from './paginatedExamRow';
+import { PaginatedExamRow, PaginatedExamTableProps } from './PaginatedExamRow';
 
 export default {
     title: `Components/${PaginatedExamRow.name}`,

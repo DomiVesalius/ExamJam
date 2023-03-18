@@ -41,8 +41,8 @@
     -   Best: Gaining deeper knowledge of mongoose/mongodb through working with virtual fields
     -   Worst: Having to take on 2 additional tasks to keep the trajectory of the sprint on track
 -   Fernando Mancini
-    -   Best:
-    -   Worst:
+    -   Best: Learning how backend works, and how to setup endpoints
+    -   Worst: Learning how to use pagiantion in frontend and backend
 -   Abhinav Meda
     -   Best: Finally contributing to the frontend portion of the project
     -   Worst: Not having React render the way I want it to

@@ -35,8 +35,8 @@
     -   Best: Customising the dashboard layout to support tabbed list of exams/posts.
     -   Worst: Limited time constraints due to other user stories blocking my tasks.
 -  Ananth Chebolu
-    -   Best:
-    -   Worst:
+    -   Best: Creating 1) a form that allows you to create a post and 2) a viewer for that post.
+    -   Worst: Styling both the creation form and the viewer so that they look appealing.
 -   Mohammad Qadir
     -   Best: Gaining deeper knowledge of mongoose/mongodb through working with virtual fields
     -   Worst: Having to take on 2 additional tasks to keep the trajectory of the sprint on track

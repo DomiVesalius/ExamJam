@@ -97,7 +97,7 @@ function createComments(data: any, currUser: string): [React.ReactElement[], num
                             container
                             wrap="nowrap"
                             spacing={2}
-                            sx={{ m: 2, bgcolor: '#ededed', borderRadius: '8px' }}
+                            sx={{ m: 2, borderRadius: '8px' }}
                         >
                             <Grid item>
                                 <NameAvatar name={child.author} />
@@ -111,10 +111,10 @@ function createComments(data: any, currUser: string): [React.ReactElement[], num
                                         {child.author}
                                     </Typography>
                                     <Typography
+                                        color="secondary"
                                         sx={{
                                             m: 0,
                                             textAlign: 'left',
-                                            color: 'blue',
                                             fontWeight: 'bold'
                                         }}
                                     >

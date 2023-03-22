@@ -6,7 +6,7 @@ interface ThemeContextProps {
     children?: React.ReactNode;
 }
 export const ThemeContext: React.FunctionComponent<ThemeContextProps> = (props) => {
-    const storage = typeof window !== 'undefined' ? localStorage.theme : 'light';
+    const storage = localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
     const [storageTheme, setStorageTheme] = React.useState(storage);
 
     const [mode, setMode] = React.useState<'light' | 'dark'>(storage);
@@ -42,4 +42,4 @@ export const ThemeContext: React.FunctionComponent<ThemeContextProps> = (props) 
             </ThemeProvider>
         </ColorModeContext.Provider>
     );
-}
+};

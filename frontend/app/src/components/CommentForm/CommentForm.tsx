@@ -41,7 +41,7 @@ const CommentForm: React.FunctionComponent<CommentFormProps> = (props: CommentFo
     });
 
     return (
-        <Card sx={{ padding: '15px', bgcolor: '#ededed' }}>
+        <Card sx={{ padding: '15px'}}>
             <CardContent>
                 <FormikProvider value={formik}>
                     <Form onSubmit={formik.handleSubmit}>

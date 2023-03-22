@@ -6,46 +6,16 @@ import reportWebVitals from './reportWebVitals';
 import { store } from './redux/store';
 import { Provider } from 'react-redux';
 import MainContextProvider from './contexts/Main/MainContextProvider';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { ColorModeContext } from './contexts/Theme/ThemeContext';
-import CssBaseline from '@mui/material/CssBaseline';
+import {ThemeContext} from './contexts/Theme/ThemeContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
-export default function ToggleColorMode() {
-    const [mode, setMode] = React.useState<'light' | 'dark'>('light');
-    const colorMode = React.useMemo(
-        () => ({
-            toggleColorMode: () => {
-                setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
-            }
-        }),
-        []
-    );
-
-    const theme = React.useMemo(
-        () =>
-            createTheme({
-                palette: {
-                    mode
-                }
-            }),
-        [mode]
-    );
-
-    return (
-        <ColorModeContext.Provider value={colorMode}>
-            <ThemeProvider theme={theme}>
-                <CssBaseline />
-                <App />
-            </ThemeProvider>
-        </ColorModeContext.Provider>
-    );
-}
 
 root.render(
     <Provider store={store}>
         <MainContextProvider>
-            <ToggleColorMode />
+            <ThemeContext>
+                <App />
+            </ThemeContext>
         </MainContextProvider>
     </Provider>
 );

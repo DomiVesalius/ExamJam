@@ -66,6 +66,9 @@ const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSu
         console.log(content);
     }
 
+    // Set markdown editor to light mode.
+    window.document.documentElement.setAttribute('data-color-mode', 'light');
+
     return (
         <Container maxWidth="xl">
             <Card variant="outlined">
@@ -95,10 +98,6 @@ const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSu
                                         />
                                         {/* @ts-ignore */}
                                         <MDEditor value={value} onChange={setValue} />
-                                        <MDEditor.Markdown
-                                            source={value}
-                                            style={{ whiteSpace: 'pre-wrap' }}
-                                        />
                                     </Stack>
                                     <Button
                                         disabled={formik.isSubmitting}

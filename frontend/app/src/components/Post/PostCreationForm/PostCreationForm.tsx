@@ -1,16 +1,26 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, ChangeEvent } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
-import 'react-quill/dist/quill.snow.css';
 import MDEditor from '@uiw/react-md-editor';
+import rehypeSanitize from 'rehype-sanitize';
+import ReactQuill, { Quill } from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+// @ts-ignore
+import ImageResize from 'quill-image-resize-module-react';
+import hljs from 'highlight.js';
+import katex from 'katex';
 import 'katex/dist/katex.min.css';
-
 import {
     Button,
     Card,
     CardContent,
     CardHeader,
     Container,
+    FormControl,
+    FormControlLabel,
+    FormLabel,
+    Radio,
+    RadioGroup,
     Stack,
     TextField,
     Typography
@@ -35,6 +45,8 @@ const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSu
     const initialExam = searchParams.get('examId') || '';
 
     const [value, setValue] = useState('');
+    const [mdValue, setMdValue] = useState('');
+    const [editorState, setEditor] = useState('rtf');
     const [examValue, setExamValue] = useState(initialExam);
 
     const initialValues: PostCreationFormValues = {
@@ -61,13 +73,53 @@ const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSu
         return <div>ERROR</div>;
     }
 
-    function handleChange(content: string) {
-        setValue(content);
-        console.log(content);
+    function handleEditorChange(event: ChangeEvent<HTMLInputElement>, value: string) {
+        setEditor(value);
+        console.log(value);
     }
 
     // Set markdown editor to light mode.
     window.document.documentElement.setAttribute('data-color-mode', 'light');
+
+    const markdownEditor = (
+        <MDEditor
+            value={mdValue}
+            /* @ts-ignore */
+            onChange={(value, event) => setMdValue(value)}
+            previewOptions={{
+                rehypePlugins: [[rehypeSanitize]]
+            }}
+        />
+    );
+
+    Quill.register('modules/imageResize', ImageResize);
+    hljs.configure({
+        languages: ['javascript', 'ruby', 'python', 'rust']
+    });
+    const toolbarOptions = [
+        ['bold', 'italic', 'underline', 'strike'],
+        ['blockquote', 'code-block'],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        ['link'],
+        [{ indent: '-1' }, { indent: '+1' }],
+        [{ header: [1, 2, 3, 4, 5, 6, false] }],
+        [{ align: [] }]
+    ];
+    const quillModules = {
+        toolbar: toolbarOptions,
+        imageResize: {
+            parchment: Quill.import('parchment'),
+            modules: ['Resize', 'DisplaySize']
+        }
+    };
+    const rtfEditor = (
+        <ReactQuill
+            theme="snow"
+            value={value}
+            onChange={(value) => setValue(value)}
+            modules={quillModules}
+        />
+    );
 
     return (
         <Container maxWidth="xl">
@@ -96,8 +148,31 @@ const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSu
                                             }
                                             helperText={formik.touched.title && formik.errors.title}
                                         />
-                                        {/* @ts-ignore */}
-                                        <MDEditor value={value} onChange={setValue} />
+                                        <FormControl>
+                                            <FormLabel id="editor-row-radio-buttons-group-label">
+                                                Editors
+                                            </FormLabel>
+                                            <RadioGroup
+                                                row
+                                                aria-labelledby="editor-row-radio-buttons-group-label"
+                                                defaultValue="markdown"
+                                                name="row-radio-buttons-group"
+                                                value={editorState}
+                                                onChange={handleEditorChange}
+                                            >
+                                                <FormControlLabel
+                                                    value="rtf"
+                                                    control={<Radio />}
+                                                    label="Rich-Text-Format"
+                                                />
+                                                <FormControlLabel
+                                                    value="markdown"
+                                                    control={<Radio />}
+                                                    label="Markdown"
+                                                />
+                                            </RadioGroup>
+                                        </FormControl>
+                                        {editorState == 'rtf' ? rtfEditor : markdownEditor}
                                     </Stack>
                                     <Button
                                         disabled={formik.isSubmitting}

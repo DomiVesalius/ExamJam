@@ -85,7 +85,11 @@ const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSu
         <MDEditor
             value={mdValue}
             /* @ts-ignore */
-            onChange={(value, event) => setMdValue(value)}
+            onChange={(value = '', event) => {
+                setMdValue(value);
+                // TODO: showing unicode after completing 3 ending backticks in code block
+                console.log(value);
+            }}
             previewOptions={{
                 rehypePlugins: [[rehypeSanitize]]
             }}

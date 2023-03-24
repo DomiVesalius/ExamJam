@@ -51,3 +51,10 @@ export interface UpdateCommentBody {
 export interface UpdateCommentResponse extends BaseResponse {
     data: ICommentModel | null;
 }
+
+export interface GetMyCommentsResponse extends BaseResponse {
+    data: ICommentModel[];
+    page: number;
+    limit: number;
+    totalPages: number;
+}

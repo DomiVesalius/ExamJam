@@ -157,4 +157,27 @@ export class CommentsService {
             return null;
         }
     }
+
+    public static async getCommentsMadeByUser(
+        userEmail: string,
+        pageNumber: number,
+        limit: number
+    ): Promise<ICommentModel[]> {
+        try {
+            return await CommentModel.find({ author: userEmail })
+                .sort({ createdAt: 'asc' })
+                .skip((pageNumber - 1) * limit)
+                .limit(limit);
+        } catch (e) {
+            return [];
+        }
+    }
+
+    public static async getTotalNumCommentPagesMadeByUser(userEmail: string): Promise<number> {
+        try {
+            return await CommentModel.find({ author: userEmail }).countDocuments();
+        } catch (e) {
+            return 0;
+        }
+    }
 }

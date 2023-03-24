@@ -88,4 +88,27 @@ export class PostsService {
             return null;
         }
     }
+
+    public static async getPostsMadeByUser(
+        userEmail: string,
+        pageNumber: number,
+        limit: number
+    ): Promise<IPostModel[]> {
+        try {
+            return await PostModel.find({ author: userEmail })
+                .sort({ createdAt: 'asc' })
+                .skip((pageNumber - 1) * limit)
+                .limit(limit);
+        } catch (e) {
+            return [];
+        }
+    }
+
+    public static async getTotalNumOfPostPagesByUser(
+        userEmail: string,
+        limit: number
+    ): Promise<number> {
+        const totalPosts = await PostModel.find({ author: userEmail }).countDocuments();
+        return Math.ceil(totalPosts / limit);
+    }
 }

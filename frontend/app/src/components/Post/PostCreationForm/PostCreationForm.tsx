@@ -72,11 +72,11 @@ const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSu
 
     function handleEditorChange(event: ChangeEvent<HTMLInputElement>, value: string) {
         setEditor(value);
-        console.log(value);
     }
 
-    // Set markdown editor to light mode.
-    window.document.documentElement.setAttribute('data-color-mode', 'light');
+    // Set markdown editor to light/dark mode.
+    const storage = localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
+    window.document.documentElement.setAttribute('data-color-mode', storage);
 
     const markdownEditor = (
         <MarkdownEditor

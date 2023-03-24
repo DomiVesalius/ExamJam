@@ -19,10 +19,11 @@ const Post: React.FunctionComponent = () => {
         title: '',
         author: '',
         content: '',
+        formatType: '',
         examId: '',
         createdAt: '',
         updatedAt: '',
-        isBookmarked: false,
+        isBookmarked: false
     });
 
     const url: string = `/posts/${postId}`;
@@ -35,11 +36,11 @@ const Post: React.FunctionComponent = () => {
                 author: data.data.author,
                 title: data.data.title,
                 content: data.data.content,
+                formatType: data.data.formatType,
                 examId: data.data.examId,
                 createdAt: data.data.createdAt,
                 updatedAt: data.data.updatedAt,
-                isBookmarked: data.data.isBookmarked,
-
+                isBookmarked: data.data.isBookmarked
             });
         }
     }, [data]);
@@ -53,6 +54,15 @@ const Post: React.FunctionComponent = () => {
     const creationDate = new Date(post.createdAt);
     const formattedCreationDate = creationDate.toLocaleString('en-US');
 
+    let postBody = (
+        <Typography variant="body1" component="div" gutterBottom>
+            <div dangerouslySetInnerHTML={{ __html: post.content }} />
+        </Typography>
+    );
+
+    if (post.formatType === 'markdown') {
+        // TODO: Use react-markdown to create markdown formatted preview for post.content
+    }
     return (
         <Container>
             <Card variant="outlined">
@@ -88,10 +98,7 @@ const Post: React.FunctionComponent = () => {
                                 <Typography variant="h4" component="h1" gutterBottom>
                                     {post.title}
                                 </Typography>
-
-                                <Typography variant="body1" component="div" gutterBottom>
-                                    <div dangerouslySetInnerHTML={{ __html: post.content }} />
-                                </Typography>
+                                {postBody}
                                 <Typography variant="caption" display="block" gutterBottom>
                                     Last updated at {formattedUpdateDate}
                                 </Typography>

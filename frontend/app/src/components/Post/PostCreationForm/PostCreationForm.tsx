@@ -56,8 +56,9 @@ const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSu
         onSubmit: async (values, { setSubmitting }) => {
             setSubmitting(true);
             const postCreationValues = {
-                content: editorState === 'rtf' ? value : marked.parse(mdValue),
+                content: editorState === 'rtf' ? value : mdValue,
                 title: values.title,
+                formatType: editorState,
                 examId: examValue
             };
             try {

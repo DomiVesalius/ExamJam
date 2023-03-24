@@ -6,7 +6,6 @@ import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 // @ts-ignore
 import ImageResize from 'quill-image-resize-module-react';
-import hljs from 'highlight.js';
 import {
     Box,
     Button,
@@ -94,9 +93,6 @@ const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSu
     );
 
     Quill.register('modules/imageResize', ImageResize);
-    hljs.configure({
-        languages: ['javascript', 'ruby', 'python', 'rust']
-    });
     const toolbarOptions = [
         ['bold', 'italic', 'underline', 'strike'],
         ['blockquote', 'code-block'],

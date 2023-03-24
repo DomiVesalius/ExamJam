@@ -43,7 +43,24 @@ export class CommentsController extends BaseController {
         @Query() limit: number
     ): Promise<GetMyCommentsResponse> {
         const userEmail = getUserFromRequest(req);
-        const totalPages = await CommentsService.getTotalNumCommentPagesMadeByUser(userEmail);
+        const totalPages = await CommentsService.getTotalNumCommentPagesMadeByUser(
+            userEmail,
+            limit
+        );
+
+        if (page > totalPages) {
+            this.setStatus(400);
+            return {
+                success: false,
+                code: 400,
+                totalPages,
+                errors: ['page out of range for given limit'],
+                page,
+                limit,
+                data: []
+            };
+        }
+
         const comments = await CommentsService.getCommentsMadeByUser(userEmail, page, limit);
 
         return {

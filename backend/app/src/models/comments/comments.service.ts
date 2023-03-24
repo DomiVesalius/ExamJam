@@ -173,9 +173,13 @@ export class CommentsService {
         }
     }
 
-    public static async getTotalNumCommentPagesMadeByUser(userEmail: string): Promise<number> {
+    public static async getTotalNumCommentPagesMadeByUser(
+        userEmail: string,
+        limit: number
+    ): Promise<number> {
         try {
-            return await CommentModel.find({ author: userEmail }).countDocuments();
+            const totalComments = await CommentModel.find({ author: userEmail }).countDocuments();
+            return Math.ceil(totalComments / limit);
         } catch (e) {
             return 0;
         }

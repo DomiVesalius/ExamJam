@@ -1,16 +1,14 @@
-import React, { useState, useRef, useEffect, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
-import MDEditor from '@uiw/react-md-editor';
-import rehypeSanitize from 'rehype-sanitize';
+import MarkdownEditor from '@uiw/react-markdown-editor';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 // @ts-ignore
 import ImageResize from 'quill-image-resize-module-react';
 import hljs from 'highlight.js';
-import katex from 'katex';
-import 'katex/dist/katex.min.css';
 import {
+    Box,
     Button,
     Card,
     CardContent,
@@ -82,17 +80,16 @@ const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSu
     window.document.documentElement.setAttribute('data-color-mode', 'light');
 
     const markdownEditor = (
-        <MDEditor
+        <MarkdownEditor
             value={mdValue}
-            /* @ts-ignore */
             onChange={(value = '', event) => {
                 setMdValue(value);
-                // TODO: showing unicode after completing 3 ending backticks in code block
-                console.log(value);
             }}
-            previewOptions={{
-                rehypePlugins: [[rehypeSanitize]]
+            previewProps={{
+                source: mdValue
             }}
+            style={{ height: 400, minHeight: 400 }}
+            visible={true}
         />
     );
 
@@ -117,12 +114,15 @@ const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSu
         }
     };
     const rtfEditor = (
-        <ReactQuill
-            theme="snow"
-            value={value}
-            onChange={(value) => setValue(value)}
-            modules={quillModules}
-        />
+        <Stack spacing={4} direction="column">
+            <ReactQuill
+                theme="snow"
+                value={value}
+                onChange={(value) => setValue(value)}
+                modules={quillModules}
+                style={{ height: 400, minHeight: 400, padding: 0 }}
+            />
+        </Stack>
     );
 
     return (
@@ -178,14 +178,18 @@ const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSu
                                         </FormControl>
                                         {editorState == 'rtf' ? rtfEditor : markdownEditor}
                                     </Stack>
-                                    <Button
-                                        disabled={formik.isSubmitting}
-                                        color="primary"
-                                        variant="contained"
-                                        type="submit"
-                                    >
-                                        <Typography variant="subtitle1">Create a Post!</Typography>
-                                    </Button>
+                                    <Stack spacing={2}>
+                                        <Button
+                                            disabled={formik.isSubmitting}
+                                            color="primary"
+                                            variant="contained"
+                                            type="submit"
+                                        >
+                                            <Typography variant="subtitle1">
+                                                Create a Post!
+                                            </Typography>
+                                        </Button>
+                                    </Stack>
                                 </Stack>
                             </Form>
                         </FormikProvider>

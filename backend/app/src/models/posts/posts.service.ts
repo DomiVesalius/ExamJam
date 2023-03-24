@@ -14,6 +14,7 @@ export class PostsService {
         user: IUserModel,
         title: string,
         content: string,
+        formatType: string,
         examId: string,
         courseCode: string
     ): Promise<IPostModel | null> {
@@ -22,6 +23,7 @@ export class PostsService {
                 author: user.email,
                 title,
                 content,
+                formatType,
                 examId,
                 courseCode
             });

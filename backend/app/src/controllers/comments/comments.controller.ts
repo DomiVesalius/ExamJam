@@ -34,10 +34,6 @@ import paginationMiddleware from '../../middlewares/pagination.middleware';
 @Tags('Comments')
 @Route('comments')
 export class CommentsController extends BaseController {
-    static MIN_PAGE = 1;
-    static MIN_LIMIT = 1;
-    static MAX_LIMIT = 50;
-
     @Security(PassportStrategies.local)
     @Middlewares<RequestHandler>(paginationMiddleware)
     @Get('my-comments')

@@ -1,5 +1,6 @@
 enum PathConstants {
     profilePage = '/dashboard/profile',
+    profileEditPage = '/dashboard/profile/edit',
     dashboard = '/dashboard',
     registerPage = '/register',
     loginPage = '/login',

@@ -30,3 +30,10 @@ export interface GetPostsByCourseCode extends BaseResponse {
 }
 
 export interface DeletePostResponse extends BaseResponse {}
+
+export interface GetMyPostsResponse extends BaseResponse {
+    page: number;
+    limit: number;
+    totalPages: number;
+    data: IPostModel[];
+}

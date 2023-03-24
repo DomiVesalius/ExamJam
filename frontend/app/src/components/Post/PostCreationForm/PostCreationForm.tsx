@@ -4,6 +4,7 @@ import { Form, FormikProvider, useFormik } from 'formik';
 import MarkdownEditor from '@uiw/react-markdown-editor';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { marked } from 'marked';
 // @ts-ignore
 import ImageResize from 'quill-image-resize-module-react';
 import {
@@ -55,7 +56,7 @@ const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSu
         onSubmit: async (values, { setSubmitting }) => {
             setSubmitting(true);
             const postCreationValues = {
-                content: value,
+                content: editorState === 'rtf' ? value : marked.parse(mdValue),
                 title: values.title,
                 examId: examValue
             };

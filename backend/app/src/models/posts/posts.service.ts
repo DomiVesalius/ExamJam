@@ -95,10 +95,14 @@ export class PostsService {
         limit: number
     ): Promise<IPostModel[]> {
         try {
-            return await PostModel.find({ author: userEmail })
+            const posts = await PostModel.find({ author: userEmail })
                 .sort({ createdAt: 'asc' })
                 .skip((pageNumber - 1) * limit)
                 .limit(limit);
+
+            await setIsBookmarkedField(userEmail || '', posts);
+
+            return posts;
         } catch (e) {
             return [];
         }

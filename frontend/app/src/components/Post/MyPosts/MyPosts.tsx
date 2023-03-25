@@ -70,7 +70,8 @@ const MyPosts: React.FunctionComponent<MyPostsProps> = (props: MyPostsProps) => 
         if (error) console.log(error);
     }, [data, error]);
 
-    if (error) return <Typography variant="subtitle1">You have not created any posts</Typography>;
+    if (error || posts.length === 0)
+        return <Typography variant="subtitle1">You have not created any posts</Typography>;
 
     return (
         <Stack spacing={2} direction="column">

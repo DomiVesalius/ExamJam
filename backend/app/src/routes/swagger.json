@@ -2040,7 +2040,7 @@
 					{
 						"in": "query",
 						"name": "keyword",
-						"required": true,
+						"required": false,
 						"schema": {
 							"type": "string"
 						}

@@ -85,8 +85,8 @@ export class PostsController extends BaseController {
         @Path() courseCode: string,
         @Query() page: number,
         @Query() limit: number,
-        @Query() keyword: string,
-        @Request() req: ExpressRequest
+        @Request() req: ExpressRequest,
+        @Query() keyword?: string
     ): Promise<GetPostsByCourseCode> {
         const userEmail = req.user as string;
 
@@ -120,7 +120,7 @@ export class PostsController extends BaseController {
             userEmail,
             keyword
         );
-        const totalPages = await PostsService.getTotalNumPosts(examIds, limit);
+        const totalPages = await PostsService.getTotalNumPosts(examIds, limit, keyword);
 
         let resBody: GetPostsByExamId;
         if (posts.length > 0) {
@@ -186,7 +186,7 @@ export class PostsController extends BaseController {
             keyword
         );
 
-        const totalPages = await PostsService.getTotalNumPosts([examId], limit);
+        const totalPages = await PostsService.getTotalNumPosts([examId], limit, keyword);
 
         let resBody: GetPostsByExamId;
         if (posts.length > 0) {

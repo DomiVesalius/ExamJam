@@ -1008,8 +1008,8 @@ export function RegisterRoutes(app: Router) {
                     courseCode: {"in":"path","name":"courseCode","required":true,"dataType":"string"},
                     page: {"in":"query","name":"page","required":true,"dataType":"double"},
                     limit: {"in":"query","name":"limit","required":true,"dataType":"double"},
-                    keyword: {"in":"query","name":"keyword","required":true,"dataType":"string"},
                     req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                    keyword: {"in":"query","name":"keyword","dataType":"string"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

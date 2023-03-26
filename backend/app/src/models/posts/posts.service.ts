@@ -32,8 +32,20 @@ export class PostsService {
         }
     }
 
-    public static async getTotalNumPosts(examIds: string[], limit: number): Promise<number> {
-        const totalPosts = await PostModel.find({ examId: examIds }).countDocuments();
+    public static async getTotalNumPosts(
+        examIds: string[],
+        limit: number,
+        keyword?: string
+    ): Promise<number> {
+        let totalPosts;
+        if (keyword) {
+            totalPosts = await PostModel.find({
+                examId: examIds,
+                $or: [{ title: new RegExp(keyword, 'i') }, { content: new RegExp(keyword, 'i') }]
+            }).countDocuments();
+        } else {
+            totalPosts = await PostModel.find({ examId: examIds }).countDocuments();
+        }
         return Math.ceil(totalPosts / limit);
     }
 
@@ -51,8 +63,7 @@ export class PostsService {
                     examId: examIds,
                     $or: [
                         { title: new RegExp(keyword, 'i') },
-                        { content: new RegExp(keyword, 'i') },
-                        { courseCode: new RegExp(keyword, 'i') }
+                        { content: new RegExp(keyword, 'i') }
                     ]
                 })
                     .sort({ createdAt: 'asc' })

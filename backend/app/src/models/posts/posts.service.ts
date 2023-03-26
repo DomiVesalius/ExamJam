@@ -51,7 +51,8 @@ export class PostsService {
                     examId: examIds,
                     $or: [
                         { title: new RegExp(keyword, 'i') },
-                        { content: new RegExp(keyword, 'i') }
+                        { content: new RegExp(keyword, 'i') },
+                        { courseCode: new RegExp(keyword, 'i') }
                     ]
                 })
                     .sort({ createdAt: 'asc' })

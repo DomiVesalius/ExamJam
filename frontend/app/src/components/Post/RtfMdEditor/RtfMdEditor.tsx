@@ -1,6 +1,14 @@
 import React, { ChangeEvent } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
-import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Stack } from '@mui/material';
+import {
+    FormControl,
+    FormControlLabel,
+    FormLabel,
+    Radio,
+    RadioGroup,
+    Stack,
+    Typography
+} from '@mui/material';
 import MarkdownEditor from '@uiw/react-markdown-editor';
 import 'react-quill/dist/quill.snow.css';
 // @ts-ignore
@@ -28,6 +36,17 @@ const RtfMdEditor: React.FunctionComponent<RtfMdEditorProps> = (props: RtfMdEdit
         editorHeight,
         editorWidth
     } = props;
+
+    if (
+        rtfValue === undefined &&
+        setRtfValue === undefined &&
+        mdValue === undefined &&
+        setMdValue === undefined &&
+        editorState === undefined &&
+        setEditor === undefined
+    ) {
+        return <Typography variant="subtitle1">Error: Missing state props/hooks</Typography>;
+    }
 
     function handleEditorChange(event: ChangeEvent<HTMLInputElement>, value: string) {
         setEditor(value);

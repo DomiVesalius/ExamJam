@@ -9,6 +9,9 @@ import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import { KebabMenu } from './KebabMenu/KebabMenu';
 import CommentSection from '../CommentList/CommentSection';
 import ReactMarkdown from 'react-markdown';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { darcula, materialLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import rehypeRaw from 'rehype-raw';
 
 const fetcher = (url: string) => http.get(url).then((res) => res.data);
 
@@ -55,16 +58,8 @@ const Post: React.FunctionComponent = () => {
     const creationDate = new Date(post.createdAt);
     const formattedCreationDate = creationDate.toLocaleString('en-US');
 
-    let postBody = (
-        <Typography variant="body1" component="div" gutterBottom>
-            <div dangerouslySetInnerHTML={{ __html: post.content }} />
-        </Typography>
-    );
+    const currTheme = localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
 
-    if (post.formatType === 'markdown') {
-        // TODO: Use react-markdown to create markdown formatted preview for post.content
-        postBody = <ReactMarkdown>post.content</ReactMarkdown>;
-    }
     return (
         <Container>
             <Card variant="outlined">
@@ -100,7 +95,31 @@ const Post: React.FunctionComponent = () => {
                                 <Typography variant="h4" component="h1" gutterBottom>
                                     {post.title}
                                 </Typography>
-                                {postBody}
+                                <ReactMarkdown
+                                    children={post.content}
+                                    components={{
+                                        code({ node, inline, className, children, ...props }) {
+                                            const match = /language-(\w+)/.exec(className || '');
+                                            return !inline && match ? (
+                                                <SyntaxHighlighter
+                                                    // @ts-ignore
+                                                    style={
+                                                        currTheme === 'dark'
+                                                            ? darcula
+                                                            : materialLight
+                                                    }
+                                                    language={match[1]}
+                                                    PreTag="div"
+                                                    children={String(children).replace(/\n$/, '')}
+                                                    {...props}
+                                                />
+                                            ) : (
+                                                <code className={className} {...props} />
+                                            );
+                                        }
+                                    }}
+                                    rehypePlugins={[rehypeRaw]}
+                                />
                                 <Typography variant="caption" display="block" gutterBottom>
                                     Last updated at {formattedUpdateDate}
                                 </Typography>

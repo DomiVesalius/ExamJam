@@ -1,30 +1,19 @@
 import React, { useState, ChangeEvent } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
-import MarkdownEditor from '@uiw/react-markdown-editor';
-import ReactQuill, { Quill } from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import { marked } from 'marked';
-// @ts-ignore
-import ImageResize from 'quill-image-resize-module-react';
 import {
-    Box,
     Button,
     Card,
     CardContent,
     CardHeader,
     Container,
-    FormControl,
-    FormControlLabel,
-    FormLabel,
-    Radio,
-    RadioGroup,
     Stack,
     TextField,
     Typography
 } from '@mui/material';
 import HTTP from '../../../utils/http';
 import { ExamDropDown } from '../ExamDropDown/ExamDropDown';
+import RtfMdEditor from '../RtfMdEditor/RtfMdEditor';
 
 export interface PostCreationFormProps {
     onSuccess: Function;
@@ -72,57 +61,6 @@ const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSu
         return <div>ERROR</div>;
     }
 
-    function handleEditorChange(event: ChangeEvent<HTMLInputElement>, value: string) {
-        setEditor(value);
-    }
-
-    // Set markdown editor to light/dark mode.
-    const storage = localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
-    window.document.documentElement.setAttribute('data-color-mode', storage);
-
-    const markdownEditor = (
-        <MarkdownEditor
-            value={mdValue}
-            onChange={(value = '', event) => {
-                setMdValue(value);
-            }}
-            previewProps={{
-                source: mdValue
-            }}
-            style={{ height: 400, minHeight: 400 }}
-            visible={true}
-        />
-    );
-
-    Quill.register('modules/imageResize', ImageResize);
-    const toolbarOptions = [
-        ['bold', 'italic', 'underline', 'strike'],
-        ['blockquote', 'code-block'],
-        [{ list: 'ordered' }, { list: 'bullet' }],
-        ['link'],
-        [{ indent: '-1' }, { indent: '+1' }],
-        [{ header: [1, 2, 3, 4, 5, 6, false] }],
-        [{ align: [] }]
-    ];
-    const quillModules = {
-        toolbar: toolbarOptions,
-        imageResize: {
-            parchment: Quill.import('parchment'),
-            modules: ['Resize', 'DisplaySize']
-        }
-    };
-    const rtfEditor = (
-        <Stack spacing={4} direction="column">
-            <ReactQuill
-                theme="snow"
-                value={value}
-                onChange={(value) => setValue(value)}
-                modules={quillModules}
-                style={{ height: 400, minHeight: 400, padding: 0 }}
-            />
-        </Stack>
-    );
-
     return (
         <Container maxWidth="xl">
             <Card variant="outlined">
@@ -150,31 +88,16 @@ const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSu
                                             }
                                             helperText={formik.touched.title && formik.errors.title}
                                         />
-                                        <FormControl>
-                                            <FormLabel id="editor-row-radio-buttons-group-label">
-                                                Editors
-                                            </FormLabel>
-                                            <RadioGroup
-                                                row
-                                                aria-labelledby="editor-row-radio-buttons-group-label"
-                                                defaultValue="markdown"
-                                                name="row-radio-buttons-group"
-                                                value={editorState}
-                                                onChange={handleEditorChange}
-                                            >
-                                                <FormControlLabel
-                                                    value="rtf"
-                                                    control={<Radio />}
-                                                    label="Rich-Text-Format"
-                                                />
-                                                <FormControlLabel
-                                                    value="markdown"
-                                                    control={<Radio />}
-                                                    label="Markdown"
-                                                />
-                                            </RadioGroup>
-                                        </FormControl>
-                                        {editorState == 'rtf' ? rtfEditor : markdownEditor}
+                                        <RtfMdEditor
+                                            rtfValue={value}
+                                            setRtfValue={setValue}
+                                            mdValue={mdValue}
+                                            setMdValue={setMdValue}
+                                            editorState={editorState}
+                                            setEditor={setEditor}
+                                            editorHeight={400}
+                                            editorWidth={'auto'}
+                                        />
                                     </Stack>
                                     <Stack spacing={2}>
                                         <Button

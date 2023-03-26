@@ -9,6 +9,7 @@ import { useMainContext } from '../../contexts/Main/MainContext';
 import LogoutButton from '../Auth/LogoutButton/LogoutButton';
 import PathConstants from '../../utils/pathConstants';
 import NavbarLink from './NavbarLink/NavbarLink';
+import { ToggleThemeButton } from '../ToggleThemeButton/ToggleThemeButton';
 
 interface NavbarProps {
     /** User menu when account icon is clicked */
@@ -169,6 +170,7 @@ export const Navbar = ({
                             <SearchIcon />
                         </IconButton>
                     </NavbarLink>
+                    <ToggleThemeButton />
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                         <IconButton
                             size="large"

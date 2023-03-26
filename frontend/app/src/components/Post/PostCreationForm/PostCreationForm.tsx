@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-
 import {
     Button,
     Card,
@@ -16,6 +13,7 @@ import {
 } from '@mui/material';
 import HTTP from '../../../utils/http';
 import { ExamDropDown } from '../ExamDropDown/ExamDropDown';
+import RtfMdEditor from '../RtfMdEditor/RtfMdEditor';
 
 export interface PostCreationFormProps {
     onSuccess: Function;
@@ -33,7 +31,9 @@ const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSu
     const [searchParams] = useSearchParams();
     const initialExam = searchParams.get('examId') || '';
 
-    const [richTextValue, setRichTextValue] = useState('');
+    const [value, setValue] = useState('');
+    const [mdValue, setMdValue] = useState('');
+    const [editorState, setEditor] = useState('rtf');
     const [examValue, setExamValue] = useState(initialExam);
 
     const initialValues: PostCreationFormValues = {
@@ -45,8 +45,9 @@ const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSu
         onSubmit: async (values, { setSubmitting }) => {
             setSubmitting(true);
             const postCreationValues = {
-                content: richTextValue,
+                content: editorState === 'rtf' ? value : mdValue,
                 title: values.title,
+                formatType: editorState,
                 examId: examValue
             };
             try {
@@ -87,25 +88,29 @@ const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSu
                                             }
                                             helperText={formik.touched.title && formik.errors.title}
                                         />
-                                        <ReactQuill
-                                            theme="snow"
-                                            placeholder="What is your question?"
-                                            value={richTextValue}
-                                            style={{
-                                                maxWidth: '100%',
-                                                height: 'auto'
-                                            }}
-                                            onChange={setRichTextValue}
+                                        <RtfMdEditor
+                                            rtfValue={value}
+                                            setRtfValue={setValue}
+                                            mdValue={mdValue}
+                                            setMdValue={setMdValue}
+                                            editorState={editorState}
+                                            setEditor={setEditor}
+                                            editorHeight={400}
+                                            editorWidth={'auto'}
                                         />
                                     </Stack>
-                                    <Button
-                                        disabled={formik.isSubmitting}
-                                        color="primary"
-                                        variant="contained"
-                                        type="submit"
-                                    >
-                                        <Typography variant="subtitle1">Create a Post!</Typography>
-                                    </Button>
+                                    <Stack spacing={2}>
+                                        <Button
+                                            disabled={formik.isSubmitting}
+                                            color="primary"
+                                            variant="contained"
+                                            type="submit"
+                                        >
+                                            <Typography variant="subtitle1">
+                                                Create a Post!
+                                            </Typography>
+                                        </Button>
+                                    </Stack>
                                 </Stack>
                             </Form>
                         </FormikProvider>

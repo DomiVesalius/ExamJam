@@ -8,6 +8,10 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import { KebabMenu } from './KebabMenu/KebabMenu';
 import CommentSection from '../CommentList/CommentSection';
+import ReactMarkdown from 'react-markdown';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { darcula, materialLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import rehypeRaw from 'rehype-raw';
 
 const fetcher = (url: string) => http.get(url).then((res) => res.data);
 
@@ -19,10 +23,11 @@ const Post: React.FunctionComponent = () => {
         title: '',
         author: '',
         content: '',
+        formatType: '',
         examId: '',
         createdAt: '',
         updatedAt: '',
-        isBookmarked: false,
+        isBookmarked: false
     });
 
     const url: string = `/posts/${postId}`;
@@ -35,11 +40,11 @@ const Post: React.FunctionComponent = () => {
                 author: data.data.author,
                 title: data.data.title,
                 content: data.data.content,
+                formatType: data.data.formatType,
                 examId: data.data.examId,
                 createdAt: data.data.createdAt,
                 updatedAt: data.data.updatedAt,
-                isBookmarked: data.data.isBookmarked,
-
+                isBookmarked: data.data.isBookmarked
             });
         }
     }, [data]);
@@ -52,6 +57,8 @@ const Post: React.FunctionComponent = () => {
     const formattedUpdateDate = updateDate.toLocaleString('en-US');
     const creationDate = new Date(post.createdAt);
     const formattedCreationDate = creationDate.toLocaleString('en-US');
+
+    const currTheme = localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
 
     return (
         <Container>
@@ -88,10 +95,31 @@ const Post: React.FunctionComponent = () => {
                                 <Typography variant="h4" component="h1" gutterBottom>
                                     {post.title}
                                 </Typography>
-
-                                <Typography variant="body1" component="div" gutterBottom>
-                                    <div dangerouslySetInnerHTML={{ __html: post.content }} />
-                                </Typography>
+                                <ReactMarkdown
+                                    children={post.content}
+                                    components={{
+                                        code({ node, inline, className, children, ...props }) {
+                                            const match = /language-(\w+)/.exec(className || '');
+                                            return !inline && match ? (
+                                                <SyntaxHighlighter
+                                                    // @ts-ignore
+                                                    style={
+                                                        currTheme === 'dark'
+                                                            ? darcula
+                                                            : materialLight
+                                                    }
+                                                    language={match[1]}
+                                                    PreTag="div"
+                                                    children={String(children).replace(/\n$/, '')}
+                                                    {...props}
+                                                />
+                                            ) : (
+                                                <code className={className} {...props} />
+                                            );
+                                        }
+                                    }}
+                                    rehypePlugins={[rehypeRaw]}
+                                />
                                 <Typography variant="caption" display="block" gutterBottom>
                                     Last updated at {formattedUpdateDate}
                                 </Typography>

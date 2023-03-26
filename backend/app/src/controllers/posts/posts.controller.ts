@@ -63,6 +63,7 @@ export class PostsController extends BaseController {
             user,
             body.title,
             body.content,
+            body.formatType,
             body.examId,
             exam.courseCode
         );

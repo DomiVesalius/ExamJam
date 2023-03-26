@@ -12,6 +12,7 @@ export interface GetPostByIdResponse extends BaseResponse {
 export interface CreatePostBody {
     title: string;
     content: string;
+    formatType: string;
     examId: string;
 }
 

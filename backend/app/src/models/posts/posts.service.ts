@@ -3,6 +3,8 @@ import PostModel, { IPostModel } from './post.model';
 import { IPiazzaPost } from '../piazzaPosts/cleaned/piazzaPost.model';
 import { CommentObject } from '../piazzaPosts/cleaned/cleanPiazza.service';
 import { setIsBookmarkedField } from '../models.helpers';
+import { ICourseModel } from '../courses/course.model';
+import { IExamModel } from '../exams/exam.model';
 
 export interface PostObject extends IPiazzaPost {
     _id: string;
@@ -39,13 +41,28 @@ export class PostsService {
         examIds: string[],
         pageNumber: number,
         limit: number,
-        email?: string
+        email?: string,
+        keyword?: string
     ): Promise<IPostModel[]> {
         try {
-            const posts = await PostModel.find({ examId: examIds })
-                .sort({ createdAt: 'asc' })
-                .skip((pageNumber - 1) * limit)
-                .limit(limit);
+            let posts;
+            if (keyword) {
+                posts = await PostModel.find({
+                    examId: examIds,
+                    $or: [
+                        { title: new RegExp(keyword, 'i') },
+                        { content: new RegExp(keyword, 'i') }
+                    ]
+                })
+                    .sort({ createdAt: 'asc' })
+                    .skip((pageNumber - 1) * limit)
+                    .limit(limit);
+            } else {
+                posts = await PostModel.find({ examId: examIds })
+                    .sort({ createdAt: 'asc' })
+                    .skip((pageNumber - 1) * limit)
+                    .limit(limit);
+            }
 
             await setIsBookmarkedField(email || '', posts);
 

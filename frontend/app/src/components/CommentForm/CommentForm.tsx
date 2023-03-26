@@ -4,6 +4,7 @@ import ReactQuill from 'react-quill';
 import { useFormik, Form, FormikProvider } from 'formik';
 import HTTP from '../../utils/http';
 import NameAvatar from '../NameAvatar/NameAvatar';
+import RtfMdEditor from '../Post/RtfMdEditor/RtfMdEditor';
 
 interface CommentFormProps {
     postId: string;
@@ -13,6 +14,8 @@ interface CommentFormProps {
 
 const CommentForm: React.FunctionComponent<CommentFormProps> = (props: CommentFormProps) => {
     const [richTextValue, setRichTextValue] = useState('');
+    const [mdValue, setMdValue] = useState('');
+    const [editorState, setEditor] = useState('rtf');
 
     const initialValues = {
         content: richTextValue
@@ -24,7 +27,8 @@ const CommentForm: React.FunctionComponent<CommentFormProps> = (props: CommentFo
             setSubmitting(true);
 
             const commentCreationValues = {
-                content: richTextValue,
+                content: editorState === 'rtf' ? richTextValue : mdValue,
+                formatType: editorState,
                 postId: props.postId,
                 parentId: props.parentId
             };
@@ -41,22 +45,32 @@ const CommentForm: React.FunctionComponent<CommentFormProps> = (props: CommentFo
     });
 
     return (
-        <Card sx={{ padding: '15px'}}>
+        <Card sx={{ padding: '15px' }}>
             <CardContent>
                 <FormikProvider value={formik}>
                     <Form onSubmit={formik.handleSubmit}>
                         <Stack direction="row" spacing={2}>
                             <NameAvatar name={props.author} />
-                            <ReactQuill
-                                theme="snow"
-                                placeholder="What is your question?"
-                                value={richTextValue}
-                                style={{
-                                    width: '100%',
-                                    height: 'auto',
-                                    paddingBottom: '20px'
-                                }}
-                                onChange={setRichTextValue}
+                            {/*<ReactQuill*/}
+                            {/*    theme="snow"*/}
+                            {/*    placeholder="What is your question?"*/}
+                            {/*    value={richTextValue}*/}
+                            {/*    style={{*/}
+                            {/*        width: '100%',*/}
+                            {/*        height: 'auto',*/}
+                            {/*        paddingBottom: '20px'*/}
+                            {/*    }}*/}
+                            {/*    onChange={setRichTextValue}*/}
+                            {/*/>*/}
+                            <RtfMdEditor
+                                rtfValue={richTextValue}
+                                setRtfValue={setRichTextValue}
+                                mdValue={mdValue}
+                                setMdValue={setMdValue}
+                                editorState={editorState}
+                                setEditor={setEditor}
+                                editorHeight={300}
+                                editorWidth={700}
                             />
                             <Button
                                 size="large"

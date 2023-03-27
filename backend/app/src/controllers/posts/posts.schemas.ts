@@ -30,3 +30,7 @@ export interface GetPostsByCourseCode extends BaseResponse {
 }
 
 export interface DeletePostResponse extends BaseResponse {}
+
+export interface PostVoteResponse extends BaseResponse {
+    data: IPostModel | null;
+}

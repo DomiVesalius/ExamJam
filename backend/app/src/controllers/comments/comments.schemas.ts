@@ -51,3 +51,7 @@ export interface UpdateCommentBody {
 export interface UpdateCommentResponse extends BaseResponse {
     data: ICommentModel | null;
 }
+
+export interface CommentVoteResponse extends BaseResponse {
+    data: ICommentModel | null;
+}

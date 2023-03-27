@@ -8,6 +8,8 @@ export interface IComment {
     postId: Schema.Types.ObjectId;
     parentId: Schema.Types.ObjectId | null;
     children: Schema.Types.ObjectId[];
+    upvotes: number;
+    downvotes: number;
 }
 
 export interface ICommentModel extends Document, IComment {}
@@ -18,7 +20,9 @@ const CommentSchema = new Schema<ICommentModel>(
         content: { type: Schema.Types.String, required: true },
         postId: { type: Schema.Types.String, required: true, ref: 'Post' },
         children: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
-        parentId: { type: Schema.Types.ObjectId, required: false, ref: CommentModelName }
+        parentId: { type: Schema.Types.ObjectId, required: false, ref: CommentModelName },
+        upvotes: { type: Schema.Types.Number, default: 0 },
+        downvotes: { type: Schema.Types.Number, default: 0 }
     },
     {
         timestamps: true,

@@ -7,14 +7,16 @@ import {
     GetPostByIdResponse,
     GetPostsByCourseCode,
     GetPostsByExamId,
-    DeletePostResponse
+    DeletePostResponse,
+    PostVoteResponse
 } from './posts.schemas';
 import { BaseController } from '../base.controller';
 import { UsersService } from '../../models/user/users.service';
 import { PostsService } from '../../models/posts/posts.service';
 import { ExamService } from '../../models/exams/exam.service';
 import { IPostModel } from '../../models/posts/post.model';
-
+import { VoteType } from '../../models/votes/vote.models';
+import { VotesService } from '../../models/votes/votes.service';
 @Tags('Post')
 @Route('posts')
 export class PostsController extends BaseController {
@@ -260,6 +262,31 @@ export class PostsController extends BaseController {
 
         this.setStatus(code);
 
+        return {
+            code,
+            success,
+            data: post
+        };
+    }
+
+    @Post('{postId}/vote')
+    @Security(PassportStrategies.local)
+    public async upvotePost(
+        @Path() postId: string,
+        @Query() type: VoteType,
+        @Request() req: ExpressRequest
+    ): Promise<PostVoteResponse> {
+        const userEmail = req.user as string;
+
+        const doesPostExist = await PostsService.getPost(postId);
+        if (!doesPostExist) {
+            this.setStatus(404);
+            return { code: 404, success: false, data: null, errors: ['Post not found'] };
+        }
+
+        const post = await VotesService.placePostVote(userEmail, type, postId);
+        const code = post ? 200 : 404;
+        const success = !!post;
         return {
             code,
             success,

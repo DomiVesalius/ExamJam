@@ -18,6 +18,7 @@ import { IPostModel } from '../../models/posts/post.model';
 import { VoteType } from '../../models/votes/vote.models';
 import { VotesService } from '../../models/votes/votes.service';
 import { getUserFromRequest } from '../../utils/helpers.util';
+import { setInteractionFields } from '../../models/models.helpers';
 @Tags('Post')
 @Route('posts')
 export class PostsController extends BaseController {
@@ -193,7 +194,7 @@ export class PostsController extends BaseController {
                 data: posts
             };
         } else {
-            resBody = {
+            resBody = { 
                 success: false,
                 code: 404,
                 page,
@@ -256,10 +257,14 @@ export class PostsController extends BaseController {
      */
     @Get('{postId}')
     @Security(PassportStrategies.local)
-    public async getPostById(@Path() postId: string): Promise<GetPostByIdResponse> {
+    public async getPostById(@Path() postId: string, @Request() req: ExpressRequest): Promise<GetPostByIdResponse> {
+        const userEmail = getUserFromRequest(req);
+
         const post = await PostsService.getPost(postId);
         const code = post ? 200 : 404;
         const success = !!post;
+
+        if (post) await setInteractionFields(userEmail, [post]);
 
         this.setStatus(code);
 
@@ -272,7 +277,7 @@ export class PostsController extends BaseController {
 
     @Post('{postId}/vote')
     @Security(PassportStrategies.local)
-    public async upvotePost(
+    public async votePost(
         @Path() postId: string,
         @Query() type: VoteType,
         @Request() req: ExpressRequest
@@ -286,6 +291,9 @@ export class PostsController extends BaseController {
         }
 
         const post = await VotesService.placePostVote(userEmail, type, postId);
+        
+        if (post) await setInteractionFields(userEmail, [post]);
+        
         const code = post ? 200 : 404;
         const success = !!post;
         return {

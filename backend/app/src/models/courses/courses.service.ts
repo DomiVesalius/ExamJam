@@ -1,5 +1,5 @@
 import CourseModel, { ICourseModel } from './course.model';
-import { setIsBookmarkedField } from '../models.helpers';
+import { setInteractionFields } from '../models.helpers';
 
 export class CoursesService {
     /**
@@ -22,7 +22,7 @@ export class CoursesService {
             .skip((pageNumber - 1) * limit)
             .limit(limit);
 
-        await setIsBookmarkedField(email, courses);
+        await setInteractionFields(email, courses);
 
         return courses;
     }

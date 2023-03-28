@@ -1,5 +1,5 @@
 import ExamModel, { IExamModel } from './exam.model';
-import { setIsBookmarkedField } from '../models.helpers';
+import { setInteractionFields } from '../models.helpers';
 
 export class ExamService {
     /**
@@ -21,7 +21,7 @@ export class ExamService {
         courseCode = courseCode.toUpperCase();
         try {
             const exams = await ExamModel.find({ courseCode });
-            await setIsBookmarkedField(email || '', exams);
+            await setInteractionFields(email || '', exams);
             return exams;
         } catch (e) {
             return [];

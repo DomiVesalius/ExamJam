@@ -1,5 +1,5 @@
 import { ICourseModel } from './courses/course.model';
-import { IPostModel } from './posts/post.model';
+import PostModel, { IPostModel } from './posts/post.model';
 import { IExamModel } from './exams/exam.model';
 
 /**
@@ -10,12 +10,25 @@ import { IExamModel } from './exams/exam.model';
  * @param documents a list of documents to check if they have been bookmarked by the user with the
  * given email
  */
-export async function setIsBookmarkedField(
+export async function setInteractionFields(
     email: string,
     documents: Array<ICourseModel | IExamModel | IPostModel>
 ) {
     for (const doc of documents) {
         // @ts-ignore sorry typescript gods :(
         await doc.setIsBookmarked(email);
+
+        // @ts-ignore sorry typescript gods :(
+        if (doc instanceof PostModel) await doc.setIsVoted(email);
     }
 }
+
+// export async function setIsVotedField(
+//     email: string,
+//     documents: Array<IPostModel>
+// ) {
+//     for (const doc of documents) {
+//         // @ts-ignore sorry typescript gods :(
+//         await doc.setIsVoted(email);
+//     }
+// }

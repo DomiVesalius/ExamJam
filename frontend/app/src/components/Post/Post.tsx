@@ -9,6 +9,8 @@ import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import { KebabMenu } from './KebabMenu/KebabMenu';
 import CommentSection from '../CommentList/CommentSection';
 
+import {VoteButtons} from '../VotingButtons/PostVotingButtons';
+
 const fetcher = (url: string) => http.get(url).then((res) => res.data);
 
 const Post: React.FunctionComponent = () => {
@@ -23,6 +25,8 @@ const Post: React.FunctionComponent = () => {
         createdAt: '',
         updatedAt: '',
         isBookmarked: false,
+        isUpvoted: false,
+        isDownvoted: false,
     });
 
     const url: string = `/posts/${postId}`;
@@ -30,6 +34,9 @@ const Post: React.FunctionComponent = () => {
 
     useEffect(() => {
         if (data) {
+            console.log('logging data', data.data);
+            console.log('logging downvoted', data.data.isDownvoted);
+            console.log('logging upvoted', data.data.isUpvoted);
             setPost({
                 postId: data.data._id,
                 author: data.data.author,
@@ -39,10 +46,11 @@ const Post: React.FunctionComponent = () => {
                 createdAt: data.data.createdAt,
                 updatedAt: data.data.updatedAt,
                 isBookmarked: data.data.isBookmarked,
-
+                isUpvoted: data.data.isUpvoted,
+                isDownvoted: data.data.isDownvoted,
             });
         }
-    }, [data]);
+    }, [data, error]);
 
     if (error || !courseCode) {
         return <div>ERROR</div>;
@@ -54,7 +62,7 @@ const Post: React.FunctionComponent = () => {
     const formattedCreationDate = creationDate.toLocaleString('en-US');
 
     return (
-        <Container>
+        <Container key={post.postId}>
             <Card variant="outlined">
                 <Stack spacing={2}>
                     <CardContent>
@@ -71,12 +79,9 @@ const Post: React.FunctionComponent = () => {
                                     </Typography>
 
                                     <Box display="flex" flexWrap="wrap" alignItems="center">
-                                        <IconButton aria-label="upvote">
-                                            <ThumbUpIcon />
-                                        </IconButton>
-                                        <IconButton aria-label="downvote">
-                                            <ThumbDownIcon />
-                                        </IconButton>
+                                        <VoteButtons postId={post.postId} isUpvoted={post.isUpvoted} isDownvoted={post.isDownvoted}/>
+                                        {/* <UpvoteButton postId={post.postId} isUpvoted={post.isUpvoted}/>
+                                        <DownvoteButton postId={post.postId} isDownvoted={post.isDownvoted}/> */}
                                         <KebabMenu
                                             postId={post.postId}
                                             courseCode={courseCode}

@@ -101,4 +101,13 @@ export class VotesService {
     public static async getNumDownvotes(postId: string): Promise<number> {
         return await VoteModel.find({ itemId: postId, type: VoteType.down }).countDocuments();
     }
+
+    public static async getVote(userEmail: string, itemId: string ): Promise<IVoteModel | null>{
+        try {
+            return await VoteModel.findOne({ userEmail: userEmail, itemId: itemId });
+        } catch (e) {
+            return null;
+        }
+    }
+    
 }

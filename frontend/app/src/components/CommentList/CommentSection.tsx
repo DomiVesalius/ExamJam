@@ -53,7 +53,7 @@ function createComments(data: any, currUser: string): [React.ReactElement[], num
 
     for (let comment of commentsData) {
         comments.push(
-            <Card sx={{ px: '20px', my: '20px', width: '40vw' }}>
+            <Card key={comment._id} sx={{ px: '20px', my: '20px', width: '40vw' }}>
                 <CardContent>
                     <Grid container wrap="nowrap" spacing={2}>
                         <Grid item>

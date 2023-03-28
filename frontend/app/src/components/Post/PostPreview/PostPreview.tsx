@@ -7,6 +7,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useMainContext } from '../../../contexts/Main/MainContext';
 import BookmarkButton from '../../BookmarkButton/BookmarkButton';
 import { BookmarkType } from '../../../utils/helpers';
+import { VoteButtons } from '../../VotingButtons/PostVotingButtons';
+
 export interface PostPreviewProps {
     postId: string;
     courseCode: string;
@@ -18,6 +20,8 @@ export interface PostPreviewProps {
     previewTextMaxLength: number;
     content: string;
     isBookmarked: boolean;
+    isUpvoted: boolean;
+    isDownvoted: boolean
     cardWidth?: string;
 }
 
@@ -58,6 +62,7 @@ const PostPreview: React.FunctionComponent<PostPreviewProps> = (props: PostPrevi
             </CardActionArea>
             <CardActionArea sx={{ display: 'flex', justifyContent: 'right' }}>
                 {/* <BookmarkButton type={BookmarkType.post} itemId={props.postId} isBookmarked={props.isBookmarked}/> */}
+                <VoteButtons postId={props.postId} isUpvoted={props.isUpvoted} isDownvoted={props.isDownvoted}/>
                 <IconButton aria-label="share">
                     <ShareIcon />
                 </IconButton>

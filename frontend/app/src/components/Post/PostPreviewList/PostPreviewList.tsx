@@ -30,32 +30,38 @@ function createPostPreviews(
 
         if (type === PostType.piazza) {
             postElement = (
-                <PiazzaPostPreview
-                    postId={post._id}
-                    forumId={post.forumId}
-                    postNumber={post.postNumber}
-                    courseCode={post.courseCode}
-                    title={post.title}
-                    content={post.content}
-                    createdAt={new Date(post.createdAt)}
-                    numComments={post.comments.length}
-                    previewTextMaxLength={MAX_CONTENT_LENGTH}
-                />
+                <div key={post._id}>
+                    <PiazzaPostPreview
+                        postId={post._id}
+                        forumId={post.forumId}
+                        postNumber={post.postNumber}
+                        courseCode={post.courseCode}
+                        title={post.title}
+                        content={post.content}
+                        createdAt={new Date(post.createdAt)}
+                        numComments={post.comments.length}
+                        previewTextMaxLength={MAX_CONTENT_LENGTH}
+                    />
+                </div>
             );
         } else {
             postElement = (
-                <PostPreview
-                    courseCode={courseCode}
-                    author={post.author}
-                    content={post.content}
-                    createdAt={new Date(post.createdAt)}
-                    examId={post.examId}
-                    postId={post._id}
-                    previewTextMaxLength={MAX_CONTENT_LENGTH}
-                    title={post.title}
-                    updatedAt={new Date(post.updatedAt)}
-                    isBookmarked={post.isBookmarked}
-                />
+                <div key={post._id}>
+                    <PostPreview
+                        courseCode={courseCode}
+                        author={post.author}
+                        content={post.content}
+                        createdAt={new Date(post.createdAt)}
+                        examId={post.examId}
+                        postId={post._id}
+                        previewTextMaxLength={MAX_CONTENT_LENGTH}
+                        title={post.title}
+                        updatedAt={new Date(post.updatedAt)}
+                        isBookmarked={post.isBookmarked}
+                        isUpvoted={post.isUpvoted}
+                        isDownvoted={post.isDownvoted}
+                    />
+                </div>
             );
         }
 

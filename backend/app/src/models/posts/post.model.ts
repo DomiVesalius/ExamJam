@@ -2,6 +2,8 @@ import mongoose, { Schema, Document } from 'mongoose';
 import { BookmarksService } from '../bookmarks/bookmarks.service';
 import { BookmarkType } from '../bookmarks/bookmark.model';
 import { VotesService } from '../votes/votes.service';
+import { PostsService } from './posts.service';
+import { VoteType } from '../votes/vote.models';
 
 export const PostModelName = 'Post';
 
@@ -31,25 +33,26 @@ const PostSchema = new Schema<IPostModel>(
 );
 
 PostSchema.virtual('isBookmarked');
+PostSchema.virtual('isUpvoted');
+PostSchema.virtual('isDownvoted');
 
-// PostSchema.virtual('upvotes').get( async function () {
-//     console.log(this.id)
-//     const res = await VotesService.getNumUpvotes(this.id)
-//     console.log(res)
-//     return res;
-
-// })
-
-// PostSchema.virtual('downvotes').get(async function () {
-//     console.log(this.id)
-//     return await VotesService.getNumDownvotes(this.id);
-
-// })
 
 PostSchema.methods.setIsBookmarked = async function (email: string) {
     const isBookmarked = await BookmarksService.getBookmark(this._id, BookmarkType.post, email);
     this.isBookmarked = !!isBookmarked;
 };
+
+PostSchema.methods.setIsVoted = async function (email: string) {
+    const vote = await VotesService.getVote(email, this.id);
+    if (!vote) {
+        this.isUpvoted = false;
+        this.isDownvoted = false;
+        return;
+    }
+
+    this.isUpvoted = vote.type === VoteType.up;
+    this.isDownvoted = vote.type === VoteType.down;
+}
 
 const PostModel = mongoose.model<IPostModel>(PostModelName, PostSchema);
 

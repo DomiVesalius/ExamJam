@@ -59,6 +59,8 @@ function createBookmarkedElements(
                     updatedAt={new Date(bookmarkedItem.updatedAt)}
                     isBookmarked={true}
                     cardWidth="37vw"
+                    isUpvoted={bookmarkedItem.isUpvoted}
+                    isDownvoted={bookmarkedItem.isDownvoted}
                 />
             );
         } else {

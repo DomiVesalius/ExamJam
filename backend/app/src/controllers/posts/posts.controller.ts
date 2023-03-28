@@ -17,6 +17,7 @@ import { ExamService } from '../../models/exams/exam.service';
 import { IPostModel } from '../../models/posts/post.model';
 import { VoteType } from '../../models/votes/vote.models';
 import { VotesService } from '../../models/votes/votes.service';
+import { getUserFromRequest } from '../../utils/helpers.util';
 @Tags('Post')
 @Route('posts')
 export class PostsController extends BaseController {
@@ -276,7 +277,7 @@ export class PostsController extends BaseController {
         @Query() type: VoteType,
         @Request() req: ExpressRequest
     ): Promise<PostVoteResponse> {
-        const userEmail = req.user as string;
+        const userEmail = getUserFromRequest(req);
 
         const doesPostExist = await PostsService.getPost(postId);
         if (!doesPostExist) {

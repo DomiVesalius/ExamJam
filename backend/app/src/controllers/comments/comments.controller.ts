@@ -20,7 +20,8 @@ import {
     UpdateCommentBody,
     UpdateCommentResponse,
     GetCommentsResponse,
-    validCreateCommentSchema
+    validCreateCommentSchema,
+    CommentVoteResponse
 } from './comments.schemas';
 import validationMiddleware from '../../middlewares/validation.middleware';
 import { RequestHandler, Request as ExpressRequest } from 'express';
@@ -28,6 +29,8 @@ import PassportStrategies from '../../middlewares/passport.middleware';
 import { PostsService } from '../../models/posts/posts.service';
 import { CommentsService } from '../../models/comments/comments.service';
 import { getUserFromRequest } from '../../utils/helpers.util';
+import { VoteType } from '../../models/votes/vote.models';
+import { VotesService } from '../../models/votes/votes.service';
 
 @Tags('Comments')
 @Route('comments')
@@ -259,6 +262,31 @@ export class CommentsController extends BaseController {
             success,
             code,
             data: updatedComment
+        };
+    }
+
+    @Post('{commentId}/vote')
+    @Security(PassportStrategies.local)
+    public async upvotePost(
+        @Path() commentId: string,
+        @Query() type: VoteType,
+        @Request() req: ExpressRequest
+    ): Promise<CommentVoteResponse> {
+        const userEmail = getUserFromRequest(req);
+
+        const doesCommentExist = await CommentsService.getComment(commentId);
+        if (!doesCommentExist) {
+            this.setStatus(404);
+            return { code: 404, success: false, data: null, errors: ['Comment not found'] };
+        }
+
+        const comment = await VotesService.placeCommentVote(userEmail, type, commentId);
+        const code = comment ? 200 : 404;
+        const success = !!comment;
+        return {
+            code,
+            success,
+            data: comment
         };
     }
 }

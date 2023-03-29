@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../EditProfile/Profile.css';
 import ProtectedRoute from '../../components/Routes/ProtectedRoute';
 import PageLayout from '../../components/Layout/PageLayout';
-import { Collapse, Grid, Typography } from '@mui/material';
+import { Collapse, Container, Grid, Stack, Typography } from '@mui/material';
 import ProfileCard from '../../components/ProfileCard/ProfileCard';
 import TabContext from '@mui/lab/TabContext';
 import Box from '@mui/material/Box';
@@ -26,18 +26,9 @@ const ProfilePage = () => {
     return (
         <ProtectedRoute>
             <PageLayout title="My Profile">
-                <Grid container spacing={2}>
-                    <Grid item>
+                <Stack spacing={2}>
+                    <Grid item sx={{ display: 'flex', justifyContent: 'center' }}>
                         <ProfileCard />
-                    </Grid>
-                    <Grid item>
-                        Bookmarks
-                        {isOpen ? <ExpandLess /> : <ExpandMore />}
-                        <Collapse in={isOpen}>
-                            <Grid item>
-                                <BookmarkTabList queryLimit={5} queryPage={1} />
-                            </Grid>
-                        </Collapse>
                     </Grid>
                     <Grid item>
                         <TabContext value={panelIndex}>
@@ -50,12 +41,12 @@ const ProfilePage = () => {
                                     <Tab label="My Posts" value="1" />
                                 </TabList>
                             </Box>
-                            <TabPanel value="1">
+                            <TabPanel value="1" sx={{ display: 'flex', justifyContent: 'center' }}>
                                 <MyPosts queryLimit={5} queryPage={1} />
                             </TabPanel>
                         </TabContext>
                     </Grid>
-                </Grid>
+                </Stack>
             </PageLayout>
         </ProtectedRoute>
     );

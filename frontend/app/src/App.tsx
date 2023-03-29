@@ -12,7 +12,7 @@ import CoursePage from './pages/Course/CoursePage';
 import PathConstants from './utils/pathConstants';
 import CourseSearch from './pages/Dashboard/CourseSearch/CourseSearch';
 import PostCreationPage from './pages/Post/PostCreationPage/PostCreationPage';
-import EditProfilePage from './pages/EditProfile/ProfilePage';
+import EditProfilePage from './pages/EditProfile/EditProfilePage';
 
 /**
  * For now this is just to show that the frontend and backend are connected.

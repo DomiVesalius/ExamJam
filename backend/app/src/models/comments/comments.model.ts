@@ -1,4 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { VoteType } from '../votes/vote.models';
+import { VotesService } from '../votes/votes.service';
 
 export const CommentModelName = 'Comment';
 
@@ -27,9 +29,25 @@ const CommentSchema = new Schema<ICommentModel>(
     {
         timestamps: true,
         versionKey: false,
-        collection: CommentModelName
+        collection: CommentModelName,
+        toJSON: { virtuals: true }
     }
 );
+
+CommentSchema.virtual('isUpvoted');
+CommentSchema.virtual('isDownvoted');
+
+CommentSchema.methods.setIsVoted = async function (email: string) {
+    const vote = await VotesService.getVote(email, this.id);
+    if (!vote) {  
+        this.isUpvoted = false;
+        this.isDownvoted = false;
+        return;
+    }
+    
+    this.isUpvoted = vote.type === VoteType.up;
+    this.isDownvoted = vote.type === VoteType.down;
+}
 
 const CommentModel = mongoose.model<ICommentModel>(CommentModelName, CommentSchema);
 

@@ -3,6 +3,7 @@ import { PostsService } from '../posts/posts.service';
 import { CommentsService } from '../comments/comments.service';
 import { IPostModel } from '../posts/post.model';
 import { ICommentModel } from '../comments/comments.model';
+import { setInteractionFields } from '../models.helpers';
 
 export class VotesService {
     public static async placePostVote(
@@ -88,6 +89,7 @@ export class VotesService {
             }
 
             comment.save();
+            await setInteractionFields(userEmail, [comment]);
             return comment;
         } catch (e) {
             return null;

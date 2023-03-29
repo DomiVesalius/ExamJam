@@ -1,6 +1,7 @@
 import { ICourseModel } from './courses/course.model';
 import PostModel, { IPostModel } from './posts/post.model';
 import { IExamModel } from './exams/exam.model';
+import CommentModel, { ICommentModel } from './comments/comments.model';
 
 /**
  * This function will call a schema instance method on all documents of the given type
@@ -12,23 +13,15 @@ import { IExamModel } from './exams/exam.model';
  */
 export async function setInteractionFields(
     email: string,
-    documents: Array<ICourseModel | IExamModel | IPostModel>
+    documents: Array<ICourseModel | IExamModel | IPostModel | ICommentModel>
 ) {
     for (const doc of documents) {
-        // @ts-ignore sorry typescript gods :(
-        await doc.setIsBookmarked(email);
+        if (!(doc instanceof CommentModel)){
+            // @ts-ignore sorry typescript gods :(
+            await doc.setIsBookmarked(email);
+        }
 
         // @ts-ignore sorry typescript gods :(
-        if (doc instanceof PostModel) await doc.setIsVoted(email);
+        if (doc instanceof PostModel || doc instanceof CommentModel) await doc.setIsVoted(email);
     }
 }
-
-// export async function setIsVotedField(
-//     email: string,
-//     documents: Array<IPostModel>
-// ) {
-//     for (const doc of documents) {
-//         // @ts-ignore sorry typescript gods :(
-//         await doc.setIsVoted(email);
-//     }
-// }

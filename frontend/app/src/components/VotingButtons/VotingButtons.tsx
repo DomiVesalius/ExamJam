@@ -1,5 +1,5 @@
 import HTTP from '../../utils/http';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import { IconButton } from '@mui/material';
@@ -8,9 +8,10 @@ import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import ButtonGroup from '@mui/material/ButtonGroup';
 
 interface VoteButtonProps {
-    postId: string;
+    itemId: string;
     isUpvoted: boolean;
     isDownvoted: boolean;
+    itemType: 'post' | 'comment';
 }
 
 
@@ -19,12 +20,20 @@ export const VoteButtons: React.FunctionComponent<VoteButtonProps> = (props) => 
     const [isDownvoted, setIsDownvoted] = useState(props.isDownvoted);
 
     const handle = async (type: 'up' | 'down') => {
+        let url;
+        // /comments/{commentId}/vote
+        if (props.itemType === 'post') {
+            url = `/posts/${props.itemId}/vote?type=${type}`;
+        } else {
+            url = `/comments/${props.itemId}/vote?type=${type}`
+        }
+
         try {
-            const result = await HTTP.post(`/posts/${props.postId}/vote?type=${type}`);
-            
+            const result = await HTTP.post(url);
+            console.log(type)
             if (type === 'up') {
                 const upvoted = result.data.data.isUpvoted
-                if (isUpvoted && type == 'up') {
+                if (isUpvoted && type === 'up') {
                     setIsUpvoted(false)
                     setIsDownvoted(false)
                 } else {

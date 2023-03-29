@@ -9,7 +9,7 @@ import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import { KebabMenu } from './KebabMenu/KebabMenu';
 import CommentSection from '../CommentList/CommentSection';
 
-import {VoteButtons} from '../VotingButtons/PostVotingButtons';
+import {VoteButtons} from '../VotingButtons/VotingButtons';
 
 const fetcher = (url: string) => http.get(url).then((res) => res.data);
 
@@ -79,7 +79,12 @@ const Post: React.FunctionComponent = () => {
                                     </Typography>
 
                                     <Box display="flex" flexWrap="wrap" alignItems="center">
-                                        <VoteButtons postId={post.postId} isUpvoted={post.isUpvoted} isDownvoted={post.isDownvoted}/>
+                                        <VoteButtons 
+                                            itemId={post.postId} 
+                                            isUpvoted={post.isUpvoted} 
+                                            isDownvoted={post.isDownvoted} 
+                                            itemType="post"
+                                        />
                                         {/* <UpvoteButton postId={post.postId} isUpvoted={post.isUpvoted}/>
                                         <DownvoteButton postId={post.postId} isDownvoted={post.isDownvoted}/> */}
                                         <KebabMenu

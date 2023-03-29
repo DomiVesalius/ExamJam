@@ -20,6 +20,12 @@ const useStyles = makeStyles((theme: any) => ({
     butt: {
         borderRadius: '20px',
         width: '150px'
+    },
+    textContent: {
+        textAlign: 'left'
+    },
+    img: {
+        width: '10vw'
     }
 }));
 
@@ -29,7 +35,7 @@ export const GettingStarted: React.FunctionComponent = () => {
         <div className={classes.root} id={'GettingStarted'}>
             <CssBaseline />
             <div>
-                <div>
+                <div className={classes.textContent}>
                     <Typography variant="h4">Success in every step</Typography>
                     <Typography variant="body2">Success in every step</Typography>
                 </div>
@@ -42,7 +48,7 @@ export const GettingStarted: React.FunctionComponent = () => {
                     </Button>
                 </div>
             </div>
-            <img src={`${process.env.PUBLIC_URL + '/image3.jpg'}`} alt="Logo" />;
+            <img className={classes.img} src={`${process.env.PUBLIC_URL + '/image3.jpg'}`} />
         </div>
     );
 };

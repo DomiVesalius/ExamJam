@@ -41,7 +41,7 @@ export const Header: React.FunctionComponent = () => {
                     </Typography>
                     <Scroll to="GettingStarted" smooth={true}>
                         <IconButton>
-                            <KeyboardDoubleArrowDownIcon />
+                            <KeyboardDoubleArrowDownIcon style={{ color: '#07b0ff' }} />
                         </IconButton>
                     </Scroll>
                 </div>

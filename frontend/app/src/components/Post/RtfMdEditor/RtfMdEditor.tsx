@@ -9,7 +9,7 @@ import {
     Stack,
     Typography
 } from '@mui/material';
-import MarkdownEditor, { ICommand } from '@uiw/react-markdown-editor';
+import MarkdownEditor from '@uiw/react-markdown-editor';
 import 'react-quill/dist/quill.snow.css';
 // @ts-ignore
 import ImageResize from 'quill-image-resize-module-react';

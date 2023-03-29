@@ -14,6 +14,7 @@ import 'react-quill/dist/quill.snow.css';
 // @ts-ignore
 import ImageResize from 'quill-image-resize-module-react';
 import { InlineMath, BlockMath } from 'react-katex';
+import katex from 'katex';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import 'katex/dist/katex.min.css';
@@ -62,9 +63,13 @@ const RtfMdEditor: React.FunctionComponent<RtfMdEditorProps> = (props: RtfMdEdit
     window.document.documentElement.setAttribute('data-color-mode', storage);
 
     Quill.register('modules/imageResize', ImageResize);
+
+    // For latex-support
+    window.katex = katex;
+
     const toolbarOptions = [
         ['bold', 'italic', 'underline', 'strike'],
-        ['blockquote', 'code-block'],
+        ['blockquote', 'code-block', 'formula'], // formula for latex-support
         [{ list: 'ordered' }, { list: 'bullet' }],
         ['link'],
         [{ indent: '-1' }, { indent: '+1' }],

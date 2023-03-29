@@ -35,7 +35,7 @@ const PostPreview: React.FunctionComponent<PostPreviewProps> = (props: PostPrevi
         Math.min(textContent.length, props.previewTextMaxLength)
     ); // 200 could me modified to be any arbitrary number
 
-    const handleNavigateToPost = () => redirect(`${props.courseCode}/posts/${props.postId}/`);
+    const handleNavigateToPost = () => redirect(`/dashboard/courses/${props.courseCode}/posts/${props.postId}/`);
     return (
         <Card sx={{ width: props.cardWidth || '50vw' }}>
             <CardActionArea onClick={handleNavigateToPost}>

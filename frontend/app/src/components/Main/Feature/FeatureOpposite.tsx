@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     },
     textContent: {
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
         alignItems: 'flex-start',
         marginRight: '2rem',
         marginBottom: '2rem'
@@ -35,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'space-between'
     },
     txt: {
-        fontFamily: 'Nunito',
         marginBottom: '2rem'
     }
 }));

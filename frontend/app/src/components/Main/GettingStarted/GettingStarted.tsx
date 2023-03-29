@@ -4,6 +4,7 @@ import { Typography, CssBaseline } from '@material-ui/core';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import PathConstants from '../../../utils/pathConstants';
+import { redirect } from '../../../utils/helpers';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'space-between'
     },
     txt: {
-        fontFamily: 'Nunito',
         marginBottom: '2rem'
     }
 }));
@@ -50,7 +50,7 @@ export const GettingStarted: React.FunctionComponent = () => {
             <CssBaseline />
             <div>
                 <div className={classes.textContent}>
-                    <Typography className={classes.txt} variant="h4">
+                    <Typography className={classes.txt} variant="h2">
                         Success in every step!
                     </Typography>
                     <Typography className={classes.txt} variant="body2">
@@ -58,28 +58,26 @@ export const GettingStarted: React.FunctionComponent = () => {
                         your courses.
                     </Typography>
                     <div className={classes.buttonContainer}>
-                        <Link to={PathConstants.courseSearch} style={{ textDecoration: 'none' }}>
-                            <Button
-                                sx={{
-                                    margin: '0 1rem 0 0',
-                                    borderRadius: '100px'
-                                }}
-                                variant="contained"
-                            >
-                                GET STARTED
-                            </Button>
-                        </Link>
-                        <Link to={PathConstants.courseSearch} style={{ textDecoration: 'none' }}>
-                            <Button
-                                sx={{
-                                    margin: '0 1rem 0 0',
-                                    borderRadius: '100px'
-                                }}
-                                variant="outlined"
-                            >
-                                LEARN MORE
-                            </Button>
-                        </Link>
+                        <Button
+                            sx={{
+                                margin: '0 1rem 0 0',
+                                borderRadius: '100px'
+                            }}
+                            variant="contained"
+                            onClick={() => redirect(PathConstants.registerPage)}
+                        >
+                            GET STARTED
+                        </Button>
+                        <Button
+                            sx={{
+                                margin: '0 1rem 0 0',
+                                borderRadius: '100px'
+                            }}
+                            variant="outlined"
+                            onClick={() => redirect(PathConstants.loginPage)}
+                        >
+                            LEARN MORE
+                        </Button>
                     </div>
                 </div>
             </div>

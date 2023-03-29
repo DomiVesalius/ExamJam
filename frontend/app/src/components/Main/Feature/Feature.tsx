@@ -35,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'space-between'
     },
     txt: {
-        fontFamily: 'Nunito',
         marginBottom: '2rem'
     }
 }));

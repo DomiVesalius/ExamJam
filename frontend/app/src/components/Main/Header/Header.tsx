@@ -17,9 +17,7 @@ const useStyles = makeStyles((theme: any) => ({
     colorText: {
         color: '#07b0ff'
     },
-    title: {
-        fontFamily: 'Nunito'
-    }
+    title: {}
 }));
 export const Header: React.FunctionComponent = () => {
     const classes = useStyles();

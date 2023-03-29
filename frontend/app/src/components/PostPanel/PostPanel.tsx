@@ -7,6 +7,7 @@ import TabPanel from '@mui/lab/TabPanel';
 import PostPreviewList, { PostType } from '../Post/PostPreviewList/PostPreviewList';
 import { SearchBar } from '../SearchBar/SearchBar';
 import { blue, lightBlue } from '@mui/material/colors';
+import { Stack } from '@mui/material';
 
 export interface PostPanelProps {
     courseCode: string;
@@ -45,19 +46,21 @@ const PostPanel: React.FunctionComponent<PostPanelProps> = (props: PostPanelProp
                     />
                 </TabPanel>
                 <TabPanel value="2">
-                    <SearchBar
-                        hoverColor={blue['300']}
-                        defaultColor={lightBlue['300']}
-                        placeHolder="Search for courses..."
-                        handleSubmit={setKeyword}
-                    />
-                    <PostPreviewList
-                        courseCode={props.courseCode}
-                        queryPage={props.queryPage}
-                        queryLimit={props.queryLimit}
-                        postType={PostType.regular}
-                        queryKeyword={keyword}
-                    />
+                    <Stack spacing={2}>
+                        <SearchBar
+                            hoverColor={blue['300']}
+                            defaultColor={lightBlue['300']}
+                            placeHolder="Search for courses..."
+                            handleSubmit={setKeyword}
+                        />
+                        <PostPreviewList
+                            courseCode={props.courseCode}
+                            queryPage={props.queryPage}
+                            queryLimit={props.queryLimit}
+                            postType={PostType.regular}
+                            queryKeyword={keyword}
+                        />
+                    </Stack>
                 </TabPanel>
             </TabContext>
         </Box>

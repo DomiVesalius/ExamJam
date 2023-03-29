@@ -24,9 +24,9 @@ export const MainPage: React.FunctionComponent = () => {
                 <CssBaseline />
                 <Header />
                 <GettingStarted />
-                <Feature description="Community Driven" image="/image2.jpg" />
-                <FeatureOpposite description="Persistent" image="/image5.jpg" />
                 <Feature description="Community Driven" image="/image7.jpg" />
+                <FeatureOpposite description="Persistent" image="/image5.jpg" />
+                <Feature description="AI Generated Answers" image="/image10.jpg" />
             </PageLayout>
         </div>
     );

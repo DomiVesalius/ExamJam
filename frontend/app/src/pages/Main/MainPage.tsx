@@ -6,6 +6,7 @@ import { CssBaseline } from '@material-ui/core';
 import { Header } from '../../components/Main/Header/Header';
 import { GettingStarted } from '../../components/Main/GettingStarted/GettingStarted';
 import { Feature } from '../../components/Main/Feature/Feature';
+import { FeatureOpposite } from '../../components/Main/Feature/FeatureOpposite';
 const useStyles = makeStyles((theme: any) => ({
     root: {
         minHeight: '100vh',
@@ -16,7 +17,6 @@ const useStyles = makeStyles((theme: any) => ({
 }));
 
 export const MainPage: React.FunctionComponent = () => {
-    const classes = useStyles();
     return (
         <div>
             <CssBaseline />
@@ -24,10 +24,9 @@ export const MainPage: React.FunctionComponent = () => {
                 <CssBaseline />
                 <Header />
                 <GettingStarted />
-                <Feature
-                    description="ExamJam is a platform that allows you to create and share exams with your friends and colleagues. You can also take exams created by others and get instant feedback on your performance."
-                    image="/image2.jpg"
-                />
+                <Feature description="Community Driven" image="/image2.jpg" />
+                <FeatureOpposite description="Persistent" image="/image5.jpg" />
+                <Feature description="Community Driven" image="/image7.jpg" />
             </PageLayout>
         </div>
     );

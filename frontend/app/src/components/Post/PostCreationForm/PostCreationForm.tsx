@@ -32,7 +32,11 @@ const PostCreationForm: React.FunctionComponent<PostCreationFormProps> = ({ onSu
     const initialExam = searchParams.get('examId') || '';
 
     const [value, setValue] = useState('');
-    const [mdValue, setMdValue] = useState('');
+    const [mdValue, setMdValue] = useState(
+        'Use single dollar sign for inline math mode\nand double for block math mode.\n' +
+            'e.g.\n```\n$$\n\\cos^2(x)+\\sin^2(x)=1  % for block math\n$$\n```\n' +
+            'and `$\\cos^2(x)+\\sin^2(x)=1$` for inline math.'
+    );
     const [editorState, setEditor] = useState('rtf');
     const [examValue, setExamValue] = useState(initialExam);
 

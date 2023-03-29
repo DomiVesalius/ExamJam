@@ -24,6 +24,10 @@ export const MainPage: React.FunctionComponent = () => {
                 <CssBaseline />
                 <Header />
                 <GettingStarted />
+                <Feature
+                    description="ExamJam is a platform that allows you to create and share exams with your friends and colleagues. You can also take exams created by others and get instant feedback on your performance."
+                    image="/image2.jpg"
+                />
             </PageLayout>
         </div>
     );

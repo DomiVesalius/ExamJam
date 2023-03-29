@@ -1,31 +1,45 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/styles';
-import { CssBaseline, Typography, Button } from '@material-ui/core';
-import { Feature } from '../Feature/Feature';
+import { makeStyles } from '@material-ui/core/styles';
+import { Typography, CssBaseline } from '@material-ui/core';
+import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom';
+import PathConstants from '../../../utils/pathConstants';
 
-const useStyles = makeStyles((theme: any) => ({
+const useStyles = makeStyles((theme) => ({
     root: {
-        textAlign: 'center',
-        justifyContent: 'center',
-        alignItems: 'center',
         display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '2rem',
+        [theme.breakpoints.down('sm')]: {
+            flexDirection: 'column'
+        },
         height: '100vh'
     },
-    colorText: {
-        color: '#07b0ff'
-    },
-    title: {
-        fontFamily: 'Nunito'
-    },
-    butt: {
-        borderRadius: '20px',
-        width: '150px'
-    },
     textContent: {
-        textAlign: 'left'
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        marginRight: '2rem',
+        marginBottom: '2rem'
     },
     img: {
-        width: '10vw'
+        width: '50%',
+        height: 'auto',
+        borderRadius: '0.5rem',
+        [theme.breakpoints.down('sm')]: {
+            width: '100%'
+        }
+    },
+    buttonContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    txt: {
+        fontFamily: 'Nunito',
+        marginBottom: '2rem'
     }
 }));
 
@@ -36,19 +50,44 @@ export const GettingStarted: React.FunctionComponent = () => {
             <CssBaseline />
             <div>
                 <div className={classes.textContent}>
-                    <Typography variant="h4">Success in every step</Typography>
-                    <Typography variant="body2">Success in every step</Typography>
-                </div>
-                <div>
-                    <Button className={classes.butt} variant="contained">
-                        Contained
-                    </Button>
-                    <Button className={classes.butt} variant="outlined">
-                        Outlined
-                    </Button>
+                    <Typography className={classes.txt} variant="h4">
+                        Success in every step!
+                    </Typography>
+                    <Typography className={classes.txt} variant="body2">
+                        Get help with exam preparation with community driven support, tailored to
+                        your courses.
+                    </Typography>
+                    <div className={classes.buttonContainer}>
+                        <Link to={PathConstants.courseSearch} style={{ textDecoration: 'none' }}>
+                            <Button
+                                sx={{
+                                    margin: '0 1rem 0 0',
+                                    borderRadius: '100px'
+                                }}
+                                variant="contained"
+                            >
+                                GET STARTED
+                            </Button>
+                        </Link>
+                        <Link to={PathConstants.courseSearch} style={{ textDecoration: 'none' }}>
+                            <Button
+                                sx={{
+                                    margin: '0 1rem 0 0',
+                                    borderRadius: '100px'
+                                }}
+                                variant="outlined"
+                            >
+                                LEARN MORE
+                            </Button>
+                        </Link>
+                    </div>
                 </div>
             </div>
-            <img className={classes.img} src={`${process.env.PUBLIC_URL + '/image3.jpg'}`} />
+            <img
+                className={classes.img}
+                src={`${process.env.PUBLIC_URL + '/image3.jpg'}`}
+                alt="Getting Started"
+            />
         </div>
     );
 };

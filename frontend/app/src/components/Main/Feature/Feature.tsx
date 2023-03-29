@@ -1,28 +1,63 @@
-import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import { Typography, CssBaseline } from '@material-ui/core';
 
-export const Feature: React.FunctionComponent = () => {
+const useStyles = makeStyles((theme) => ({
+    root: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '2rem',
+        [theme.breakpoints.down('sm')]: {
+            flexDirection: 'column'
+        },
+        height: '50vh'
+    },
+    textContent: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        marginRight: '2rem',
+        marginBottom: '2rem'
+    },
+    img: {
+        width: '50%',
+        height: 'auto',
+        borderRadius: '0.5rem',
+        [theme.breakpoints.down('sm')]: {
+            width: '100%'
+        }
+    },
+    buttonContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    txt: {
+        fontFamily: 'Nunito',
+        marginBottom: '2rem'
+    }
+}));
+interface FeatureProps {
+    description: string;
+    image: string;
+}
+export const Feature: React.FunctionComponent<FeatureProps> = (props: FeatureProps) => {
+    const classes = useStyles();
     return (
-        <Card sx={{ maxWidth: 345 }}>
-            <CardMedia
-                sx={{ height: 140 }}
-                image="/static/images/cards/contemplative-reptile.jpg"
-                title="green iguana"
+        <div className={classes.root}>
+            <CssBaseline />
+            <div className={classes.textContent}>
+                <Typography className={classes.txt} variant="h4">
+                    {props.description}
+                </Typography>
+            </div>
+            <img
+                className={classes.img}
+                src={`${process.env.PUBLIC_URL}${props.image}`}
+                alt="Feature"
             />
-            <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                    Lizard
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles, with over 6,000 species,
-                    ranging across all continents except Antarctica
-                </Typography>
-            </CardContent>
-        </Card>
+        </div>
     );
 };

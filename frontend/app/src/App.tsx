@@ -12,6 +12,7 @@ import CoursePage from './pages/Course/CoursePage';
 import PathConstants from './utils/pathConstants';
 import CourseSearch from './pages/Dashboard/CourseSearch/CourseSearch';
 import PostCreationPage from './pages/Post/PostCreationPage/PostCreationPage';
+import { MainPage } from './pages/Main/MainPage';
 
 /**
  * For now this is just to show that the frontend and backend are connected.
@@ -20,18 +21,10 @@ import PostCreationPage from './pages/Post/PostCreationPage/PostCreationPage';
  * @constructor
  */
 function App() {
-    function Main() {
-        return (
-            <PageLayout title={App.name}>
-                <Typography variant="h1">Welcome to the main page :]</Typography>
-            </PageLayout>
-        );
-    }
-
     return (
         <BrowserRouter>
             <Routes>
-                <Route path={PathConstants.rootPage} element={<Main />}></Route>
+                <Route path={PathConstants.rootPage} element={<MainPage />}></Route>
                 <Route path={PathConstants.profilePage} element={<ProfilePage />}></Route>
                 <Route path={PathConstants.dashboard} element={<Dashboard />}></Route>
                 <Route path={PathConstants.courseSearch} element={<CourseSearch />}></Route>

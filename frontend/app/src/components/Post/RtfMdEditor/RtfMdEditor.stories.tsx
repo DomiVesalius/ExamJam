@@ -16,16 +16,7 @@ const Template: ComponentStory<typeof RtfMdEditor> = (args: RtfMdEditorProps) =>
 
 export const Default = Template.bind({});
 
-const [value, setValue] = useState('');
-const [mdValue, setMdValue] = useState('');
-const [editorState, setEditor] = useState('rtf');
-
 Default.args = {
-    rtfValue: value,
-    setRtfValue: setValue,
-    mdValue: mdValue,
-    setMdValue: setMdValue,
-    editorState: editorState,
-    setEditor: setEditor,
-    editorHeight: 400
+    editorHeight: 400,
+    editorWidth: 'auto'
 };

@@ -12,6 +12,8 @@ import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { darcula, materialLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import rehypeRaw from 'rehype-raw';
+import rehypeKatex from 'rehype-katex';
+import remarkMath from 'remark-math';
 
 const fetcher = (url: string) => http.get(url).then((res) => res.data);
 
@@ -118,7 +120,8 @@ const Post: React.FunctionComponent = () => {
                                             );
                                         }
                                     }}
-                                    rehypePlugins={[rehypeRaw]}
+                                    remarkPlugins={[remarkMath]}
+                                    rehypePlugins={[rehypeRaw, rehypeKatex]}
                                 />
                                 <Typography variant="caption" display="block" gutterBottom>
                                     Last updated at {formattedUpdateDate}

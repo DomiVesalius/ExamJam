@@ -1,10 +1,24 @@
 import React, { ChangeEvent } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
-import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Stack } from '@mui/material';
+import {
+    FormControl,
+    FormControlLabel,
+    FormLabel,
+    Radio,
+    RadioGroup,
+    Stack,
+    Typography
+} from '@mui/material';
 import MarkdownEditor from '@uiw/react-markdown-editor';
 import 'react-quill/dist/quill.snow.css';
 // @ts-ignore
 import ImageResize from 'quill-image-resize-module-react';
+import { InlineMath, BlockMath } from 'react-katex';
+import katex from 'katex';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import 'katex/dist/katex.min.css';
+import { Commands } from '@uiw/react-markdown-editor/cjs/components/ToolBar';
 
 export interface RtfMdEditorProps {
     rtfValue: string;
@@ -29,6 +43,17 @@ const RtfMdEditor: React.FunctionComponent<RtfMdEditorProps> = (props: RtfMdEdit
         editorWidth
     } = props;
 
+    if (
+        rtfValue === undefined &&
+        setRtfValue === undefined &&
+        mdValue === undefined &&
+        setMdValue === undefined &&
+        editorState === undefined &&
+        setEditor === undefined
+    ) {
+        return <Typography variant="subtitle1">Error: Missing state props/hooks</Typography>;
+    }
+
     function handleEditorChange(event: ChangeEvent<HTMLInputElement>, value: string) {
         setEditor(value);
     }
@@ -38,9 +63,13 @@ const RtfMdEditor: React.FunctionComponent<RtfMdEditorProps> = (props: RtfMdEdit
     window.document.documentElement.setAttribute('data-color-mode', storage);
 
     Quill.register('modules/imageResize', ImageResize);
+
+    // For latex-support
+    window.katex = katex;
+
     const toolbarOptions = [
         ['bold', 'italic', 'underline', 'strike'],
-        ['blockquote', 'code-block'],
+        ['blockquote', 'code-block', 'formula'], // formula for latex-support
         [{ list: 'ordered' }, { list: 'bullet' }],
         ['link'],
         [{ indent: '-1' }, { indent: '+1' }],
@@ -71,6 +100,33 @@ const RtfMdEditor: React.FunctionComponent<RtfMdEditorProps> = (props: RtfMdEdit
         </Stack>
     );
 
+    const mdRenderers = {
+        // @ts-ignore
+        inlineMath: ({ value }) => <InlineMath math={value} />,
+        // @ts-ignore
+        math: ({ value }) => <BlockMath math={value} />
+    };
+
+    const mdEditorToolbars: Array<Commands> = [
+        'undo',
+        'redo',
+        'bold',
+        'italic',
+        'header',
+        'strike',
+        'underline',
+        'quote',
+        'olist',
+        'ulist',
+        'todo',
+        'link',
+        'image',
+        'code',
+        'codeBlock',
+        'fullscreen',
+        'preview'
+    ];
+
     const markdownEditor = (
         <MarkdownEditor
             value={mdValue}
@@ -78,8 +134,11 @@ const RtfMdEditor: React.FunctionComponent<RtfMdEditorProps> = (props: RtfMdEdit
                 setMdValue(value);
             }}
             previewProps={{
-                source: mdValue
+                source: mdValue,
+                remarkPlugins: [remarkMath],
+                rehypePlugins: [rehypeKatex]
             }}
+            toolbars={mdEditorToolbars}
             style={{ height: editorHeight, minHeight: editorHeight, width: editorWidth }}
             visible={true}
         />

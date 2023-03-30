@@ -17,7 +17,9 @@ const useStyles = makeStyles((theme: any) => ({
     colorText: {
         color: '#07b0ff'
     },
-    title: {}
+    title: {
+        fontWeight: 'bold'
+    }
 }));
 export const Header: React.FunctionComponent = () => {
     const classes = useStyles();
@@ -34,7 +36,8 @@ export const Header: React.FunctionComponent = () => {
             >
                 <div className={classes.root}>
                     <Typography variant="h1" className={classes.title} gutterBottom>
-                        Welcome to <br />
+                        Welcome to
+                        <br />
                         <span className={classes.colorText}>ExamJam</span>
                     </Typography>
                     <Scroll to="GettingStarted" smooth={true}>

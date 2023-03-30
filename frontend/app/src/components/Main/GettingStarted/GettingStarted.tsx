@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.down('sm')]: {
             flexDirection: 'column'
         },
-        height: '100vh'
+        height: '65vh'
     },
     textContent: {
         display: 'flex',
@@ -39,7 +39,8 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'space-between'
     },
     txt: {
-        marginBottom: '2rem'
+        marginBottom: '3rem',
+        fontWeight: 300
     }
 }));
 
@@ -50,10 +51,10 @@ export const GettingStarted: React.FunctionComponent = () => {
             <CssBaseline />
             <div>
                 <div className={classes.textContent}>
-                    <Typography className={classes.txt} variant="h2">
+                    <Typography className={classes.txt} variant="h3">
                         Success in every step!
                     </Typography>
-                    <Typography className={classes.txt} variant="body2">
+                    <Typography className={classes.txt} variant="h6">
                         Get help with exam preparation with community driven support, tailored to
                         your courses.
                     </Typography>

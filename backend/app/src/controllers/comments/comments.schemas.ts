@@ -13,6 +13,7 @@ export const validCreateCommentSchema = yup.object().shape({
 
 export interface CreateCommentBody {
     content: string;
+    formatType?: string;
     postId: string;
     parentId?: string | null;
 }

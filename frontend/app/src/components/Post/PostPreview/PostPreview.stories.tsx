@@ -33,5 +33,67 @@ Default.args = {
     createdAt: new Date('2019-09-07T22:29:32.000+00:00'),
     updatedAt: new Date('2019-09-08T22:29:32.000+00:00'),
     author: 'john.doe@mail.utoronto.ca',
-    previewTextMaxLength: 200
+    previewTextMaxLength: 200,
+    isBookmarked: false,
+    isDownvoted: false,
+    isUpvoted: false
+};
+
+
+export const Upvoted = Template.bind({});
+Upvoted.args = {
+    postId: '640934acf0d2c67811001e58',
+    title: 'Hello, do we go the lectures/practicals from the 9th to the 13th?',
+    content:
+        '<p>It says that there are &#34;no lab meetings&#34; from the 9th to the 13th on this page:</p>\n' +
+        '<p></p>\n' +
+        '<p><a href="https://mcs.utm.utoronto.ca/~108/labs.shtml">https://mcs.utm.utoronto.ca/~108/labs.shtml</a></p>\n' +
+        '<p></p>\n' +
+        '<p>Thanks!</p>',
+    createdAt: new Date('2019-09-07T22:29:32.000+00:00'),
+    updatedAt: new Date('2019-09-08T22:29:32.000+00:00'),
+    author: 'john.doe@mail.utoronto.ca',
+    previewTextMaxLength: 200,
+    isBookmarked: false,
+    isDownvoted: false,
+    isUpvoted: true
+};
+
+
+export const Downvoted = Template.bind({});
+Downvoted.args = {
+    postId: '640934acf0d2c67811001e58',
+    title: 'Hello, do we go the lectures/practicals from the 9th to the 13th?',
+    content:
+        '<p>It says that there are &#34;no lab meetings&#34; from the 9th to the 13th on this page:</p>\n' +
+        '<p></p>\n' +
+        '<p><a href="https://mcs.utm.utoronto.ca/~108/labs.shtml">https://mcs.utm.utoronto.ca/~108/labs.shtml</a></p>\n' +
+        '<p></p>\n' +
+        '<p>Thanks!</p>',
+    createdAt: new Date('2019-09-07T22:29:32.000+00:00'),
+    updatedAt: new Date('2019-09-08T22:29:32.000+00:00'),
+    author: 'john.doe@mail.utoronto.ca',
+    previewTextMaxLength: 200,
+    isBookmarked: false,
+    isDownvoted: true,
+    isUpvoted: false
+};
+
+export const Bookmarked = Template.bind({});
+Bookmarked.args = {
+    postId: '640934acf0d2c67811001e58',
+    title: 'Hello, do we go the lectures/practicals from the 9th to the 13th?',
+    content:
+        '<p>It says that there are &#34;no lab meetings&#34; from the 9th to the 13th on this page:</p>\n' +
+        '<p></p>\n' +
+        '<p><a href="https://mcs.utm.utoronto.ca/~108/labs.shtml">https://mcs.utm.utoronto.ca/~108/labs.shtml</a></p>\n' +
+        '<p></p>\n' +
+        '<p>Thanks!</p>',
+    createdAt: new Date('2019-09-07T22:29:32.000+00:00'),
+    updatedAt: new Date('2019-09-08T22:29:32.000+00:00'),
+    author: 'john.doe@mail.utoronto.ca',
+    previewTextMaxLength: 200,
+    isBookmarked: true,
+    isDownvoted: false,
+    isUpvoted: false
 };

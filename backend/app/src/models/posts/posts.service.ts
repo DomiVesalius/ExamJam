@@ -2,7 +2,7 @@ import { IUserModel } from '../user/user.model';
 import PostModel, { IPostModel } from './post.model';
 import { IPiazzaPost } from '../piazzaPosts/cleaned/piazzaPost.model';
 import { CommentObject } from '../piazzaPosts/cleaned/cleanPiazza.service';
-import { setIsBookmarkedField } from '../models.helpers';
+import { setInteractionFields } from '../models.helpers';
 
 export interface PostObject extends IPiazzaPost {
     _id: string;
@@ -47,7 +47,7 @@ export class PostsService {
                 .skip((pageNumber - 1) * limit)
                 .limit(limit);
 
-            await setIsBookmarkedField(email || '', posts);
+            await setInteractionFields(email || '', posts);
 
             return posts;
         } catch (e) {
@@ -83,6 +83,7 @@ export class PostsService {
      */
     public static async getPost(postId: string): Promise<IPostModel | null> {
         try {
+            
             return await PostModel.findById(postId);
         } catch (e) {
             return null;

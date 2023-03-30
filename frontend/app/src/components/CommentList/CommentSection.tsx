@@ -22,6 +22,7 @@ import ReplyButton from '../ReplyButton/ReplyButton';
 import IconButton from '@mui/material/IconButton';
 import { KebabMenu } from '../Post/KebabMenu/KebabMenu';
 import DeleteCommentButton from '../DeleteCommentButton/DeleteCommentButton';
+import { VoteButtons } from '../VotingButtons/VotingButtons';
 
 interface ChildComment {
     _id: string;
@@ -30,6 +31,9 @@ interface ChildComment {
     parentId: string;
     content: string;
     children: unknown[];
+    isDownvoted: boolean,
+    isUpvoted: boolean,
+    
 }
 
 interface Comment {
@@ -38,6 +42,8 @@ interface Comment {
     postId: string;
     parentId: string | null;
     content: string;
+    isDownvoted: boolean;
+    isUpvoted: boolean;
     children: ChildComment[];
 }
 
@@ -53,7 +59,7 @@ function createComments(data: any, currUser: string): [React.ReactElement[], num
 
     for (let comment of commentsData) {
         comments.push(
-            <Card sx={{ px: '20px', my: '20px', width: '40vw' }}>
+            <Card key={comment._id} sx={{ px: '20px', my: '20px', width: '40vw' }}>
                 <CardContent>
                     <Grid container wrap="nowrap" spacing={2}>
                         <Grid item>
@@ -80,12 +86,19 @@ function createComments(data: any, currUser: string): [React.ReactElement[], num
                         </Grid>
                         <Grid item>
                             <Box display="flex" flexWrap="wrap" alignItems="center">
-                                <IconButton aria-label="upvote">
+                                    <VoteButtons 
+                                            itemId={comment._id} 
+                                            isUpvoted={comment.isUpvoted} 
+                                            isDownvoted={comment.isDownvoted} 
+                                            itemType="comment"
+                                        />
+                                {/* <VoteButtons postId={comment.postId} isUpvoted=/> */}
+                                {/* <IconButton aria-label="upvote">
                                     <ThumbUpIcon />
                                 </IconButton>
                                 <IconButton aria-label="downvote">
                                     <ThumbDownIcon />
-                                </IconButton>
+                                </IconButton> */}
                                 {currUser === comment.author && (
                                     <DeleteCommentButton commentId={comment._id} />
                                 )}
@@ -94,6 +107,7 @@ function createComments(data: any, currUser: string): [React.ReactElement[], num
                     </Grid>
                     {comment.children.map((child: ChildComment) => (
                         <Grid
+                            key={child._id}
                             container
                             wrap="nowrap"
                             spacing={2}
@@ -132,15 +146,15 @@ function createComments(data: any, currUser: string): [React.ReactElement[], num
                             </Grid>
                             <Grid item>
                                 <Box display="flex" flexWrap="wrap" alignItems="center">
-                                    <IconButton aria-label="upvote">
-                                        <ThumbUpIcon />
-                                    </IconButton>
-                                    <IconButton aria-label="downvote">
-                                        <ThumbDownIcon />
-                                    </IconButton>
                                     {currUser === child.author && (
                                         <DeleteCommentButton commentId={child._id} />
                                     )}
+                                    <VoteButtons 
+                                            itemId={child._id} 
+                                            isUpvoted={child.isUpvoted} 
+                                            isDownvoted={child.isDownvoted} 
+                                            itemType="comment"
+                                    />
                                 </Box>
                             </Grid>
                         </Grid>

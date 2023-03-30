@@ -31,6 +31,7 @@ import { CommentsService } from '../../models/comments/comments.service';
 import { getUserFromRequest } from '../../utils/helpers.util';
 import { VoteType } from '../../models/votes/vote.models';
 import { VotesService } from '../../models/votes/votes.service';
+import { setInteractionFields } from '../../models/models.helpers';
 
 @Tags('Comments')
 @Route('comments')
@@ -96,9 +97,10 @@ export class CommentsController extends BaseController {
         if (newComment && parentComment)
             await CommentsService.addReplyToComment(parentComment, newComment);
 
-        const success = !!newComment;
-        const code = newComment ? 201 : 500;
+        if(newComment) await setInteractionFields(userEmail, [newComment])
 
+        const success = !!newComment;
+        const code = newComment ? 201 : 500;        
         this.setStatus(code);
 
         return { success, code, data: newComment };
@@ -112,11 +114,14 @@ export class CommentsController extends BaseController {
      * @param postId ID of Post
      */
     @Get('posts/{postId}')
+    @Security(PassportStrategies.local)
     public async getComments(
         @Query() limit: number,
         @Query() page: number,
-        @Path() postId: string
+        @Path() postId: string,
+        @Request() req: ExpressRequest,
     ): Promise<GetCommentsResponse> {
+        const userEmail = getUserFromRequest(req);
         if (page <= 0 || limit <= 0 || limit > 10) {
             return {
                 success: false,
@@ -176,7 +181,7 @@ export class CommentsController extends BaseController {
             };
         }
 
-        const commentsArray = await CommentsService.getCommentsByPost(page, limit, postId);
+        const commentsArray = await CommentsService.getCommentsByPost(page, limit, postId, userEmail);
 
         this.setStatus(200);
         return {
@@ -267,7 +272,7 @@ export class CommentsController extends BaseController {
 
     @Post('{commentId}/vote')
     @Security(PassportStrategies.local)
-    public async upvotePost(
+    public async voteComment(
         @Path() commentId: string,
         @Query() type: VoteType,
         @Request() req: ExpressRequest
@@ -281,6 +286,7 @@ export class CommentsController extends BaseController {
         }
 
         const comment = await VotesService.placeCommentVote(userEmail, type, commentId);
+
         const code = comment ? 200 : 404;
         const success = !!comment;
         return {

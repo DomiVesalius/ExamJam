@@ -7,6 +7,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useMainContext } from '../../../contexts/Main/MainContext';
 import BookmarkButton from '../../BookmarkButton/BookmarkButton';
 import { BookmarkType } from '../../../utils/helpers';
+import { VoteButtons } from '../../VotingButtons/VotingButtons';
+
 export interface PostPreviewProps {
     postId: string;
     courseCode: string;
@@ -18,6 +20,8 @@ export interface PostPreviewProps {
     previewTextMaxLength: number;
     content: string;
     isBookmarked: boolean;
+    isUpvoted: boolean;
+    isDownvoted: boolean
     cardWidth?: string;
 }
 
@@ -31,7 +35,7 @@ const PostPreview: React.FunctionComponent<PostPreviewProps> = (props: PostPrevi
         Math.min(textContent.length, props.previewTextMaxLength)
     ); // 200 could me modified to be any arbitrary number
 
-    const handleNavigateToPost = () => redirect(`${props.courseCode}/posts/${props.postId}/`);
+    const handleNavigateToPost = () => redirect(`/dashboard/courses/${props.courseCode}/posts/${props.postId}/`);
     return (
         <Card sx={{ width: props.cardWidth || '50vw' }}>
             <CardActionArea onClick={handleNavigateToPost}>
@@ -58,6 +62,7 @@ const PostPreview: React.FunctionComponent<PostPreviewProps> = (props: PostPrevi
             </CardActionArea>
             <CardActionArea sx={{ display: 'flex', justifyContent: 'right' }}>
                 {/* <BookmarkButton type={BookmarkType.post} itemId={props.postId} isBookmarked={props.isBookmarked}/> */}
+                <VoteButtons itemId={props.postId} isUpvoted={props.isUpvoted} isDownvoted={props.isDownvoted} itemType="post"/>
                 <IconButton aria-label="share">
                     <ShareIcon />
                 </IconButton>

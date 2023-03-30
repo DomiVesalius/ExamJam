@@ -20,7 +20,8 @@ import {
     UpdateCommentBody,
     UpdateCommentResponse,
     GetCommentsResponse,
-    validCreateCommentSchema
+    validCreateCommentSchema,
+    GetMyCommentsResponse
 } from './comments.schemas';
 import validationMiddleware from '../../middlewares/validation.middleware';
 import { RequestHandler, Request as ExpressRequest } from 'express';
@@ -28,10 +29,50 @@ import PassportStrategies from '../../middlewares/passport.middleware';
 import { PostsService } from '../../models/posts/posts.service';
 import { CommentsService } from '../../models/comments/comments.service';
 import { getUserFromRequest } from '../../utils/helpers.util';
+import paginationMiddleware from '../../middlewares/pagination.middleware';
 
 @Tags('Comments')
 @Route('comments')
 export class CommentsController extends BaseController {
+    @Security(PassportStrategies.local)
+    @Middlewares<RequestHandler>(paginationMiddleware)
+    @Get('my-comments')
+    public async getMyComments(
+        @Request() req: ExpressRequest,
+        @Query() page: number,
+        @Query() limit: number
+    ): Promise<GetMyCommentsResponse> {
+        const userEmail = getUserFromRequest(req);
+        const totalPages = await CommentsService.getTotalNumCommentPagesMadeByUser(
+            userEmail,
+            limit
+        );
+
+        if (page > totalPages) {
+            this.setStatus(400);
+            return {
+                success: false,
+                code: 400,
+                totalPages,
+                errors: ['page out of range for given limit'],
+                page,
+                limit,
+                data: []
+            };
+        }
+
+        const comments = await CommentsService.getCommentsMadeByUser(userEmail, page, limit);
+
+        return {
+            success: true,
+            code: 200,
+            totalPages,
+            data: comments,
+            page,
+            limit
+        };
+    }
+
     @Post('')
     @Security(PassportStrategies.local)
     @Middlewares<RequestHandler>(validationMiddleware(validCreateCommentSchema))

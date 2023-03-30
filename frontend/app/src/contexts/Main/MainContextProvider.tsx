@@ -8,9 +8,9 @@ interface MainContextProviderProps {
 const MainContextProvider: React.FunctionComponent<MainContextProviderProps> = (props) => {
     useEffect(() => {
         if (localStorage.getItem('auth') === null)
-            localStorage.setItem('auth', JSON.stringify('false'));
+            localStorage.setItem('auth', JSON.stringify(false));
         if (localStorage.getItem('email') === null)
-            localStorage.setItem('email', JSON.stringify('false'));
+            localStorage.setItem('email', JSON.stringify(false));
     }, []);
 
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(

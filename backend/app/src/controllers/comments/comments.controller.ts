@@ -21,7 +21,8 @@ import {
     UpdateCommentResponse,
     GetCommentsResponse,
     validCreateCommentSchema,
-    CommentVoteResponse
+    CommentVoteResponse,
+    GetMyCommentsResponse
 } from './comments.schemas';
 import validationMiddleware from '../../middlewares/validation.middleware';
 import { RequestHandler, Request as ExpressRequest } from 'express';
@@ -32,10 +33,50 @@ import { getUserFromRequest } from '../../utils/helpers.util';
 import { VoteType } from '../../models/votes/vote.models';
 import { VotesService } from '../../models/votes/votes.service';
 import { setInteractionFields } from '../../models/models.helpers';
+import paginationMiddleware from '../../middlewares/pagination.middleware';
 
 @Tags('Comments')
 @Route('comments')
 export class CommentsController extends BaseController {
+    @Security(PassportStrategies.local)
+    @Middlewares<RequestHandler>(paginationMiddleware)
+    @Get('my-comments')
+    public async getMyComments(
+        @Request() req: ExpressRequest,
+        @Query() page: number,
+        @Query() limit: number
+    ): Promise<GetMyCommentsResponse> {
+        const userEmail = getUserFromRequest(req);
+        const totalPages = await CommentsService.getTotalNumCommentPagesMadeByUser(
+            userEmail,
+            limit
+        );
+
+        if (page > totalPages) {
+            this.setStatus(400);
+            return {
+                success: false,
+                code: 400,
+                totalPages,
+                errors: ['page out of range for given limit'],
+                page,
+                limit,
+                data: []
+            };
+        }
+
+        const comments = await CommentsService.getCommentsMadeByUser(userEmail, page, limit);
+
+        return {
+            success: true,
+            code: 200,
+            totalPages,
+            data: comments,
+            page,
+            limit
+        };
+    }
+
     @Post('')
     @Security(PassportStrategies.local)
     @Middlewares<RequestHandler>(validationMiddleware(validCreateCommentSchema))
@@ -97,10 +138,10 @@ export class CommentsController extends BaseController {
         if (newComment && parentComment)
             await CommentsService.addReplyToComment(parentComment, newComment);
 
-        if(newComment) await setInteractionFields(userEmail, [newComment])
+        if (newComment) await setInteractionFields(userEmail, [newComment]);
 
         const success = !!newComment;
-        const code = newComment ? 201 : 500;        
+        const code = newComment ? 201 : 500;
         this.setStatus(code);
 
         return { success, code, data: newComment };
@@ -112,6 +153,7 @@ export class CommentsController extends BaseController {
      * @param limit amount of comments per page
      * @param page page of comments to retrieve
      * @param postId ID of Post
+     * @param req
      */
     @Get('posts/{postId}')
     @Security(PassportStrategies.local)
@@ -119,7 +161,7 @@ export class CommentsController extends BaseController {
         @Query() limit: number,
         @Query() page: number,
         @Path() postId: string,
-        @Request() req: ExpressRequest,
+        @Request() req: ExpressRequest
     ): Promise<GetCommentsResponse> {
         const userEmail = getUserFromRequest(req);
         if (page <= 0 || limit <= 0 || limit > 10) {
@@ -181,7 +223,12 @@ export class CommentsController extends BaseController {
             };
         }
 
-        const commentsArray = await CommentsService.getCommentsByPost(page, limit, postId, userEmail);
+        const commentsArray = await CommentsService.getCommentsByPost(
+            page,
+            limit,
+            postId,
+            userEmail
+        );
 
         this.setStatus(200);
         return {

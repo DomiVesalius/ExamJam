@@ -8,7 +8,8 @@ import {
     GetPostsByCourseCode,
     GetPostsByExamId,
     DeletePostResponse,
-    PostVoteResponse
+    PostVoteResponse,
+    GetMyPostsResponse
 } from './posts.schemas';
 import { BaseController } from '../base.controller';
 import { UsersService } from '../../models/user/users.service';
@@ -19,12 +20,35 @@ import { VoteType } from '../../models/votes/vote.models';
 import { VotesService } from '../../models/votes/votes.service';
 import { getUserFromRequest } from '../../utils/helpers.util';
 import { setInteractionFields } from '../../models/models.helpers';
+
 @Tags('Post')
 @Route('posts')
 export class PostsController extends BaseController {
     static MIN_PAGE = 1;
     static MIN_LIMIT = 1;
     static MAX_LIMIT = 50;
+
+    @Security(PassportStrategies.local)
+    @Get('my-posts')
+    public async getMyPosts(
+        @Request() req: ExpressRequest,
+        @Query() page: number,
+        @Query() limit: number
+    ): Promise<GetMyPostsResponse> {
+        const userEmail = getUserFromRequest(req);
+
+        const totalPages = await PostsService.getTotalNumOfPostPagesByUser(userEmail, limit);
+        const posts = await PostsService.getPostsMadeByUser(userEmail, page, limit);
+
+        return {
+            success: true,
+            code: 200,
+            page,
+            limit,
+            totalPages,
+            data: posts
+        };
+    }
 
     /**
      Creates Post with given Body parameters
@@ -67,6 +91,7 @@ export class PostsController extends BaseController {
             user,
             body.title,
             body.content,
+            body.formatType,
             body.examId,
             exam.courseCode
         );
@@ -89,7 +114,8 @@ export class PostsController extends BaseController {
         @Path() courseCode: string,
         @Query() page: number,
         @Query() limit: number,
-        @Request() req: ExpressRequest
+        @Request() req: ExpressRequest,
+        @Query() keyword?: string
     ): Promise<GetPostsByCourseCode> {
         const userEmail = req.user as string;
 
@@ -116,8 +142,14 @@ export class PostsController extends BaseController {
             examIds.push(exam._id);
         }
 
-        const posts = await PostsService.getPostsByExamIdList(examIds, page, limit, userEmail);
-        const totalPages = await PostsService.getTotalNumPosts(examIds, limit);
+        const posts = await PostsService.getPostsByExamIdList(
+            examIds,
+            page,
+            limit,
+            userEmail,
+            keyword
+        );
+        const totalPages = await PostsService.getTotalNumPosts(examIds, limit, keyword);
 
         let resBody: GetPostsByExamId;
         if (posts.length > 0) {
@@ -155,7 +187,8 @@ export class PostsController extends BaseController {
         @Path() examId: string,
         @Query() page: number,
         @Query() limit: number,
-        @Request() req: ExpressRequest
+        @Request() req: ExpressRequest,
+        @Query() keyword?: string
     ): Promise<GetPostsByExamId> {
         const userEmail = req.user as string;
 
@@ -178,10 +211,11 @@ export class PostsController extends BaseController {
             [examId],
             page,
             limit,
-            userEmail
+            userEmail,
+            keyword
         );
 
-        const totalPages = await PostsService.getTotalNumPosts([examId], limit);
+        const totalPages = await PostsService.getTotalNumPosts([examId], limit, keyword);
 
         let resBody: GetPostsByExamId;
         if (posts.length > 0) {
@@ -194,7 +228,7 @@ export class PostsController extends BaseController {
                 data: posts
             };
         } else {
-            resBody = { 
+            resBody = {
                 success: false,
                 code: 404,
                 page,
@@ -254,10 +288,14 @@ export class PostsController extends BaseController {
     /**
      Gets Post with given postId
      * @param postId
+     * @param req
      */
     @Get('{postId}')
     @Security(PassportStrategies.local)
-    public async getPostById(@Path() postId: string, @Request() req: ExpressRequest): Promise<GetPostByIdResponse> {
+    public async getPostById(
+        @Path() postId: string,
+        @Request() req: ExpressRequest
+    ): Promise<GetPostByIdResponse> {
         const userEmail = getUserFromRequest(req);
 
         const post = await PostsService.getPost(postId);
@@ -291,9 +329,9 @@ export class PostsController extends BaseController {
         }
 
         const post = await VotesService.placePostVote(userEmail, type, postId);
-        
+
         if (post) await setInteractionFields(userEmail, [post]);
-        
+
         const code = post ? 200 : 404;
         const success = !!post;
         return {

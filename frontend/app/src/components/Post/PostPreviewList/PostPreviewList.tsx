@@ -15,6 +15,7 @@ interface PostPreviewListProps {
     queryPage: number;
     queryLimit: number;
     postType: PostType;
+    queryKeyword: string;
 }
 
 function createPostPreviews(
@@ -79,9 +80,9 @@ const PostPreviewList: React.FunctionComponent<PostPreviewListProps> = (
 
     let url: string;
     if (props.postType === PostType.piazza) {
-        url = `/piazza/courses/${props.courseCode}?page=${currentPage}&limit=${props.queryLimit}`;
+        url = `/piazza/courses/${props.courseCode}?page=${currentPage}&limit=${props.queryLimit}&keyword=${props.queryKeyword}`;
     } else {
-        url = `/posts/courses/${props.courseCode}?page=${currentPage}&limit=${props.queryLimit}`;
+        url = `/posts/courses/${props.courseCode}?page=${currentPage}&limit=${props.queryLimit}&keyword=${props.queryKeyword}`;
     }
 
     const { data, error } = useSWR(url, fetcher);

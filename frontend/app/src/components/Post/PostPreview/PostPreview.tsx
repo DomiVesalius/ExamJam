@@ -18,6 +18,8 @@ export interface PostPreviewProps {
     isBookmarked: boolean;
     isUpvoted: boolean;
     isDownvoted: boolean;
+    upvotes: number;
+    downvotes: number;
     cardWidth?: string;
 }
 
@@ -58,11 +60,12 @@ const PostPreview: React.FunctionComponent<PostPreviewProps> = (props: PostPrevi
                 </CardContent>
             </CardActionArea>
             <CardActionArea sx={{ display: 'flex', justifyContent: 'right' }}>
-                {/* <BookmarkButton type={BookmarkType.post} itemId={props.postId} isBookmarked={props.isBookmarked}/> */}
                 <VoteButtons
                     itemId={props.postId}
                     isUpvoted={props.isUpvoted}
                     isDownvoted={props.isDownvoted}
+                    upvotes={props.upvotes}
+                    downvotes={props.downvotes}
                     itemType="post"
                 />
                 {currUser === props.author && (

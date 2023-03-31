@@ -42,6 +42,8 @@ function createMyPostCards(data: any): [React.ReactElement[], number] {
                     isBookmarked={post.isBookmarked}
                     isDownvoted={post.isDownvoted}
                     isUpvoted={post.isUpvoted}
+                    downvotes={post.downvotes}
+                    upvotes={post.upvotes}
                 />
             </div>
         );

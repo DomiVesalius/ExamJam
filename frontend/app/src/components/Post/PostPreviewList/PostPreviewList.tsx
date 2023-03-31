@@ -61,6 +61,8 @@ function createPostPreviews(
                         isBookmarked={post.isBookmarked}
                         isUpvoted={post.isUpvoted}
                         isDownvoted={post.isDownvoted}
+                        downvotes={post.downvotes}
+                        upvotes={post.upvotes}
                     />
                 </div>
             );

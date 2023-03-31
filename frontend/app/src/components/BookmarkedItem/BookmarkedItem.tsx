@@ -61,6 +61,8 @@ function createBookmarkedElements(
                     cardWidth="37vw"
                     isUpvoted={bookmarkedItem.isUpvoted}
                     isDownvoted={bookmarkedItem.isDownvoted}
+                    downvotes={bookmarkedItem.downvotes}
+                    upvotes={bookmarkedItem.upvotes}
                 />
             );
         } else {

@@ -22,6 +22,8 @@ interface ChildComment {
     children: unknown[];
     isDownvoted: boolean;
     isUpvoted: boolean;
+    upvotes: number;
+    downvotes: number;
 }
 
 interface Comment {
@@ -32,6 +34,8 @@ interface Comment {
     content: string;
     isDownvoted: boolean;
     isUpvoted: boolean;
+    upvotes: number;
+    downvotes: number;
     children: ChildComment[];
 }
 
@@ -98,6 +102,8 @@ function createComments(data: any, currUser: string): [React.ReactElement[], num
                                     itemId={comment._id}
                                     isUpvoted={comment.isUpvoted}
                                     isDownvoted={comment.isDownvoted}
+                                    downvotes={comment.downvotes}
+                                    upvotes={comment.upvotes}
                                     itemType="comment"
                                 />
                                 {currUser === comment.author && (
@@ -148,6 +154,8 @@ function createComments(data: any, currUser: string): [React.ReactElement[], num
                                         itemId={child._id}
                                         isUpvoted={child.isUpvoted}
                                         isDownvoted={child.isDownvoted}
+                                        downvotes={child.downvotes}
+                                        upvotes={child.upvotes}
                                         itemType="comment"
                                     />
                                 </Box>

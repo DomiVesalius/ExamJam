@@ -30,7 +30,9 @@ const Post: React.FunctionComponent = () => {
         updatedAt: '',
         isBookmarked: false,
         isUpvoted: false,
-        isDownvoted: false
+        isDownvoted: false,
+        upvotes: 0,
+        downvotes: 0
     });
 
     const url: string = `/posts/${postId}`;
@@ -52,7 +54,9 @@ const Post: React.FunctionComponent = () => {
                 updatedAt: data.data.updatedAt,
                 isBookmarked: data.data.isBookmarked,
                 isUpvoted: data.data.isUpvoted,
-                isDownvoted: data.data.isDownvoted
+                isDownvoted: data.data.isDownvoted,
+                upvotes: data.data.upvotes,
+                downvotes: data.data.downvotes
             });
         }
     }, [data, error]);
@@ -90,6 +94,8 @@ const Post: React.FunctionComponent = () => {
                                             itemId={post.postId}
                                             isUpvoted={post.isUpvoted}
                                             isDownvoted={post.isDownvoted}
+                                            upvotes={post.upvotes}
+                                            downvotes={post.downvotes}
                                             itemType="post"
                                         />
                                         {/* <UpvoteButton postId={post.postId} isUpvoted={post.isUpvoted}/>

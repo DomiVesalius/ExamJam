@@ -1,5 +1,6 @@
 import CommentModel, { ICommentModel } from './comments.model';
 import { CreateCommentBody } from '../../controllers/comments/comments.schemas';
+import { setInteractionFields } from '../models.helpers';
 
 interface CreateCommentParams extends CreateCommentBody {
     author: string;
@@ -12,6 +13,10 @@ export interface CommentObject {
     postId: string;
     parentId: string | null;
     content: string;
+    upvotes: number;
+    downvotes: number;
+    isUpvoted: boolean;
+    isDownvoted: boolean;
     children: ChildCommentObject[];
 }
 
@@ -21,6 +26,10 @@ export interface ChildCommentObject {
     postId: string;
     parentId: string | null;
     content: string;
+    upvotes: number;
+    downvotes: number;
+    isUpvoted: boolean;
+    isDownvoted: boolean;
     children: any[];
 }
 
@@ -72,12 +81,15 @@ export class CommentsService {
     public static async getCommentsByPost(
         pageNumber: number,
         limit: number,
-        postId: string
+        postId: string,
+        userEmail: string,
     ): Promise<CommentObject[]> {
         try {
             const topLevelComments = await CommentModel.find({ postId: postId, parentId: null })
                 .skip((pageNumber - 1) * limit)
                 .limit(limit);
+
+            await setInteractionFields(userEmail, topLevelComments)
 
             const comments: CommentObject[] = [];
 
@@ -88,12 +100,21 @@ export class CommentsService {
                     postId: comment.postId.toString(),
                     parentId: comment.parentId ? comment.parentId.toString() : '',
                     content: comment.content,
+                    // @ts-ignore
+                    isUpvoted: comment.isUpvoted,
+                    // @ts-ignore
+                    isDownvoted: comment.isDownvoted,
+                    upvotes: comment.upvotes,
+                    downvotes: comment.downvotes,
                     children: []
-                };
+                }; 
+
                 for (const childId of comment.children) {
                     const childComment = await CommentModel.findById(childId);
 
                     if (!childComment) continue;
+
+                    await setInteractionFields(userEmail, [childComment])
 
                     const childCommentObj: ChildCommentObject = {
                         _id: childComment._id,
@@ -101,6 +122,12 @@ export class CommentsService {
                         postId: childComment.postId.toString(),
                         parentId: childComment.parentId ? childComment.parentId.toString() : '',
                         content: childComment.content,
+                        // @ts-ignore
+                        isUpvoted: childComment.isUpvoted,
+                        // @ts-ignore
+                        isDownvoted: childComment.isDownvoted,
+                        upvotes: childComment.upvotes,
+                        downvotes: childComment.downvotes,
                         children: []
                     };
 
@@ -108,6 +135,7 @@ export class CommentsService {
                 }
                 comments.push(commentObj);
             }
+
             return comments;
         } catch (e) {
             return [];
@@ -155,6 +183,33 @@ export class CommentsService {
             return await comment.save();
         } catch (e) {
             return null;
+        }
+    }
+
+    public static async getCommentsMadeByUser(
+        userEmail: string,
+        pageNumber: number,
+        limit: number
+    ): Promise<ICommentModel[]> {
+        try {
+            return await CommentModel.find({ author: userEmail })
+                .sort({ createdAt: 'asc' })
+                .skip((pageNumber - 1) * limit)
+                .limit(limit);
+        } catch (e) {
+            return [];
+        }
+    }
+
+    public static async getTotalNumCommentPagesMadeByUser(
+        userEmail: string,
+        limit: number
+    ): Promise<number> {
+        try {
+            const totalComments = await CommentModel.find({ author: userEmail }).countDocuments();
+            return Math.ceil(totalComments / limit);
+        } catch (e) {
+            return 0;
         }
     }
 }

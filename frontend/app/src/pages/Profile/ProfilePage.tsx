@@ -1,45 +1,52 @@
-import React from 'react';
-import './Profile.css';
-import { Avatar, Button, Container, Stack } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import ChangePasswordForm from '../../components/ProfileForms/PasswordForm';
-import ChangeUsernameForm from '../../components/ProfileForms/UsernameForm';
-import DeleteUserButton from '../../components/ProfileForms/DeleteUserButton';
+import React, { useState } from 'react';
+import '../EditProfile/Profile.css';
 import ProtectedRoute from '../../components/Routes/ProtectedRoute';
-import ChangeBioForm from '../../components/ProfileForms/BioForm';
 import PageLayout from '../../components/Layout/PageLayout';
+import { Collapse, Container, Grid, Stack, Typography } from '@mui/material';
+import ProfileCard from '../../components/ProfileCard/ProfileCard';
+import TabContext from '@mui/lab/TabContext';
+import Box from '@mui/material/Box';
+import TabList from '@mui/lab/TabList';
+import Tab from '@mui/material/Tab';
+import TabPanel from '@mui/lab/TabPanel';
+import PostPreviewList, { PostType } from '../../components/Post/PostPreviewList/PostPreviewList';
+import BookmarkedItem, { BookmarkedItemType } from '../../components/BookmarkedItem/BookmarkedItem';
+import MyPosts from '../../components/Post/MyPosts/MyPosts';
+import BookmarkTabList from '../../components/BookmarkTabList/BookmarkTabList';
+import { ExpandLess, ExpandMore } from '@material-ui/icons';
 
 const ProfilePage = () => {
+    const [panelIndex, setPanelIndex] = useState<string>('1');
+    const [isOpen, setIsOpen] = useState<boolean>(true);
+
+    const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+        setPanelIndex(newValue);
+    };
+
     return (
         <ProtectedRoute>
             <PageLayout title="My Profile">
-                <Container maxWidth={'md'}>
-                    <Stack spacing={2} alignItems={'center'}>
-                        <Stack direction={'row'} spacing={20} alignItems={'center'}>
-                            <Stack spacing={2} alignItems={'center'}>
-                                <Avatar
-                                    alt="Remy Sharp"
-                                    src={'/frontend/app/public/logo192.png'}
-                                    sx={{ width: 100, height: 100 }}
-                                />
-                                <Button
-                                    variant="outlined"
-                                    startIcon={<EditIcon />}
-                                    size={'small'}
-                                    onClick={() => {
-                                        alert('ProfilePage picture changed.');
-                                    }}
+                <Stack spacing={2}>
+                    <Grid item sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <ProfileCard />
+                    </Grid>
+                    <Grid item>
+                        <TabContext value={panelIndex}>
+                            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                <TabList
+                                    variant="fullWidth"
+                                    onChange={handleChange}
+                                    aria-label="User related items"
                                 >
-                                    Change picture
-                                </Button>
-                                <ChangeUsernameForm />
-                            </Stack>
-                        </Stack>
-                        <ChangeBioForm />
-                        <ChangePasswordForm />
-                        <DeleteUserButton />
-                    </Stack>
-                </Container>
+                                    <Tab label="My Posts" value="1" />
+                                </TabList>
+                            </Box>
+                            <TabPanel value="1" sx={{ display: 'flex', justifyContent: 'center' }}>
+                                <MyPosts queryLimit={5} queryPage={1} />
+                            </TabPanel>
+                        </TabContext>
+                    </Grid>
+                </Stack>
             </PageLayout>
         </ProtectedRoute>
     );

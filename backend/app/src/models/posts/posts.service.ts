@@ -2,7 +2,7 @@ import { IUserModel } from '../user/user.model';
 import PostModel, { IPostModel } from './post.model';
 import { IPiazzaPost } from '../piazzaPosts/cleaned/piazzaPost.model';
 import { CommentObject } from '../piazzaPosts/cleaned/cleanPiazza.service';
-import { setIsBookmarkedField } from '../models.helpers';
+import { setInteractionFields } from '../models.helpers';
 
 export interface PostObject extends IPiazzaPost {
     _id: string;
@@ -14,6 +14,7 @@ export class PostsService {
         user: IUserModel,
         title: string,
         content: string,
+        formatType: string,
         examId: string,
         courseCode: string
     ): Promise<IPostModel | null> {
@@ -22,6 +23,7 @@ export class PostsService {
                 author: user.email,
                 title,
                 content,
+                formatType,
                 examId,
                 courseCode
             });
@@ -30,8 +32,20 @@ export class PostsService {
         }
     }
 
-    public static async getTotalNumPosts(examIds: string[], limit: number): Promise<number> {
-        const totalPosts = await PostModel.find({ examId: examIds }).countDocuments();
+    public static async getTotalNumPosts(
+        examIds: string[],
+        limit: number,
+        keyword?: string
+    ): Promise<number> {
+        let totalPosts;
+        if (keyword) {
+            totalPosts = await PostModel.find({
+                examId: examIds,
+                $or: [{ title: new RegExp(keyword, 'i') }, { content: new RegExp(keyword, 'i') }]
+            }).countDocuments();
+        } else {
+            totalPosts = await PostModel.find({ examId: examIds }).countDocuments();
+        }
         return Math.ceil(totalPosts / limit);
     }
 
@@ -39,15 +53,30 @@ export class PostsService {
         examIds: string[],
         pageNumber: number,
         limit: number,
-        email?: string
+        email?: string,
+        keyword?: string
     ): Promise<IPostModel[]> {
         try {
-            const posts = await PostModel.find({ examId: examIds })
-                .sort({ createdAt: 'asc' })
-                .skip((pageNumber - 1) * limit)
-                .limit(limit);
+            let posts;
+            if (keyword) {
+                posts = await PostModel.find({
+                    examId: examIds,
+                    $or: [
+                        { title: new RegExp(keyword, 'i') },
+                        { content: new RegExp(keyword, 'i') }
+                    ]
+                })
+                    .sort({ createdAt: 'asc' })
+                    .skip((pageNumber - 1) * limit)
+                    .limit(limit);
+            } else {
+                posts = await PostModel.find({ examId: examIds })
+                    .sort({ createdAt: 'asc' })
+                    .skip((pageNumber - 1) * limit)
+                    .limit(limit);
+            }
 
-            await setIsBookmarkedField(email || '', posts);
+            await setInteractionFields(email || '', posts);
 
             return posts;
         } catch (e) {
@@ -87,5 +116,32 @@ export class PostsService {
         } catch (e) {
             return null;
         }
+    }
+
+    public static async getPostsMadeByUser(
+        userEmail: string,
+        pageNumber: number,
+        limit: number
+    ): Promise<IPostModel[]> {
+        try {
+            const posts = await PostModel.find({ author: userEmail })
+                .sort({ createdAt: 'asc' })
+                .skip((pageNumber - 1) * limit)
+                .limit(limit);
+
+            await setInteractionFields(userEmail || '', posts);
+
+            return posts;
+        } catch (e) {
+            return [];
+        }
+    }
+
+    public static async getTotalNumOfPostPagesByUser(
+        userEmail: string,
+        limit: number
+    ): Promise<number> {
+        const totalPosts = await PostModel.find({ author: userEmail }).countDocuments();
+        return Math.ceil(totalPosts / limit);
     }
 }

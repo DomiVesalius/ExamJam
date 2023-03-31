@@ -1,17 +1,4 @@
-import {
-    Avatar,
-    Box,
-    Card,
-    Divider,
-    Grid,
-    Pagination,
-    Stack,
-    Typography,
-    CardContent,
-    CardActionArea
-} from '@mui/material';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import { Box, Card, Grid, Pagination, Stack, Typography, CardContent } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { fetcher } from '../../utils/helpers';
 import useSWR from 'swr';
@@ -19,9 +6,12 @@ import NameAvatar from '../NameAvatar/NameAvatar';
 import CommentForm from '../CommentForm/CommentForm';
 import { useMainContext } from '../../contexts/Main/MainContext';
 import ReplyButton from '../ReplyButton/ReplyButton';
-import IconButton from '@mui/material/IconButton';
-import { KebabMenu } from '../Post/KebabMenu/KebabMenu';
 import DeleteCommentButton from '../DeleteCommentButton/DeleteCommentButton';
+import { VoteButtons } from '../VotingButtons/VotingButtons';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { darcula, materialLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import rehypeRaw from 'rehype-raw';
+import ReactMarkdown from 'react-markdown';
 
 interface ChildComment {
     _id: string;
@@ -30,6 +20,10 @@ interface ChildComment {
     parentId: string;
     content: string;
     children: unknown[];
+    isDownvoted: boolean;
+    isUpvoted: boolean;
+    upvotes: number;
+    downvotes: number;
 }
 
 interface Comment {
@@ -38,6 +32,10 @@ interface Comment {
     postId: string;
     parentId: string | null;
     content: string;
+    isDownvoted: boolean;
+    isUpvoted: boolean;
+    upvotes: number;
+    downvotes: number;
     children: ChildComment[];
 }
 
@@ -47,13 +45,41 @@ interface CommentSectionProps {
     queryPage: number;
 }
 
+const commentPreview = (comment: string, currTheme: string): React.ReactElement => {
+    return (
+        <ReactMarkdown
+            children={comment}
+            components={{
+                code({ node, inline, className, children, ...props }) {
+                    const match = /language-(\w+)/.exec(className || '');
+                    return !inline && match ? (
+                        <SyntaxHighlighter
+                            // @ts-ignore
+                            style={currTheme === 'dark' ? darcula : materialLight}
+                            language={match[1]}
+                            PreTag="div"
+                            children={String(children).replace(/\n$/, '')}
+                            {...props}
+                        />
+                    ) : (
+                        <code className={className} {...props} />
+                    );
+                }
+            }}
+            rehypePlugins={[rehypeRaw]}
+        />
+    );
+};
+
 function createComments(data: any, currUser: string): [React.ReactElement[], number] {
     const comments: React.ReactElement[] = [];
     const commentsData: Comment[] = data.data;
 
+    const currTheme = localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
+
     for (let comment of commentsData) {
         comments.push(
-            <Card sx={{ px: '20px', my: '20px', width: '40vw' }}>
+            <Card key={comment._id} sx={{ px: '20px', my: '20px', width: '40vw' }}>
                 <CardContent>
                     <Grid container wrap="nowrap" spacing={2}>
                         <Grid item>
@@ -68,24 +94,18 @@ function createComments(data: any, currUser: string): [React.ReactElement[], num
                                     {comment.author}
                                 </Typography>
                             </Grid>
-                            {/*<div dangerouslySetInnerHTML={{ __html: comment.content }} />*/}
-                            <Typography
-                                align="left"
-                                paragraph={true}
-                                variant="h6"
-                                dangerouslySetInnerHTML={{ __html: comment.content }}
-                            >
-                                {/*{comment.content}*/}
-                            </Typography>
+                            {commentPreview(comment.content, currTheme)}
                         </Grid>
                         <Grid item>
                             <Box display="flex" flexWrap="wrap" alignItems="center">
-                                <IconButton aria-label="upvote">
-                                    <ThumbUpIcon />
-                                </IconButton>
-                                <IconButton aria-label="downvote">
-                                    <ThumbDownIcon />
-                                </IconButton>
+                                <VoteButtons
+                                    itemId={comment._id}
+                                    isUpvoted={comment.isUpvoted}
+                                    isDownvoted={comment.isDownvoted}
+                                    downvotes={comment.downvotes}
+                                    upvotes={comment.upvotes}
+                                    itemType="comment"
+                                />
                                 {currUser === comment.author && (
                                     <DeleteCommentButton commentId={comment._id} />
                                 )}
@@ -94,10 +114,11 @@ function createComments(data: any, currUser: string): [React.ReactElement[], num
                     </Grid>
                     {comment.children.map((child: ChildComment) => (
                         <Grid
+                            key={child._id}
                             container
                             wrap="nowrap"
                             spacing={2}
-                            sx={{ m: 2, bgcolor: '#ededed', borderRadius: '8px' }}
+                            sx={{ m: 2, borderRadius: '8px' }}
                         >
                             <Grid item>
                                 <NameAvatar name={child.author} />
@@ -111,10 +132,10 @@ function createComments(data: any, currUser: string): [React.ReactElement[], num
                                         {child.author}
                                     </Typography>
                                     <Typography
+                                        color="secondary"
                                         sx={{
                                             m: 0,
                                             textAlign: 'left',
-                                            color: 'blue',
                                             fontWeight: 'bold'
                                         }}
                                     >
@@ -122,25 +143,21 @@ function createComments(data: any, currUser: string): [React.ReactElement[], num
                                     </Typography>
                                 </div>
 
-                                <Typography
-                                    align="left"
-                                    sx={{ mr: '20px' }}
-                                    paragraph={true}
-                                    variant="h6"
-                                    dangerouslySetInnerHTML={{ __html: child.content }}
-                                ></Typography>
+                                {commentPreview(child.content, currTheme)}
                             </Grid>
                             <Grid item>
                                 <Box display="flex" flexWrap="wrap" alignItems="center">
-                                    <IconButton aria-label="upvote">
-                                        <ThumbUpIcon />
-                                    </IconButton>
-                                    <IconButton aria-label="downvote">
-                                        <ThumbDownIcon />
-                                    </IconButton>
                                     {currUser === child.author && (
                                         <DeleteCommentButton commentId={child._id} />
                                     )}
+                                    <VoteButtons
+                                        itemId={child._id}
+                                        isUpvoted={child.isUpvoted}
+                                        isDownvoted={child.isDownvoted}
+                                        downvotes={child.downvotes}
+                                        upvotes={child.upvotes}
+                                        itemType="comment"
+                                    />
                                 </Box>
                             </Grid>
                         </Grid>

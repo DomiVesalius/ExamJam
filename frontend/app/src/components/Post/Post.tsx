@@ -3,11 +3,16 @@ import { useParams } from 'react-router-dom';
 import { Box, Card, CardContent, Container, Stack, Typography } from '@mui/material';
 import useSWR from 'swr';
 import http from '../../utils/http';
-import IconButton from '@mui/material/IconButton';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import { KebabMenu } from './KebabMenu/KebabMenu';
 import CommentSection from '../CommentList/CommentSection';
+import ReactMarkdown from 'react-markdown';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { darcula, materialLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import rehypeRaw from 'rehype-raw';
+import rehypeKatex from 'rehype-katex';
+import remarkMath from 'remark-math';
+
+import { VoteButtons } from '../VotingButtons/VotingButtons';
 
 const fetcher = (url: string) => http.get(url).then((res) => res.data);
 
@@ -19,10 +24,15 @@ const Post: React.FunctionComponent = () => {
         title: '',
         author: '',
         content: '',
+        formatType: '',
         examId: '',
         createdAt: '',
         updatedAt: '',
         isBookmarked: false,
+        isUpvoted: false,
+        isDownvoted: false,
+        upvotes: 0,
+        downvotes: 0
     });
 
     const url: string = `/posts/${postId}`;
@@ -30,19 +40,26 @@ const Post: React.FunctionComponent = () => {
 
     useEffect(() => {
         if (data) {
+            console.log('logging data', data.data);
+            console.log('logging downvoted', data.data.isDownvoted);
+            console.log('logging upvoted', data.data.isUpvoted);
             setPost({
                 postId: data.data._id,
                 author: data.data.author,
                 title: data.data.title,
                 content: data.data.content,
+                formatType: data.data.formatType,
                 examId: data.data.examId,
                 createdAt: data.data.createdAt,
                 updatedAt: data.data.updatedAt,
                 isBookmarked: data.data.isBookmarked,
-
+                isUpvoted: data.data.isUpvoted,
+                isDownvoted: data.data.isDownvoted,
+                upvotes: data.data.upvotes,
+                downvotes: data.data.downvotes
             });
         }
-    }, [data]);
+    }, [data, error]);
 
     if (error || !courseCode) {
         return <div>ERROR</div>;
@@ -53,8 +70,10 @@ const Post: React.FunctionComponent = () => {
     const creationDate = new Date(post.createdAt);
     const formattedCreationDate = creationDate.toLocaleString('en-US');
 
+    const currTheme = localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
+
     return (
-        <Container>
+        <Container key={post.postId}>
             <Card variant="outlined">
                 <Stack spacing={2}>
                     <CardContent>
@@ -71,12 +90,16 @@ const Post: React.FunctionComponent = () => {
                                     </Typography>
 
                                     <Box display="flex" flexWrap="wrap" alignItems="center">
-                                        <IconButton aria-label="upvote">
-                                            <ThumbUpIcon />
-                                        </IconButton>
-                                        <IconButton aria-label="downvote">
-                                            <ThumbDownIcon />
-                                        </IconButton>
+                                        <VoteButtons
+                                            itemId={post.postId}
+                                            isUpvoted={post.isUpvoted}
+                                            isDownvoted={post.isDownvoted}
+                                            upvotes={post.upvotes}
+                                            downvotes={post.downvotes}
+                                            itemType="post"
+                                        />
+                                        {/* <UpvoteButton postId={post.postId} isUpvoted={post.isUpvoted}/>
+                                        <DownvoteButton postId={post.postId} isDownvoted={post.isDownvoted}/> */}
                                         <KebabMenu
                                             postId={post.postId}
                                             courseCode={courseCode}
@@ -88,10 +111,32 @@ const Post: React.FunctionComponent = () => {
                                 <Typography variant="h4" component="h1" gutterBottom>
                                     {post.title}
                                 </Typography>
-
-                                <Typography variant="body1" component="div" gutterBottom>
-                                    <div dangerouslySetInnerHTML={{ __html: post.content }} />
-                                </Typography>
+                                <ReactMarkdown
+                                    children={post.content}
+                                    components={{
+                                        code({ node, inline, className, children, ...props }) {
+                                            const match = /language-(\w+)/.exec(className || '');
+                                            return !inline && match ? (
+                                                <SyntaxHighlighter
+                                                    // @ts-ignore
+                                                    style={
+                                                        currTheme === 'dark'
+                                                            ? darcula
+                                                            : materialLight
+                                                    }
+                                                    language={match[1]}
+                                                    PreTag="div"
+                                                    children={String(children).replace(/\n$/, '')}
+                                                    {...props}
+                                                />
+                                            ) : (
+                                                <code className={className} {...props} />
+                                            );
+                                        }
+                                    }}
+                                    remarkPlugins={[remarkMath]}
+                                    rehypePlugins={[rehypeRaw, rehypeKatex]}
+                                />
                                 <Typography variant="caption" display="block" gutterBottom>
                                     Last updated at {formattedUpdateDate}
                                 </Typography>

@@ -1,12 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { redirect } from '../../../utils/helpers';
 import { Card, CardActionArea, CardContent, CardHeader, Typography } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
-import ShareIcon from '@mui/icons-material/Share';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { useMainContext } from '../../../contexts/Main/MainContext';
-import BookmarkButton from '../../BookmarkButton/BookmarkButton';
-import { BookmarkType } from '../../../utils/helpers';
+import { VoteButtons } from '../../VotingButtons/VotingButtons';
+import { KebabMenu } from '../KebabMenu/KebabMenu';
+
 export interface PostPreviewProps {
     postId: string;
     courseCode: string;
@@ -18,6 +16,10 @@ export interface PostPreviewProps {
     previewTextMaxLength: number;
     content: string;
     isBookmarked: boolean;
+    isUpvoted: boolean;
+    isDownvoted: boolean;
+    upvotes: number;
+    downvotes: number;
     cardWidth?: string;
 }
 
@@ -31,7 +33,8 @@ const PostPreview: React.FunctionComponent<PostPreviewProps> = (props: PostPrevi
         Math.min(textContent.length, props.previewTextMaxLength)
     ); // 200 could me modified to be any arbitrary number
 
-    const handleNavigateToPost = () => redirect(`${props.courseCode}/posts/${props.postId}/`);
+    const handleNavigateToPost = () =>
+        redirect(`/dashboard/courses/${props.courseCode}/posts/${props.postId}/`);
     return (
         <Card sx={{ width: props.cardWidth || '50vw' }}>
             <CardActionArea onClick={handleNavigateToPost}>
@@ -57,14 +60,21 @@ const PostPreview: React.FunctionComponent<PostPreviewProps> = (props: PostPrevi
                 </CardContent>
             </CardActionArea>
             <CardActionArea sx={{ display: 'flex', justifyContent: 'right' }}>
-                {/* <BookmarkButton type={BookmarkType.post} itemId={props.postId} isBookmarked={props.isBookmarked}/> */}
-                <IconButton aria-label="share">
-                    <ShareIcon />
-                </IconButton>
+                <VoteButtons
+                    itemId={props.postId}
+                    isUpvoted={props.isUpvoted}
+                    isDownvoted={props.isDownvoted}
+                    upvotes={props.upvotes}
+                    downvotes={props.downvotes}
+                    itemType="post"
+                />
                 {currUser === props.author && (
-                    <IconButton>
-                        <DeleteIcon />
-                    </IconButton>
+                    <KebabMenu
+                        postId={props.postId}
+                        courseCode={props.courseCode}
+                        author={props.author}
+                        isBookmarked={props.isBookmarked}
+                    />
                 )}
             </CardActionArea>
         </Card>

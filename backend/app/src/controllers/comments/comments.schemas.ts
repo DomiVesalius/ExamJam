@@ -13,6 +13,7 @@ export const validCreateCommentSchema = yup.object().shape({
 
 export interface CreateCommentBody {
     content: string;
+    formatType?: string;
     postId: string;
     parentId?: string | null;
 }
@@ -50,4 +51,15 @@ export interface UpdateCommentBody {
 
 export interface UpdateCommentResponse extends BaseResponse {
     data: ICommentModel | null;
+}
+
+export interface CommentVoteResponse extends BaseResponse {
+    data: ICommentModel | null;
+}
+
+export interface GetMyCommentsResponse extends BaseResponse {
+    data: ICommentModel[];
+    page: number;
+    limit: number;
+    totalPages: number;
 }

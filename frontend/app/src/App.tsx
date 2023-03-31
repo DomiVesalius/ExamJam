@@ -1,8 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ProfilePage from './pages/Profile/ProfilePage';
-import PageLayout from './components/Layout/PageLayout';
-import { Typography } from '@mui/material';
 import RegistrationPage from './pages/Auth/RegistrationPage';
 import LoginPage from './pages/Auth/LoginPage';
 import ExamPage from './pages/Exam/ExamPage';
@@ -12,6 +10,9 @@ import CoursePage from './pages/Course/CoursePage';
 import PathConstants from './utils/pathConstants';
 import CourseSearch from './pages/Dashboard/CourseSearch/CourseSearch';
 import PostCreationPage from './pages/Post/PostCreationPage/PostCreationPage';
+import { MainPage } from './pages/Main/MainPage';
+import EditProfilePage from './pages/EditProfile/EditProfilePage';
+import PiazzaPostPage from './pages/PiazzaPost/PiazzaPostPage';
 
 /**
  * For now this is just to show that the frontend and backend are connected.
@@ -20,19 +21,12 @@ import PostCreationPage from './pages/Post/PostCreationPage/PostCreationPage';
  * @constructor
  */
 function App() {
-    function Main() {
-        return (
-            <PageLayout title={App.name}>
-                <Typography variant="h1">Welcome to the main page :]</Typography>
-            </PageLayout>
-        );
-    }
-
     return (
         <BrowserRouter>
             <Routes>
-                <Route path={PathConstants.rootPage} element={<Main />}></Route>
+                <Route path={PathConstants.rootPage} element={<MainPage />}></Route>
                 <Route path={PathConstants.profilePage} element={<ProfilePage />}></Route>
+                <Route path={PathConstants.profileEditPage} element={<EditProfilePage />} />
                 <Route path={PathConstants.dashboard} element={<Dashboard />}></Route>
                 <Route path={PathConstants.courseSearch} element={<CourseSearch />}></Route>
                 <Route path={PathConstants.registerPage} element={<RegistrationPage />} />
@@ -41,6 +35,7 @@ function App() {
                 <Route path={PathConstants.coursePage} element={<CoursePage />} />
                 <Route path={PathConstants.postPage} element={<PostPage />} />
                 <Route path={PathConstants.postCreationPage} element={<PostCreationPage />} />
+                <Route path={PathConstants.piazzaPostPage} element={<PiazzaPostPage />} />
             </Routes>
         </BrowserRouter>
     );

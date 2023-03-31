@@ -4,6 +4,7 @@ import Menu from '@mui/material/Menu';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ShareIcon from '@mui/icons-material/Share';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import http from '../../../utils/http';
 import { redirect, fetcher } from '../../../utils/helpers';
 import useSWR from 'swr';
@@ -29,8 +30,8 @@ const handleDelete = async (postId: string, courseCode: string) => {
 export const KebabMenu: React.FunctionComponent<CourseTableProps> = ({
     postId,
     courseCode,
-    author, 
-    isBookmarked,
+    author,
+    isBookmarked
 }) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -70,7 +71,7 @@ export const KebabMenu: React.FunctionComponent<CourseTableProps> = ({
                 onClick={handleClick}
                 style={{ color: 'black' }}
             >
-                ...
+                <MoreHorizIcon color="action" />
             </Button>
             <Menu
                 id="basic-menu"
@@ -89,9 +90,12 @@ export const KebabMenu: React.FunctionComponent<CourseTableProps> = ({
                     >
                         <DeleteIcon />
                     </IconButton>
-
                 )}
-                <BookmarkButton type={BookmarkType.post} itemId={postId} isBookmarked={isBookmarked}/>
+                <BookmarkButton
+                    type={BookmarkType.post}
+                    itemId={postId}
+                    isBookmarked={isBookmarked}
+                />
 
                 <IconButton size="small" aria-label="share">
                     <ShareIcon />

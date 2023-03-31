@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar, Box, Menu, MenuItem, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Button, Menu, MenuItem, Toolbar, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { AccountCircle } from '@mui/icons-material';
 import MoreIcon from '@mui/icons-material/MoreVert';
@@ -9,6 +9,7 @@ import { useMainContext } from '../../contexts/Main/MainContext';
 import LogoutButton from '../Auth/LogoutButton/LogoutButton';
 import PathConstants from '../../utils/pathConstants';
 import NavbarLink from './NavbarLink/NavbarLink';
+import { ToggleThemeButton } from '../ToggleThemeButton/ToggleThemeButton';
 
 interface NavbarProps {
     /** User menu when account icon is clicked */
@@ -88,18 +89,10 @@ export const Navbar = ({
             onClose={handleMenuClose}
         >
             <MenuItem onClick={handleMenuClose}>
-                {isAuthenticated ? (
-                    <NavbarLink to={PathConstants.profilePage}>My Profile</NavbarLink>
-                ) : (
-                    <NavbarLink to={PathConstants.loginPage}>Login</NavbarLink>
-                )}
+                <NavbarLink to={PathConstants.profilePage}>My Profile</NavbarLink>
             </MenuItem>
             <MenuItem onClick={handleMenuClose}>
-                {isAuthenticated ? (
-                    <LogoutButton />
-                ) : (
-                    <NavbarLink to={PathConstants.registerPage}>Register</NavbarLink>
-                )}
+                <LogoutButton />
             </MenuItem>
         </Menu>
     );
@@ -164,23 +157,42 @@ export const Navbar = ({
                     {/* Search Bar from SearchBar.tsx */}
 
                     <Box sx={{ flexGrow: 1 }} />
-                    <NavbarLink to={PathConstants.courseSearch}>
-                        <IconButton color="inherit">
-                            <SearchIcon />
-                        </IconButton>
-                    </NavbarLink>
+                    {isAuthenticated && (
+                        <NavbarLink to={PathConstants.courseSearch}>
+                            <IconButton color="inherit">
+                                <SearchIcon />
+                            </IconButton>
+                        </NavbarLink>
+                    )}
+
+                    <ToggleThemeButton />
+
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                        <IconButton
-                            size="large"
-                            edge="end"
-                            aria-label="account of current user"
-                            aria-controls={menuId}
-                            aria-haspopup="true"
-                            onClick={handleProfileMenuOpen}
-                            color="inherit"
-                        >
-                            <AccountCircle />
-                        </IconButton>
+                        {isAuthenticated && (
+                            <IconButton
+                                size="large"
+                                edge="end"
+                                aria-label="account of current user"
+                                aria-controls={menuId}
+                                aria-haspopup="true"
+                                onClick={handleProfileMenuOpen}
+                                color="inherit"
+                            >
+                                <AccountCircle />
+                            </IconButton>
+                        )}
+                        {!isAuthenticated && (
+                            <div>
+                                <Button sx={{ color: 'white' }}>
+                                    <NavbarLink to={PathConstants.loginPage}>Login</NavbarLink>
+                                </Button>
+                                <Button sx={{ color: 'white' }}>
+                                    <NavbarLink to={PathConstants.registerPage}>
+                                        Register
+                                    </NavbarLink>
+                                </Button>
+                            </div>
+                        )}
                     </Box>
                     <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
                         <IconButton

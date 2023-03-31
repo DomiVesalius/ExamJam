@@ -12,7 +12,7 @@ export interface FollowupProps {
 
 const Followup: React.FunctionComponent<FollowupProps> = (props) => {
     return (
-        <Paper key={props._id} elevation={2} sx={{ padding: 1, width: props.width || '80%' }}>
+        <Paper key={props._id} elevation={2} sx={{ padding: 1, width: props.width || '100%' }}>
             <Grid container spacing={2}>
                 <Grid item>
                     <img

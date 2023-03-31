@@ -36,7 +36,7 @@ const Answer: React.FunctionComponent<AnswerProps> = (props) => {
     }
 
     return (
-        <Card key={props.id} sx={{ width: '50vw' }}>
+        <Card key={props.id} sx={{ width: '100%' }}>
             <CardContent>{headerText}</CardContent>
             <Divider />
             <CardContent>

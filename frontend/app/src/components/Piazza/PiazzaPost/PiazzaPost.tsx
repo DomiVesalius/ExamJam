@@ -22,7 +22,10 @@ const PiazzaPost: React.FunctionComponent<PiazzaPostProps> = (props) => {
             <Card>
                 <CardContent>
                     <Typography variant="h6">
-                        {QUESTION_SYMBOL} <strong>question @{props.postNumber}</strong>
+                        {QUESTION_SYMBOL} <strong>question @{props.postNumber}</strong>{' '}
+                        <i style={{ fontSize: 'small' }}>
+                            {props.courseCode} forum {props.forumId}
+                        </i>
                     </Typography>
                 </CardContent>
                 <Divider />

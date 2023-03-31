@@ -3,9 +3,6 @@ import { useParams } from 'react-router-dom';
 import { Box, Card, CardContent, Container, Stack, Typography } from '@mui/material';
 import useSWR from 'swr';
 import http from '../../utils/http';
-import IconButton from '@mui/material/IconButton';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import { KebabMenu } from './KebabMenu/KebabMenu';
 import CommentSection from '../CommentList/CommentSection';
 import ReactMarkdown from 'react-markdown';
@@ -14,6 +11,8 @@ import { darcula, materialLight } from 'react-syntax-highlighter/dist/esm/styles
 import rehypeRaw from 'rehype-raw';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
+
+import { VoteButtons } from '../VotingButtons/VotingButtons';
 
 const fetcher = (url: string) => http.get(url).then((res) => res.data);
 
@@ -29,7 +28,11 @@ const Post: React.FunctionComponent = () => {
         examId: '',
         createdAt: '',
         updatedAt: '',
-        isBookmarked: false
+        isBookmarked: false,
+        isUpvoted: false,
+        isDownvoted: false,
+        upvotes: 0,
+        downvotes: 0
     });
 
     const url: string = `/posts/${postId}`;
@@ -37,6 +40,9 @@ const Post: React.FunctionComponent = () => {
 
     useEffect(() => {
         if (data) {
+            console.log('logging data', data.data);
+            console.log('logging downvoted', data.data.isDownvoted);
+            console.log('logging upvoted', data.data.isUpvoted);
             setPost({
                 postId: data.data._id,
                 author: data.data.author,
@@ -46,10 +52,14 @@ const Post: React.FunctionComponent = () => {
                 examId: data.data.examId,
                 createdAt: data.data.createdAt,
                 updatedAt: data.data.updatedAt,
-                isBookmarked: data.data.isBookmarked
+                isBookmarked: data.data.isBookmarked,
+                isUpvoted: data.data.isUpvoted,
+                isDownvoted: data.data.isDownvoted,
+                upvotes: data.data.upvotes,
+                downvotes: data.data.downvotes
             });
         }
-    }, [data]);
+    }, [data, error]);
 
     if (error || !courseCode) {
         return <div>ERROR</div>;
@@ -63,7 +73,7 @@ const Post: React.FunctionComponent = () => {
     const currTheme = localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
 
     return (
-        <Container>
+        <Container key={post.postId}>
             <Card variant="outlined">
                 <Stack spacing={2}>
                     <CardContent>
@@ -80,12 +90,16 @@ const Post: React.FunctionComponent = () => {
                                     </Typography>
 
                                     <Box display="flex" flexWrap="wrap" alignItems="center">
-                                        <IconButton aria-label="upvote">
-                                            <ThumbUpIcon />
-                                        </IconButton>
-                                        <IconButton aria-label="downvote">
-                                            <ThumbDownIcon />
-                                        </IconButton>
+                                        <VoteButtons
+                                            itemId={post.postId}
+                                            isUpvoted={post.isUpvoted}
+                                            isDownvoted={post.isDownvoted}
+                                            upvotes={post.upvotes}
+                                            downvotes={post.downvotes}
+                                            itemType="post"
+                                        />
+                                        {/* <UpvoteButton postId={post.postId} isUpvoted={post.isUpvoted}/>
+                                        <DownvoteButton postId={post.postId} isDownvoted={post.isDownvoted}/> */}
                                         <KebabMenu
                                             postId={post.postId}
                                             courseCode={courseCode}

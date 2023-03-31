@@ -2,9 +2,7 @@ import { IUserModel } from '../user/user.model';
 import PostModel, { IPostModel } from './post.model';
 import { IPiazzaPost } from '../piazzaPosts/cleaned/piazzaPost.model';
 import { CommentObject } from '../piazzaPosts/cleaned/cleanPiazza.service';
-import { setIsBookmarkedField } from '../models.helpers';
-import { ICourseModel } from '../courses/course.model';
-import { IExamModel } from '../exams/exam.model';
+import { setInteractionFields } from '../models.helpers';
 
 export interface PostObject extends IPiazzaPost {
     _id: string;
@@ -78,7 +76,7 @@ export class PostsService {
                     .limit(limit);
             }
 
-            await setIsBookmarkedField(email || '', posts);
+            await setInteractionFields(email || '', posts);
 
             return posts;
         } catch (e) {
@@ -131,7 +129,7 @@ export class PostsService {
                 .skip((pageNumber - 1) * limit)
                 .limit(limit);
 
-            await setIsBookmarkedField(userEmail || '', posts);
+            await setInteractionFields(userEmail || '', posts);
 
             return posts;
         } catch (e) {

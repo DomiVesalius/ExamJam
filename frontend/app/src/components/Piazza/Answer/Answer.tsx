@@ -1,23 +1,43 @@
 import React from 'react';
 import { Box, Card, CardContent, CardHeader, Divider, Typography } from '@mui/material';
 
-export interface StudentAnswerProps {
+export enum AnswerType {
+    student = 's_answer',
+    instructor = 'i_answer'
+}
+
+export interface AnswerProps {
     id: string;
     postId: string;
     content: string;
+    type: AnswerType;
 }
 
-const StudentAnswer: React.FunctionComponent<StudentAnswerProps> = (props) => {
+const Answer: React.FunctionComponent<AnswerProps> = (props) => {
+    let headerText;
+    if (props.type === AnswerType.student) {
+        headerText = (
+            <Typography variant="h6">
+                {STUDENT_SYMBOL} <strong>the students' answer,</strong>{' '}
+                <i style={{ fontSize: 'small' }}>
+                    where students collectively construct a single answer
+                </i>
+            </Typography>
+        );
+    } else {
+        headerText = (
+            <Typography variant="h6">
+                {INSTRUCTOR_SYMBOL} <strong>the instructors' answer,</strong>{' '}
+                <i style={{ fontSize: 'small' }}>
+                    where instructors collectively construct a single answer
+                </i>
+            </Typography>
+        );
+    }
+
     return (
-        <Card>
-            <CardContent sx={{ width: '100%' }}>
-                <Typography variant="h6">
-                    {STUDENT_SYMBOL} <strong>the students' answer,</strong>{' '}
-                    <i style={{ fontSize: 'small' }}>
-                        where students collectively construct a single answer
-                    </i>
-                </Typography>
-            </CardContent>
+        <Card key={props.id} sx={{ width: '50vw' }}>
+            <CardContent>{headerText}</CardContent>
             <Divider />
             <CardContent>
                 <div dangerouslySetInnerHTML={{ __html: props.content }} />
@@ -25,6 +45,29 @@ const StudentAnswer: React.FunctionComponent<StudentAnswerProps> = (props) => {
         </Card>
     );
 };
+
+const INSTRUCTOR_SYMBOL = (
+    <svg width="24px" height="24px" aria-hidden="true" focusable="false">
+        <use xlinkHref="#Instructors">
+            <symbol id="Instructors" viewBox="0 0 14 16" preserveAspectRatio="none">
+                <rect
+                    fill="#FAAE40"
+                    x="0"
+                    y="0"
+                    width="14"
+                    height="16"
+                    rx="2"
+                    data-darkreader-inline-fill=""
+                ></rect>
+                <path
+                    d="M6,6 L8,6 L8,12 L6,12 L6,6 Z M6,2 L8,2 L8,4 L6,4 L6,2 Z"
+                    fill="#FFFFFF"
+                    data-darkreader-inline-fill=""
+                ></path>
+            </symbol>
+        </use>
+    </svg>
+);
 
 const STUDENT_SYMBOL = (
     <svg width="24px" height="24px" aria-hidden="true" focusable="false">
@@ -49,4 +92,4 @@ const STUDENT_SYMBOL = (
     </svg>
 );
 
-export default StudentAnswer;
+export default Answer;

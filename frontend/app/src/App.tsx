@@ -12,7 +12,7 @@ import CourseSearch from './pages/Dashboard/CourseSearch/CourseSearch';
 import PostCreationPage from './pages/Post/PostCreationPage/PostCreationPage';
 import { MainPage } from './pages/Main/MainPage';
 import EditProfilePage from './pages/EditProfile/EditProfilePage';
-
+import PiazzaPostPage from './pages/PiazzaPost/PiazzaPostPage';
 
 /**
  * For now this is just to show that the frontend and backend are connected.
@@ -35,6 +35,7 @@ function App() {
                 <Route path={PathConstants.coursePage} element={<CoursePage />} />
                 <Route path={PathConstants.postPage} element={<PostPage />} />
                 <Route path={PathConstants.postCreationPage} element={<PostCreationPage />} />
+                <Route path={PathConstants.piazzaPostPage} element={<PiazzaPostPage />} />
             </Routes>
         </BrowserRouter>
     );

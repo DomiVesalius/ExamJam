@@ -40,6 +40,8 @@ function createMyPostCards(data: any): [React.ReactElement[], number] {
                     previewTextMaxLength={MAX_CONTENT_LENGTH}
                     content={post.content}
                     isBookmarked={post.isBookmarked}
+                    isDownvoted={post.isDownvoted}
+                    isUpvoted={post.isUpvoted}
                 />
             </div>
         );

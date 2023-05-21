@@ -9,13 +9,15 @@
     "gen": "tsoa spec-and-routes",
     "test": "jest --runInBand --verbose",
     "scrapePiazza": "ts-node src/scripts/piazza/retrievePiazzaPosts.ts",
-    "modifyPiazzaImgs": "ts-node src/scripts/piazza/modifyImageLinks.ts"
+    "modifyPiazzaImgs": "ts-node src/scripts/piazza/modifyImageLinks.ts",
+    "scrapeSyllabi": "ts-node src/scripts/syllabi/retrieveSyllabi.ts"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@types/mongodb": "^4.0.7",
     "@types/node": "^18.14.2",
+    "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",
     "cors": "^2.8.5",
@@ -37,6 +39,7 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.15",

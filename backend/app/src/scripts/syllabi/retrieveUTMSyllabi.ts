@@ -6,8 +6,7 @@ import jsdom from 'jsdom';
 import { expose } from 'threads/worker';
 import SyllabusModel from '../../models/syllabus/syllabus.model';
 
-const COOKIES =
-    'PHPSESSID=fhql09s3kb5cc1rhvloj97eq62; utmor_sess=2de35c05d3f1593df78cf90f64adacf511cb1fe9';
+const COOKIES = 'INSERT COOKIES HERE';
 
 const DOWNLOAD_FILES = false;
 

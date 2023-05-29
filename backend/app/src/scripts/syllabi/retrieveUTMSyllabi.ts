@@ -5,10 +5,29 @@ import axios from 'axios';
 import jsdom from 'jsdom';
 import { expose } from 'threads/worker';
 import SyllabusModel from '../../models/syllabus/syllabus.model';
+import { ObjectId } from 'mongodb';
+import * as mongodb from 'mongodb';
+import * as fs from 'fs';
 
 const COOKIES = 'INSERT COOKIES HERE';
 
-const DOWNLOAD_FILES = false;
+const LETTERS_TO_SCRAPE = 'W';
+
+const HTTP = axios.create({
+    headers: {
+        'User-Agent':
+            'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/110.0',
+        Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-CA,en-US;q=0.7,en;q=0.3',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Upgrade-Insecure-Requests': '1',
+        'Sec-Fetch-Dest': 'document',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'same-origin',
+        'Sec-Fetch-User': '?1',
+        Cookie: COOKIES
+    }
+});
 
 const fileDownloadLink = (href: string) => `https://student.utm.utoronto.ca/CourseInfo/${href}`;
 
@@ -20,10 +39,12 @@ async function scrapeUTMSyllabi(): Promise<void> {
         .then(async () => {
             logger.info(`Connected to database @ ${DB_CONFIG.url}`);
 
+            if ((await SyllabusModel.find({}).countDocuments()) > 0) {
+                SyllabusModel.deleteMany({});
+            }
+
             const data = await fetchSyllabusRepo();
             await scrapeTable(data);
-
-            if (DOWNLOAD_FILES) await downloadFiles();
 
             await mongoose.disconnect();
             logger.info('Done');
@@ -36,6 +57,13 @@ async function scrapeUTMSyllabi(): Promise<void> {
 async function scrapeTable(data: any) {
     const repoPage = new jsdom.JSDOM(data.data);
     const tableRows = repoPage.window.document.body.querySelectorAll('tr');
+
+    const client = await mongodb.MongoClient.connect(
+        `mongodb://localhost:27017?directConnection=true`
+    );
+    const db = client.db(DB_CONFIG.name);
+
+    const bucket = new mongodb.GridFSBucket(db);
 
     const syllabiJson = [];
 
@@ -54,40 +82,28 @@ async function scrapeTable(data: any) {
         // @ts-ignore
         const originalUrl = fileDownloadLink(fileDownloadHref);
 
-        syllabiJson.push({
+        // @ts-ignore
+        if (!LETTERS_TO_SCRAPE.includes(courseCode.charAt(0))) continue;
+
+        logger.info(`[${courseCode}] (${session}) (${meetingSection}) (${instructor}) Downloading`);
+        const fileId = await downloadFile(originalUrl, bucket);
+        await SyllabusModel.create({
             session,
             courseCode,
             meetingSection,
             instructor,
-            originalUrl
+            originalUrl,
+            fileId
         });
+        logger.info('Inserting syllabus object');
     }
-
-    logger.info('Inserting syllabi objects');
-    await SyllabusModel.insertMany(syllabiJson);
 }
 
 async function fetchSyllabusRepo() {
-    const http = axios.create({
-        headers: {
-            'User-Agent':
-                'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/110.0',
-            Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-            'Accept-Language': 'en-CA,en-US;q=0.7,en;q=0.3',
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Upgrade-Insecure-Requests': '1',
-            'Sec-Fetch-Dest': 'document',
-            'Sec-Fetch-Mode': 'navigate',
-            'Sec-Fetch-Site': 'same-origin',
-            'Sec-Fetch-User': '?1',
-            Cookie: COOKIES
-        }
-    });
-
     logger.info('Fetching the course outline page');
 
     try {
-        return await http.post('https://student.utm.utoronto.ca/CourseInfo/', {
+        return await HTTP.post('https://student.utm.utoronto.ca/CourseInfo/', {
             session_cd: '',
             department_id: '',
             search: 1
@@ -98,11 +114,27 @@ async function fetchSyllabusRepo() {
     }
 }
 
+async function downloadFile(url: string, bucket: mongodb.GridFSBucket): Promise<ObjectId> {
+    const syllabusBinary = await HTTP.get(url, { responseType: 'stream' });
+
+    const uploadStream = bucket.openUploadStream(url);
+    syllabusBinary.data
+        .pipe(uploadStream)
+        .on('error', () => logger.error(`Failed to download file for ${url}`))
+        .on('finish', () => logger.info('Finished downloading'));
+
+    const timeToSleepInMs = Math.floor(Math.random() * 5 + 2) * 1000;
+    logger.info(`Sleeping for ${timeToSleepInMs / 1000} seconds`);
+    // Sleeping for a random time between 2 - 5 seconds
+    await sleep(timeToSleepInMs);
+
+    return uploadStream.id;
+}
+
 /**
- * DANGEROUS!!
- * There are over 10k syllabi in the UTM repo alone. Downloading all of them will take a lot of data so do
- * this at your own risk. Use the DOWNLOAD_FILES option for safety.
+ * A function that blocks execution for ms number of ms
+ * This is required to prevent piazza from rate limiting this script.
  */
-async function downloadFiles() {}
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export default scrapeUTMSyllabi;

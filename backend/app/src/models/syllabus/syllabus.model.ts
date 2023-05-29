@@ -8,7 +8,7 @@ export interface ISyllabus {
     meetingSection: string;
     instructor: string;
     originalUrl: string;
-    filesId: string;
+    fileId: string;
 }
 
 export interface ISyllabusModel extends Document, ISyllabus {}
@@ -19,7 +19,11 @@ const SyllabusSchema = new Schema({
     meetingSection: { type: Schema.Types.String, required: true },
     instructor: { type: Schema.Types.String, required: true },
     originalUrl: { type: Schema.Types.String, required: true },
-    filesId: { type: Schema.Types.ObjectId, required: false, default: '' }
+    fileId: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: 'fs.files'
+    }
 });
 
 const SyllabusModel = mongoose.model<ISyllabusModel>(SyllabusModelName, SyllabusSchema);
